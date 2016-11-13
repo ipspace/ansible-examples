@@ -1,0 +1,15 @@
+---
+#
+# Default username and SNMP community
+#
+# Unless you're using VIRL you should probably change them
+#
+ansible_user:       cisco
+ansible_ssh_pass:   cisco
+snmp_community:     cisco
+
+#
+# Default device OS. Overwrite with group or host variables
+# or specify in the inventory file
+#
+os: ios

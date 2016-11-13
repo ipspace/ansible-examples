@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  name:  Create empty links file
+  tags:  [ links ]
+  tasks:
+  - file: path={{links|default('links.txt')}} state=absent
+  - file: path={{links|default('links.txt')}} state=touch
+
+- hosts: all
+  tasks:
+  - snmp_facts:
+      host: "{{ip}}"
+      version: v2
+      community: cisco
+    tags: [ facts ]
+
+  - name: Generate links
+    lineinfile: 
+      dest: "{{links|default('links.txt')}}"
+      line: "{{inventory_hostname}} {{item.description}}"
+    with_items: "{{ansible_interfaces.values()}}"
+    when: >
+      {{
+        item.description.find('to ') >= 0 and
+        item.description.replace('to ','') > inventory_hostname
+      }}
+    tags: [ links ]

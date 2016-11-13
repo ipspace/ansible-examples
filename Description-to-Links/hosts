@@ -1,0 +1,8 @@
+# Sample inventory file
+# Change it
+E1  ip=172.16.1.110
+E2  ip=172.16.1.111
+PE1 ip=172.16.1.112
+E3  ip=172.16.1.120
+E4  ip=172.16.1.121
+PE2 ip=172.16.1.122
