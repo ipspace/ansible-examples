@@ -55,7 +55,8 @@ def readXMLFile(f):
 
 def printInventory(nodeList,osVar):
   for node in nodeList:
-    print "{name:<10} {osvar}={ip:<18} os={os}".format(osvar=osVar,**node)
+    if 'ip' in node and node['ip']: 
+      print "{name:<10} {osvar}={ip:<18} os={os}".format(osvar=osVar,**node)
 
 def getOptions():
   try:
