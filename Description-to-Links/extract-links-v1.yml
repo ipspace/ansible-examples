@@ -7,7 +7,6 @@
   - file: path={{links|default('links.txt')}} state=touch
 
 - hosts: all
-  serial: 1
   tasks:
   - snmp_facts:
       host: "{{ip}}"
@@ -20,13 +19,9 @@
       dest: "{{links|default('links.txt')}}"
       line: "{{inventory_hostname}} {{item.description}}"
     with_items: "{{ansible_interfaces.values()}}"
-    delegate_to: localhost
-    when: |
-      {% if item.description.find('to ') >= 0 %}
-        {% set host = item.description.partition('to ')[2] %}
-        {{
-          host and
-          (host > inventory_hostname or (not host in hostvars))
-        }}
-      {% else %} False {% endif %}
+    when: >
+      {{
+        item.description.find('to ') >= 0 and
+        item.description.replace('to ','') > inventory_hostname
+      }}
     tags: [ links ]
