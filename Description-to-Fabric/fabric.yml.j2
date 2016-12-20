@@ -1,0 +1,33 @@
+#
+# Fabric definition
+#
+---
+fabric:
+{% for host,facts in allhosts|dictsort %}
+{%   if facts.internal_links is defined and facts.internal_links|length > 0 %}
+{{ facts.internal_links|to_yaml|indent(2,true) }}
+{%   endif %}
+{% endfor %}
+
+interas:
+{% for host,facts in allhosts|dictsort %}
+{%   if facts.interas_links is defined and facts.interas_links|length > 0 %}
+{{ facts.interas_links|to_yaml|indent(2,true) }}
+{%   endif %}
+{% endfor %}
+
+nodes:
+{% for host,facts in allhosts|dictsort %}
+  - name: {{facts.inventory_hostname}}
+{%  if facts.ansible_interfaces is defined %}
+{%   for idx,intf in facts.ansible_interfaces|dictsort %}
+{#    dump: {{ intf|to_nice_json }} -- debugging #}
+{%     if intf.description.find("OOB") >= 0 and intf.ipv4 is defined and intf.ipv4[0] is defined %}
+    mgmt: {{intf.ipv4[0].address}}
+{%     endif %}
+{%     if intf.name == "Loopback0" and intf.ipv4 is defined and intf.ipv4[0] is defined %}
+    rid:  {{intf.ipv4[0].address}}
+{%     endif %}
+{%   endfor %}
+{%  endif %}
+{% endfor %}

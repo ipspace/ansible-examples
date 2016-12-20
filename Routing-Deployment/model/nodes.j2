@@ -1,0 +1,79 @@
+#
+# Nodes in the network
+#
+{% macro internal_link(name,ip,cost) %}
+{{ name }}: { ip: {{ip}} {% if cost %}, cost: {{cost}}{% endif %} }{% endmacro %}
+{% macro ibgp_session(from,to,ip) %}
+{% if from != to %}
+- { rid: {{to}}, ip: "{{ip}}" }{% endif %}{% endmacro %}
+{% macro ebgp_session(from,to,as,ip,ecnt) %}
+{% if from != to %}
+- { rid: {{to}}, as: {{as}}, ip: "{{ip}}" }{% endif %}{% endmacro %}
+
+---
+{% if services is defined %}
+services: {{services|to_json}}
+{% endif %}
+
+nodes:
+{% for node in nodes %}
+
+  {{ node.name }}:
+    mgmt: {{ node.mgmt }}
+    rid:  {{ node.rid }}
+{#
+    Create IBGP information:
+    * Find ASN that has current node name as one of its members
+    * Create AS variable
+    * Create a list of IBGP sessions
+
+    IBGP sessions are established between RRs and all other
+    nodes in the AS
+#}
+{%   for k,v in asn|dictsort() %}
+{%     if node.name in v.members %}
+    as:   {{ k }}
+{%       if node.name in v.rr %}
+    rr:   yes
+{%       endif %}
+    ibgp:
+{%       if node.name in v.rr %}
+{%         for rid in v.members %}
+{%           set neighbor = nodes|selectattr('name','equalto',rid)|first %}
+      {{ibgp_session(node.name,rid,neighbor.rid)}}
+{%         endfor %}
+{%       else %}
+{%         for rid in v.rr %}
+{%           set neighbor = nodes|selectattr('name','equalto',rid)|first %}
+      {{ibgp_session(node.name,rid,neighbor.rid)}}
+{%         endfor %}
+{%       endif %}
+{%     endif %}
+{%   endfor %}
+
+{%   set ecnt = 0 %}
+{%   for s in interas %}
+{%     if s.left == node.name %}
+{%       if ecnt == 0 %}
+    ebgp:
+{%       endif %}
+      {{ebgp_session(node.name,s.right,s.right_as,s.right_ip,ecnt)}}
+{%       set ecnt = ecnt + 1 %}
+{%     endif %}
+{%     if s.right == node.name %}
+{%       if ecnt == 0 %}
+    ebgp:
+{%       endif %}
+      {{ebgp_session(node.name,s.left,s.left_as,s.left_ip,ecnt)}}
+{%       set ecnt = ecnt + 1 %}
+{%     endif %}
+{%   endfor %}
+    internal: 
+{%   for link in fabric %}
+{%     if link.left == node.name %}
+      {{ internal_link(link.left_port,link.left_ip,link.cost|default('')) }}
+{%     elif link.right == node.name %}
+      {{ internal_link(link.right_port,link.right_ip, link.cost|default('')) }}
+{%     endif %}
+{%   endfor %}
+{% endfor %}

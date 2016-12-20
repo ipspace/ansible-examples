@@ -1,0 +1,34 @@
+---
+- hosts: all
+  tasks:
+  - name:   Check that the device belongs to exactly one AS
+    assert: that="{{ group_names|select('match','AS')|list|length == 1 }}"
+  - snmp_facts:
+      host: "{{ip}}"
+      version: v2
+      community: cisco
+    tags: [ facts,internal,interas ]
+
+  - set_fact:
+      internal_links: []
+      interas_links:  []
+
+  - name: Generate Internal links
+    include: get-connectivity/internal-links.yml intf="{{item}}"
+    with_items: "{{ansible_interfaces.values()}}"
+    when: "{{intf.description.find('to ') >= 0}}"  
+    tags: [ internal ]
+
+  - name: Generate Inter-AS links
+    include: get-connectivity/interas-links.yml intf="{{item}}"
+    with_items: "{{ansible_interfaces.values()}}"
+    when: "{{intf.description.find('to ') >= 0}}"  
+    tags: [ interas ]
+
+  - name: Generate fabric.yml file
+    template: src=fabric.yml.j2 dest=./fabric.yml
+    vars: 
+      allhosts: "{{hostvars}}"
+    run_once: true
+    connection: local
+    tags: [ internal,interas,nodes ]

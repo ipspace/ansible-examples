@@ -1,0 +1,53 @@
+#
+# Deploy IBGP and EBGP routing in a WAN fabric
+#
+---
+- name: Create and deploy BGP configurations
+  hosts: all
+  vars:
+    configs: "{{inventory_dir}}/configs"
+  tasks:
+  - include_vars: "{{ item }}"
+    with_first_found:
+      - nodes.yml
+      - "{{ inventory_dir }}/nodes.yml"
+    tags: [ configs,verify,deploy ]
+
+  - name: Create configuration directory
+    local_action: file path={{configs}} state=directory
+    run_once: true
+    tags: [ configs ]
+
+  - name: Create configurations
+    template: src=bgp-config.j2 dest={{configs}}/{{inventory_hostname}}.bgp.cfg
+    tags: [ configs ]
+
+  - name: Deploy configurations
+    ios_config:
+      provider: "{{ios_provider}}"
+      src: "{{configs}}/{{inventory_hostname}}.bgp.cfg"
+    tags: [ deploy ]
+    register: changes
+
+  - set_fact: deploy=1
+    tags: [ deploy ]
+
+  - name: Wait for BGP to start
+    pause: seconds=15 prompt="Waiting for BGP to start"
+    tags: [ verify ]
+    when: deploy is defined
+
+  - name: Collect BGP neighbors
+    ios_command:
+      provider: "{{ios_provider}}"
+      commands: 
+      - "show ip bgp summary | include ^[0-9]+\\."
+    register: bgp_neighbors
+    tags: [ verify ]
+
+  - name: Verify BGP neighbors are configured
+    assert:
+      that: "'{{ item.ip }}' in bgp_neighbors.stdout[0]"
+      msg:  "IBGP neighbor {{ item.rid }}/{{item.ip}} is not configured"
+    with_items: "{{ nodes[inventory_hostname].ibgp | union(nodes[inventory_hostname].ebgp|default([])) }}"
+    tags: [ verify ]

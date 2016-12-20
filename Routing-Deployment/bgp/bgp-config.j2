@@ -1,0 +1,42 @@
+{% macro bgp_af_neighbor(ip,svc) %}
+  neighbor {{ip}} activate
+  neighbor {{ip}} send-community {% if svc == "vpnv4" %}both{% endif %}{% endmacro %}
+
+{% set node = nodes[inventory_hostname] %}
+{% if node.as is defined %}
+router bgp {{ node.as }}
+ bgp router-id {{ node.rid }}
+!
+{%   for neighbor in node.ibgp %}
+ neighbor {{ neighbor.ip }} remote-as {{ node.as }}
+ neighbor {{ neighbor.ip }} update-source Loopback0
+ neighbor {{ neighbor.ip }} description IBGP session to {{ neighbor.rid }}
+{%   endfor %}
+{%   for neighbor in node.ebgp|default([]) %}
+ neighbor {{ neighbor.ip }} remote-as {{ neighbor.as }}
+ neighbor {{ neighbor.ip }} description EBGP session to {{ neighbor.rid }}
+{%   endfor %}
+
+{%   for svc in services|default(['IPv4']) %}
+{%     set svc = svc.lower() %}
+ address-family {{svc}}
+{%     if svc == 'ipv4' %}
+  redistribute connected route-map Redistribute32
+{%     endif %}
+{%     for neighbor in node.ibgp %}
+{{ bgp_af_neighbor(neighbor.ip,svc) }}
+{%       if node.rr is defined and not (nodes[neighbor.rid].rr is defined) %}
+  neighbor {{ neighbor.ip }} route-reflector-client
+{%       endif %}
+{%     endfor %}
+{%     for neighbor in node.ebgp|default([]) %}
+{{ bgp_af_neighbor(neighbor.ip,svc) }}
+{%     endfor %}
+{%   endfor %}
+!
+route-map Redistribute32
+ match ip address prefix-list Subnet32
+!
+no ip prefix-list Subnet32
+ip prefix-list Subnet32 permit {{ node.rid }}/32
+{% endif %}

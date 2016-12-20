@@ -1,0 +1,20 @@
+---
+- include: remote-interface.yml
+- set_fact:
+    link:   |
+      { 'left':       '{{inventory_hostname}}',
+        'left_port':  '{{intf.name}}',
+        'left_ip':    '{{intf.ipv4[0].address}}',
+        'right':      '{{remote}}',
+        'right_port': '{{remintf.name}}',
+        'right_ip':   '{{remintf.ipv4[0].address}}' 
+      }
+  when: |
+    {{
+      remintf.ipv4 is defined and 
+      remintf.ipv4[0].address > intf.ipv4[0].address and
+      group_names | intersect(hostvars[remote].group_names) | length > 0
+    }}
+- set_fact: 
+    internal_links:  "{% set x = internal_links.append(link) %}{{internal_links}}"
+  when:     "{{ link.left is defined }}"

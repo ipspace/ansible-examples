@@ -1,0 +1,49 @@
+#
+# Deploy OSPF routing in a WAN fabric
+#
+---
+- name: Create and deploy OSPF configurations
+  hosts: all
+  vars:
+    configs: "{{inventory_dir}}/configs"
+  tasks:
+  - include_vars: "{{ item }}"
+    with_first_found:
+      - nodes.yml
+      - "{{ inventory_dir }}/nodes.yml"
+    tags: [ configs,verify ]
+
+  - name: Create configuration directory
+    local_action: file path={{configs}} state=directory
+    run_once: true
+    tags: [ configs ]
+
+  - name: Create configurations
+    template: src=ospf-config.j2 dest={{configs}}/{{inventory_hostname}}.ospf.cfg
+    tags: [ configs ]
+
+  - name: Deploy configurations
+    ios_config:
+      provider: "{{ios_provider}}"
+      src: "{{configs}}/{{inventory_hostname}}.ospf.cfg"
+    tags: [ deploy ]
+    register: changes
+
+  - name: Wait for OSPF to start
+    pause: seconds=15 prompt="Waiting for OSPF to start"
+    tags: [ verify ]
+
+  - name: Collect OSPF neighbors
+    ios_command:
+      provider: "{{ios_provider}}"
+      commands: 
+      - "show ip ospf neighbor | include ^[1-9]"
+    register: ospf_neighbors
+    tags: [ verify ]
+
+  - name: Verify OSPF is running on all internal interfaces
+    assert:
+      that: "'{{ item.key }}' in ospf_neighbors.stdout[0]"
+      msg:  "OSPF session in interface {{item.key}} is missing"
+    with_dict: "{{ nodes[inventory_hostname].internal }}"
+    tags: [ verify ]

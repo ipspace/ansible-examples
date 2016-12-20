@@ -1,0 +1,10 @@
+---
+- set_fact: 
+    remote: "{{intf.description.replace('to ','')}}"
+- set_fact:
+    remintf: |
+      {% set riflist = hostvars[remote].ansible_interfaces|default({}) %}
+      {% set local = "to "+inventory_hostname %}
+      {% set remIfList = riflist.values()|selectattr('description','equalto',local)|list %}
+      {{ remIfList[0]|default({}) }}
+- set_fact: link={}
