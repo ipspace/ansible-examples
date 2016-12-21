@@ -29,6 +29,14 @@
     tags: [ deploy ]
     register: changes
 
+  - name: Refresh BGP routers
+    ios_command:
+      provider: "{{ios_provider}}"
+      commands: 
+      - "clear ip bgp * all soft out"
+    register: bgp_neighbors
+    tags: [ deploy ]
+
   - set_fact: deploy=1
     tags: [ deploy ]
 
