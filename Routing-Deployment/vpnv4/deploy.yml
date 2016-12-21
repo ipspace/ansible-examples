@@ -1,0 +1,39 @@
+#
+# Deploy VPNv4 services from services-vpnv4 definition
+#
+---
+- name: Create and deploy BGP configurations
+  hosts: all
+  vars:
+    configs: "{{inventory_dir}}/configs"
+    services: "{{inventory_dir}}/services-vpnv4.yml"
+  tasks:
+  - include_vars: 
+      file: "{{ services }}"
+      name: vpnv4
+    tags: [ configs,deploy ]
+
+  - include_vars: "{{ item }}"
+    with_first_found:
+      - nodes.yml
+      - "{{ inventory_dir }}/nodes.yml"
+    tags: [ configs,deploy ]
+
+  - name: Create configuration directory
+    local_action: file path={{configs}} state=directory
+    run_once: true
+    tags: [ configs ]
+
+  - set_fact: customers="{{ lookup('template','list-of-customers.json.j2') }}"
+
+  - name: Create configurations
+    template: src=vpnv4-config.j2 dest={{configs}}/{{inventory_hostname}}.vpnv4.cfg
+    when: customers|length > 0
+    tags: [ configs ]
+
+  - name: Deploy configurations
+    ios_config:
+      provider: "{{ios_provider}}"
+      src: "{{configs}}/{{inventory_hostname}}.vpnv4.cfg"
+    tags: [ deploy ]
+    when: customers|length > 0

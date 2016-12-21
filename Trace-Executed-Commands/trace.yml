@@ -1,0 +1,24 @@
+#
+# Enable or disable logging of commands executed on Cisco IOS devices
+#
+---
+- name: Enable or disable command logging on Cisco IOS
+  hosts: all
+  vars:
+    configlets: { enabled: enableLogging.cfg, disabled: disableLogging.cfg, config: configLogging.cfg }
+  tasks:
+  - set_fact: logging={{log|default('enabled')}}
+  - set_fact: src={{configlets[logging]|default("")}}
+  - assert:
+      that: src != ""
+      msg:  "Unknown logging type {{logging}}"
+  
+  - debug:
+      msg: Target logging state is {{logging}} configuring from {{src}}
+
+  - name: Enable/Disable command logging
+    ios_config: 
+      src:      "{{src}}"
+      host:     "{{ip|default(ansible_host)}}"
+      username: "{{ansible_user}}"
+      password: "{{ansible_ssh_pass}}"

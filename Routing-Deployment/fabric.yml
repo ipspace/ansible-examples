@@ -33,7 +33,7 @@ asn:
     members: [ E3,E4,PE2 ]
     rr:      [ E3,E4 ]
 
-services: [ IPv4, VPNv4 ]
+services: [ IPv4, VPNv4,InterAS ]
 
 nodes:
   - name: E1

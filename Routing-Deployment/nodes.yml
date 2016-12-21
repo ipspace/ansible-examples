@@ -3,7 +3,7 @@
 #
 
 ---
-services: ["IPv4", "VPNv4"]
+services: ["IPv4", "VPNv4", "InterAS"]
 
 nodes:
 

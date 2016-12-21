@@ -15,6 +15,9 @@ interface {{intf}}
 {%     if data.cost is defined %}  
   ip ospf cost {{data.cost}}
 {%     endif %}
+{%     if "VPNv4" in services %}
+  mpls ip
+{%     endif %}
 !
 {%   endfor %}
 {% endif %}
