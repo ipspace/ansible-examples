@@ -1,0 +1,32 @@
+#
+# Deploy IBGP and EBGP routing in a WAN fabric
+#
+---
+- name: Collect confgurations from Cisco IOS devices
+  hosts: all
+  vars:
+    dir: "{{inventory_dir}}/printouts"
+
+  tasks:
+  - local_action: file path={{dir}} state=directory
+    run_once: true
+
+  - include_vars: "{{ item }}"
+    with_first_found:
+      - "{{ inventory_dir }}/printouts.yml"
+      - printouts.yml
+
+  - name: Collect printouts
+    ios_command:
+      host: "{{ip|default(ansible_host)}}"
+      username: "{{ansible_user}}"
+      password: "{{ansible_ssh_pass}}"
+      commands: "{{ printouts | map(attribute='command') | list }}"
+    register: results
+
+  - name: Save printouts into files
+    template: src=dummy.j2 dest="{{dir}}/{{inventory_hostname}}.{{item.0}}.txt"
+    when: item.1 is defined
+    with_together:
+    - "{{ printouts | map(attribute='save') | list }}"
+    - "{{ results.stdout }}"

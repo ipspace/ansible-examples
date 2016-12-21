@@ -1,0 +1,6 @@
+---
+printouts:
+  - command: show running
+    save:    running
+  - command: show startup
+    save:    startup
