@@ -37,6 +37,10 @@
     tags: [ verify ]
     when: deploy is defined
 
+  - set_fact: 
+      sessions: "{{ nodes[inventory_hostname].ibgp | union(nodes[inventory_hostname].ebgp|default([])) }}"
+    tags: [ verify ]
+
   - name: Collect BGP neighbors
     ios_command:
       provider: "{{ios_provider}}"
@@ -48,6 +52,18 @@
   - name: Verify BGP neighbors are configured
     assert:
       that: "'{{ item.ip }}' in bgp_neighbors.stdout[0]"
-      msg:  "IBGP neighbor {{ item.rid }}/{{item.ip}} is not configured"
-    with_items: "{{ nodes[inventory_hostname].ibgp | union(nodes[inventory_hostname].ebgp|default([])) }}"
+      msg:  "BGP neighbor {{ item.rid }}/{{item.ip}} is not configured"
+    with_items: "{{ sessions }}"
+    tags: [ verify ]
+
+  - name: Verify BGP sessions are up and running
+    assert:
+      that: |
+        {% set pattern = '^'~item.ip~'.*\s+(\d+)$' %}
+        {{ bgp_neighbors.stdout[0] | regex_findall(pattern,'\1')|length > 0 }}
+      msg:  >
+        {% set pattern = '^'~item.ip~'.*\s+(\D+)$' %}
+        Session with BGP neighbor {{ item.rid }}/{{item.ip}} is not established
+        state is {{ bgp_neighbors.stdout[0] | regex_findall(pattern,'\1') | join("") }}
+    with_items: "{{ sessions }}"
     tags: [ verify ]
