@@ -1,0 +1,4 @@
+# Extra pools to remove
+{% for pool in extraPools %}
+no ip dhcp pool {{pool}}
+{% endfor %}

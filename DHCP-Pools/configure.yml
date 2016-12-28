@@ -1,0 +1,40 @@
+#
+# This playbook configures DHCP pools on managed devices
+#
+---
+- hosts: all
+  name:  Configure DHCP pools on managed devices
+  vars:
+    config_path: "{{configs|default('configs')}}"
+  vars_files:
+  - "{{ lookup('env','EXTRA_POOLS')|default('pools.yml') }}"
+
+  tasks:
+  - fail: msg="Please run this playbook with tags set to create and/or install"
+
+  - name: Create config directory
+    file: path={{config_path}} state=directory
+    run_once: yes
+    tags: [ create, install ]
+
+  - name: Get exiting DHCP pools
+    include: include/getPools.yml
+    tags: [ install ]
+
+  - name: Verify that there are no extra pools
+    assert:
+      that: "extraPools|length == 0"
+      msg:  "Extra DHCP pools have to be removed first: {{extraPools|join(', ')}}"
+    tags: [ install ]
+
+  - name: Create pool configuration
+    template: src=pools.j2 dest={{config_path}}/{{inventory_hostname}}.cfg
+    tags: [ create ]
+
+  - name: Configure DHCP pools
+    ios_config:
+      username:  "{{ansible_user}}"
+      password:  "{{ansible_ssh_pass}}"
+      host:      "{{ip|default(inventory_hostname)}}"
+      src:       pools.j2
+    tags: [ install ]

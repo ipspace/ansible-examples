@@ -1,0 +1,45 @@
+{% for ifname,intf in interfaces|dictsort %}
+ip dhcp pool {% if intf.pool is defined %}{{intf.pool}}{% else %}{{ifname}}{% endif %}
+
+  network {{intf.ip|ipaddr('network')}} {{intf.ip|ipaddr('netmask')}}
+{%   if intf.domain %}
+  domain-name {{intf.domain}}
+{%   endif %}
+!
+{% endfor %}
+{% for name,data in hostPools|dictsort %}
+{%   for intf in interfaces.values() %}
+{%     if data.ip|ipaddr(intf.ip) and data.id is defined %}
+{# 
+    Found the interface/subnet the client IP belongs to -->
+    it makes sense to create the host DHCP pool
+#}
+ip dhcp pool {{name}}
+{#
+    If the client ID matches MAC address format generate hardware-address
+    otherwise use client-identifier 
+#}
+{%       if data.id|match('\A([0-9a-f]{4}\.){2}[0-9a-f]{4}\Z') %}
+  hardware-address {{data.id}}
+{%       else %}
+  client-identifier {{data.id}}
+{%       endif %}
+  host {{data.ip}} {{intf.ip|ipaddr('netmask')}}
+{%       if name.find('.') > 0 %}{# is client name FQDN? #}
+  client-name {{name.partition('.')[0]}}
+{%         if name.partition('.')[2] != intf.domain|default('') %}
+{# client domain is not equal to equal to interface domain #}
+  domain-name {{name.partition('.')[2]}}
+{%         endif %}
+{%       else %}{# name has no dot #}
+  client-name {{name}}
+{%       endif %}
+{%     endif %}
+{%   endfor %}
+{% endfor %}
+!
+{% for name,data in hostPools|dictsort %}
+{%   if data.ip is defined  %}
+ip host {{name}} {{data.ip}}
+{%   endif %}
+{% endfor %}

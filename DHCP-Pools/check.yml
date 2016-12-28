@@ -1,0 +1,15 @@
+#
+# This playbook checks for extra DHCP pools on managed routers and fails if there are any
+#
+# You could change the ASSERT action into something more appropriate (example: send an email)
+#
+---
+- hosts: all
+  name:  Check DHCP pools configured on the device
+  vars_files:
+  - "{{ lookup('env','EXTRA_POOLS')|default('pools.yml') }}"
+  tasks:
+  - include: include/getPools.yml
+  - assert:
+      that: "extraPools|length == 0"
+      msg:  "Extra DHCP pools have to be removed first: {{extraPools|join(', ')}}"

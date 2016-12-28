@@ -1,0 +1,6 @@
+---
+interfaces:
+  Vlan1: 
+    ip: 10.217.233.1/24
+    dhcp: enabled
+    domain: nil.si

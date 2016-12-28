@@ -1,0 +1,15 @@
+#
+# This playbook enable SNMP on all Cisco IOS routers in the inventory
+#
+---
+- hosts: all
+  name:  Check DHCP pools configured on the device
+  vars_files:
+  - "{{ lookup('env','EXTRA_POOLS')|default('pools.yml') }}"
+  tasks:
+  - include: include/getPools.yml
+  - ios_config:
+      username:  "{{ansible_user}}"
+      password:  "{{ansible_ssh_pass}}"
+      host:      "{{ip|default(inventory_hostname)}}"
+      src:       cleanup.j2

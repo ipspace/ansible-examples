@@ -1,0 +1,19 @@
+{% macro WritePool(host,mac,ip) %}
+  {{ host }}: { id: '{{mac|default('')}}', ip: '{{ip|default('')}}' }{% endmacro %}
+---
+{% for line in pools.stdout_lines[0] %}
+{%   set poolname = line|regex_findall('^ip dhcp pool (\S+)$') %}
+{%   set ip = line|regex_findall('host ([0-9.]+)') %}
+{%   set mac = line|regex_findall('(client-identifier|hardware-address)\s+([0-9a-f.]+)') %}
+{%   if poolname[0] is defined %}
+{%     if not (host is defined) %}
+hostPools:
+{%     endif %}
+{%     set host = poolname[0] %}
+{%     set host_ip = "" %}
+{%   endif %}
+{%   set host_ip  = ip[0] |default(host_ip)|default("") %}
+{%   if mac[0] is defined %}
+{{     WritePool(host,mac[0][1],host_ip) }}
+{%   endif %}
+{% endfor %}

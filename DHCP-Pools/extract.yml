@@ -1,0 +1,26 @@
+#
+# This playbook checks for extra DHCP pools on managed routers and fails if there are any
+#
+# You could change the ASSERT action into something more appropriate (example: send an email)
+#
+---
+- hosts: all
+  name:  Extract DHCP pools from existing device configurations
+  vars:
+    extract_path: "{{extract_pools|default('pools')}}"
+  tasks:
+  - name: Create pools directory
+    file: path={{extract_path}} state=directory
+    run_once: yes
+
+  - ios_command:
+      username:  "{{ansible_user}}"
+      password:  "{{ansible_ssh_pass}}"
+      host:      "{{ip|default(inventory_hostname)}}"
+      commands:
+      - "show running | section ip dhcp pool"
+    register: pools
+
+  - debug: var=pools.stdout_lines
+
+  - local_action: template src=extract.j2 dest={{extract_path}}/{{inventory_hostname}}.pools.yml

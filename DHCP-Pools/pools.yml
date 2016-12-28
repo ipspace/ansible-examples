@@ -1,0 +1,9 @@
+#
+# Sample host pools
+#
+---
+hostPools:
+  h1.example.com:    { id: ff6d.4040.4142.4344.4546.47, ip: 192.168.200.194 }
+  h2.example.com:    { id: 0100.aa00.1111.22, ip: 192.168.200.195 }
+  h3.example.com:    { id: 0100.aa00.e9fb.b6, ip: 192.168.200.196 }
+  extra.example.com: { id: 1234.abcd.ffff, ip: 10.0.0.1 }

@@ -1,0 +1,32 @@
+#
+# This set of tasks will get interface and pool list from an IOS router
+#
+---
+- name: "Get interface and pool list"
+  ios_command:
+    username:  "{{ansible_user}}"
+    password:  "{{ansible_ssh_pass}}"
+    host:      "{{ip|default(inventory_hostname)}}"
+    commands:
+      - "show ip interface brief | inc \\.[0-9]+[ ]+YES"
+      - "show ip dhcp pool | inc ^Pool"
+  register: printout
+
+#
+# Parse printouts to get a list of interfaces and existing DHCP pools on the device
+#
+- set_fact:
+    intf: "{{printout.stdout_lines[0] | map('regex_replace','\\s+.*','') | list }}"
+    pool: "{{printout.stdout_lines[1] | map('regex_replace','Pool\\s+(?P<id>.+)\\s+:','\\g<id>') | list }}"
+
+# 
+# Pools that are not interface pools, host pools, or default pools should not be on the box.
+#
+# Get the list of extraPools, the parent playbook will figure out what to do with them.
+#
+- set_fact:
+    extraPools: |
+      {{ pool | difference(intf) 
+              | difference(hostPools)
+              | difference(defaultPools | default(['DHCP'])) 
+      }}
