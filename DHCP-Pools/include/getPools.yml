@@ -16,8 +16,8 @@
 # Parse printouts to get a list of interfaces and existing DHCP pools on the device
 #
 - set_fact:
-    intf: "{{printout.stdout_lines[0] | map('regex_replace','\\s+.*','') | list }}"
-    pool: "{{printout.stdout_lines[1] | map('regex_replace','Pool\\s+(?P<id>.+)\\s+:','\\g<id>') | list }}"
+    intf: "{{printout.stdout_lines[0] | map('regex_findall','^([A-Za-z]+[0-9./]+)') | map('join') | list }}"
+    pool: "{{printout.stdout_lines[1] | map('regex_search','Pool\\s+(?P<id>.+)\\s+:','\\g<id>') | map('join') | list }}"
 
 # 
 # Pools that are not interface pools, host pools, or default pools should not be on the box.
