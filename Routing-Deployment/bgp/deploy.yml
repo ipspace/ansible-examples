@@ -41,7 +41,7 @@
     tags: [ deploy ]
 
   - name: Wait for BGP to start
-    pause: seconds=15 prompt="Waiting for BGP to start"
+    pause: seconds=30 prompt="Waiting for BGP to start"
     tags: [ verify ]
     when: deploy is defined
 
