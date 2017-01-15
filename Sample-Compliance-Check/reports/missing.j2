@@ -1,0 +1,8 @@
+{% for host,facts in allhosts|dictsort %}
+{%   if facts.error_no_community is defined %}
+{{facts.inventory_hostname}}: Missing SNMP community {{snmp_community}}
+{%   endif %}
+{%   if facts.error_no_snmp_server is defined %}
+{{facts.inventory_hostname}}: {{snmp_server}} is not SNMP trap host
+{%   endif %}
+{% endfor %}

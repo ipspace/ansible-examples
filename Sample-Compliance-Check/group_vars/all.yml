@@ -1,0 +1,10 @@
+---
+snmp_server: 10.0.0.1
+snmp_community: myPass
+syslog_server: 10.0.0.1
+
+ios_provider:
+  username:  "{{ansible_user}}"
+  password:  "{{ansible_ssh_pass}}"
+  host:      "{{ip|default(ansible_host)|default(inventory_hostname)}}"
+  transport: cli

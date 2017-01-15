@@ -1,0 +1,12 @@
+#
+# Create a compliance report from specified template
+#
+---
+- file: path="{{results}}" state=directory
+  run_once: true
+- template: 
+    src:  "{{report|default('missing.j2')}}" 
+    dest: "{{results}}/{{output|default('errors.log')}}"
+  vars: 
+    allhosts: "{{hostvars}}"
+  run_once: true

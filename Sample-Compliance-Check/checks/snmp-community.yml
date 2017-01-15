@@ -1,0 +1,10 @@
+#
+# Check whether SNMP community is configured on devices
+#
+---
+- ios_command: 
+    provider: "{{ios_provider}}"
+    commands: "show snmp community"
+  register: result
+- set_fact: error_no_community=1
+  when: "not('name: '~snmp_community in result.stdout[0])"

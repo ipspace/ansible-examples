@@ -1,0 +1,10 @@
+#
+# Check whether SNMP community is configured on devices
+#
+---
+- ios_command: 
+    provider: "{{ios_provider}}"
+    commands: "show run | include logging host"
+  register: result
+- set_fact: error_no_syslog_server="{{syslog_server}} is not configured as syslog server"
+  when: "not(syslog_server in result.stdout[0])"

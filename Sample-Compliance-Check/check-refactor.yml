@@ -1,0 +1,9 @@
+---
+- name:  Check whether SNMP community is configured on devices. Report missing communities
+  hosts: all
+  vars:
+  - results: "{{inventory_dir}}/results"
+  tasks:
+  - include: "checks/{{item}}.yml"
+    with_items: [ "snmp-community", "snmp-server" ] 
+  - include: "reports/{{fmt|default('template')}}.yml"

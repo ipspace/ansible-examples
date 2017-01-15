@@ -1,0 +1,10 @@
+E1  ansible_host=172.16.1.110
+E2  ansible_host=172.16.1.111
+PE1 ansible_host=172.16.1.112
+E3  ansible_host=172.16.1.120
+E4  ansible_host=172.16.1.121
+PE2 ansible_host=172.16.1.122
+
+[all:vars]
+ansible_user=cisco
+ansible_ssh_pass=cisco
