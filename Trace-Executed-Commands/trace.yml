@@ -5,7 +5,7 @@
 - name: Enable or disable command logging on Cisco IOS
   hosts: all
   vars:
-    configlets: { enabled: enableLogging.cfg, disabled: disableLogging.cfg, config: configLogging.cfg }
+    configlets: { enabled: enableLogging.cfg, disabled: disableLogging.cfg, config: configLogging.cfg, keys: sshKeys.cfg }
   tasks:
   - set_fact: logging={{log|default('enabled')}}
   - set_fact: src={{configlets[logging]|default("")}}
