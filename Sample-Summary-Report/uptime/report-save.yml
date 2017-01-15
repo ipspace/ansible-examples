@@ -1,3 +1,6 @@
+#
+# Saves all Ansible host variables into a YAML file
+#
 ---
 - file: path={{results}} state=directory
   run_once: true

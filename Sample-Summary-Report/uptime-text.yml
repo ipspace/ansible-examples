@@ -1,5 +1,5 @@
 ---
-- name:  Collect SNMP Facts from devices. Save them to YAML files
+- name:  Collect SNMP and vendor-specific facts from devices. Create a text report
   hosts: all
   vars:
   - results: results

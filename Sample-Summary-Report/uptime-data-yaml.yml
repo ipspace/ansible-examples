@@ -1,5 +1,5 @@
 ---
-- name:  Collect SNMP Facts from devices. Save them to YAML files
+- name:  Collect IOS facts from devices. Save them to YAML files
   hosts: all
   vars:
   - results: results

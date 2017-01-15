@@ -1,3 +1,8 @@
+#
+# Reads SNMP and vendor-specific facts from a networking device
+# 
+# Include it in an Ansible play
+#
 ---
 - snmp_facts:       
     host: "{{ansible_host}}"
