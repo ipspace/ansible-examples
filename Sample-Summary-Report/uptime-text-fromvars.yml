@@ -1,0 +1,13 @@
+---
+- name:  Collect SNMP Facts from devices. Save them to YAML files
+  hosts: all
+  vars:
+  - results: results
+  tasks:
+  - include_vars: "{{results}}/{{inventory_hostname}}.yml"
+  - file: path="{{results}}/uptime.log" state=touch
+    run_once: true
+  - lineinfile:
+      dest:   "{{results}}/uptime.log"
+      regexp: "{{inventory_hostname}}"
+      line:   "{{'%-20s %8s'|format(inventory_hostname,ansible_sysuptime)}}"

@@ -1,0 +1,2 @@
+---
+- include_vars: "{{results}}/{{inventory_hostname}}.yml"

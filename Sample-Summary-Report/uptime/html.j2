@@ -1,0 +1,13 @@
+<html>
+<head>
+  <title>Device uptime report</title>
+</head>
+<body>
+  <h1>Device uptime report</h1>
+  <table>
+    <tr><th>Device</th><th>Uptime in seconds</th></tr>
+{% for host,facts in allhosts|dictsort %}
+    <tr><td>{{facts.inventory_hostname}}</td><td>{{facts.ansible_sysuptime}}</td></tr>
+{% endfor %}
+  </table>
+</body>

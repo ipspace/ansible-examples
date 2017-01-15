@@ -1,0 +1,6 @@
+---
+- snmp_facts:       
+    host: "{{ansible_host}}"
+    version: v2
+    community: cisco
+- ios_facts: provider={{ios_provider}}

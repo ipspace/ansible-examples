@@ -1,0 +1,17 @@
+#
+# Enable or disable logging of commands executed on Cisco IOS devices
+#
+---
+- name: Deploy a configuration snippet on Cisco IOS routers
+  hosts: all
+  tasks:
+  - assert:
+      that: src is defined
+      msg:  "Must specify configuration snippet filename with --extra-vars"
+    run_once: 1
+
+  - ios_config: 
+      src:      "{{src}}"
+      host:     "{{ansible_host}}"
+      username: "{{ansible_user}}"
+      password: "{{ansible_ssh_pass}}"

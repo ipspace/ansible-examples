@@ -1,0 +1,11 @@
+---
+- name:  Collect SNMP Facts from devices. Save them to YAML files
+  hosts: all
+  vars:
+  - results: results
+  tasks:
+  - file: path={{results}} state=directory
+    run_once: true
+  - ios_facts: provider={{ios_provider}}
+    register: result
+  - copy: content="{{result.ansible_facts}}" dest={{results}}/{{inventory_hostname}}.json

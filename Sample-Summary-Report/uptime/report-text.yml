@@ -1,0 +1,7 @@
+---
+- file: path="{{results}}/uptime.log" state=touch
+  run_once: true
+- lineinfile:
+    dest:   "{{results}}/uptime.log"
+    regexp: "{{inventory_hostname}}"
+    line:   "{{'%-20s %8s'|format(inventory_hostname,ansible_sysuptime)}}"

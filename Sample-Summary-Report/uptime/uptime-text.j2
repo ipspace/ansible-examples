@@ -1,0 +1,3 @@
+{% for host,facts in allhosts|dictsort %}
+{{'%-20s %8s'|format(facts.inventory_hostname,facts.ansible_sysuptime)}}
+{% endfor %}

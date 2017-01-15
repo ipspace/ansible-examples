@@ -1,0 +1,8 @@
+---
+- name:  Collect SNMP Facts from devices. Save them to YAML files
+  hosts: all
+  vars:
+  - results: "{{inventory_dir}}/results"
+  tasks:
+  - include: "uptime/read-{{src|default('device')}}.yml"
+  - include: "uptime/report-{{dst|default('text')}}.yml"
