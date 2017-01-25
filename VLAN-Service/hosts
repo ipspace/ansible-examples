@@ -1,0 +1,2 @@
+leaf-1  ansible_host=172.16.1.110 ansible_os=nxos
+# leaf-2  ansible_host=172.16.1.111

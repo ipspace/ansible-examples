@@ -1,0 +1,35 @@
+---
+- hosts: all
+  name:  configure VLAN service
+  tasks:
+  - include_vars: 
+      file: "{{inventory_dir}}/services.yml" 
+      name: services
+
+  - nxos_vlan:
+      provider: "{{cli}}"
+      vlan_id: "{{item.value.vlan}}" 
+      state:   "present"
+      admin_state: "up"
+      name:    "{{item.key}}"
+    with_dict: "{{services}}"
+
+  - nxos_interface:
+      provider: "{{cli}}"
+      admin_state: up
+      interface:   "{{item.1.port}}"
+      mode:        layer2
+    when: item.1.node == inventory_hostname
+    with_subelements:
+    - "{{services}}"
+    - ports
+
+  - nxos_switchport:
+      provider: "{{cli}}"
+      mode:        access
+      access_vlan: "{{item.0.vlan}}"
+      interface:   "{{item.1.port}}"
+    when: item.1.node == inventory_hostname
+    with_subelements:
+    - "{{services}}"
+    - ports
