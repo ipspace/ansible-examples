@@ -1,0 +1,23 @@
+{
+  "vlans": {
+{% for customer,svc in services.iteritems() %}
+{%   if inventory_hostname in svc.ports|map(attribute='node') %}
+    {{svc.vlan}}: "{{customer}}"{% if not(loop.last) %},{% endif %}
+{%   endif %}
+{% endfor %}
+  },
+  "vlan_list": [ 1,
+{% for customer,svc in services.iteritems() %}
+{%   if inventory_hostname in svc.ports|map(attribute='node') %}
+    {{svc.vlan}}{% if not(loop.last) %},{% endif %}
+{%   endif %}
+{% endfor %}
+  ],
+  "ports": {
+{% for customer,svc in services.iteritems() %}
+{%   for p in svc.ports if p.node == inventory_hostname %}
+    "{{p.port}}": {{svc.vlan}}{% if not(loop.last) %},{% endif %}
+{%   endfor %}
+{% endfor %}
+  }
+}

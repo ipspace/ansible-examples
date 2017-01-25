@@ -1,0 +1,14 @@
+---
+- hosts: all
+  name:  test data model
+  vars:
+    input:  "{{inventory_dir}}/services.yml"
+    output: "{{inventory_dir}}/printouts"
+    model:  "../templates/node-model.j2"
+  tasks:
+  - include_vars: 
+      file: "{{input}}" 
+      name: services
+  - template:
+      src:  "{{model}}"
+      dest: "{{output}}/{{inventory_hostname}}-model.json"

@@ -5,31 +5,25 @@
   - include_vars: 
       file: "{{inventory_dir}}/services.yml" 
       name: services
-
+  - set_fact: data="{{lookup('template','templates/node-model.j2')}}"
   - nxos_vlan:
       provider: "{{cli}}"
-      vlan_id: "{{item.value.vlan}}" 
+      vlan_id: "{{item.key}}" 
+      name:    "{{item.value}}"
       state:   "present"
       admin_state: "up"
-      name:    "{{item.key}}"
-    with_dict: "{{services}}"
+    with_dict: "{{data.vlans}}"
 
   - nxos_interface:
       provider: "{{cli}}"
       admin_state: up
-      interface:   "{{item.1.port}}"
+      interface:   "{{item.key}}"
       mode:        layer2
-    when: item.1.node == inventory_hostname
-    with_subelements:
-    - "{{services}}"
-    - ports
+    with_dict: "{{data.ports}}"
 
   - nxos_switchport:
       provider: "{{cli}}"
       mode:        access
-      access_vlan: "{{item.0.vlan}}"
-      interface:   "{{item.1.port}}"
-    when: item.1.node == inventory_hostname
-    with_subelements:
-    - "{{services}}"
-    - ports
+      access_vlan: "{{item.value}}"
+      interface:   "{{item.key}}"
+    with_dict: "{{data.ports}}"
