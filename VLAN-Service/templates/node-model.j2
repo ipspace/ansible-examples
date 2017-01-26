@@ -27,21 +27,23 @@
   because it was way too hard to get the number of commas right ;)
 #}
   "ports": {
+{% set count = [] %}
 {% for customer,svc in services.iteritems() 
      if svc.state|default("") != "absent" %}
 {%   for p in svc.ports if p.node == inventory_hostname %}
-    "{{p.port}}": { "vlan": {{svc.vlan}}, "description": "{{customer}} - {{p.site|default("")}}" },
+{% if count|length > 0 %},{% endif %}{% set _ = count.append(1) %}
+    "{{p.port}}": { "vlan": {{svc.vlan}}, "description": "{{customer}} - {{p.site|default("")}}" }
 {%   endfor %}
 {% endfor %}
-    "": {}
   },
   "remove_ports": [
+{% set count = [] %}
 {% for customer,svc in services.iteritems() 
      if svc.state|default("") == "absent" %}
 {%   for p in svc.ports if p.node == inventory_hostname %}
-    "{{p.port}}",
+{% if count|length > 0 %},{% endif %}{% set _ = count.append(1) %}
+    "{{p.port}}"
 {%   endfor %}
 {% endfor %}
-    ""
   ]
 }

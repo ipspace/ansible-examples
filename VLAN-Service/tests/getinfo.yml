@@ -1,0 +1,14 @@
+#
+# Test playbook: get info from managed devices
+#
+---
+- hosts: all
+  name:  test data model
+  vars:
+    input:  "{{inventory_dir}}/services.yml"
+    debug_output: "{{inventory_dir}}/printouts"
+  tasks:
+  - include_vars: 
+      file: "{{input}}" 
+      name: services
+  - include: "../getinfo/{{ansible_os}}-get.yml"
