@@ -1,23 +1,47 @@
 {
   "vlans": {
-{% for customer,svc in services.iteritems() %}
-{%   if inventory_hostname in svc.ports|map(attribute='node') %}
-    {{svc.vlan}}: "{{customer}}"{% if not(loop.last) %},{% endif %}
-{%   endif %}
+{% for customer,svc in services.iteritems()
+     if inventory_hostname in svc.ports|map(attribute='node') 
+       and svc.state|default("") != "absent" %}
+    "{{svc.vlan}}": "{{customer}}"{% if not(loop.last) %},{% endif %}
+
 {% endfor %}
   },
+  "remove_vlans": [
+{% for customer,svc in services.iteritems() 
+     if inventory_hostname in svc.ports|map(attribute='node') 
+       and svc.state|default("") == "absent" %}
+    {{svc.vlan}}{% if not(loop.last) %},{% endif %}
+{% endfor %}
+  ],
   "vlan_list": [ 1,
 {% for customer,svc in services.iteritems() %}
-{%   if inventory_hostname in svc.ports|map(attribute='node') %}
+{%   if inventory_hostname in svc.ports|map(attribute='node') 
+      and svc.state|default("") != "absent" %}
     {{svc.vlan}}{% if not(loop.last) %},{% endif %}
 {%   endif %}
 {% endfor %}
   ],
+{#
+  The data model contains a dirty hack - there's an empty key at the end of the dictionary
+  because it was way too hard to get the number of commas right ;)
+#}
   "ports": {
-{% for customer,svc in services.iteritems() %}
+{% for customer,svc in services.iteritems() 
+     if svc.state|default("") != "absent" %}
 {%   for p in svc.ports if p.node == inventory_hostname %}
-    "{{p.port}}": {{svc.vlan}}{% if not(loop.last) %},{% endif %}
+    "{{p.port}}": { "vlan": {{svc.vlan}}, "description": "{{customer}} - {{p.site|default("")}}" },
 {%   endfor %}
 {% endfor %}
-  }
+    "": {}
+  },
+  "remove_ports": [
+{% for customer,svc in services.iteritems() 
+     if svc.state|default("") == "absent" %}
+{%   for p in svc.ports if p.node == inventory_hostname %}
+    "{{p.port}}",
+{%   endfor %}
+{% endfor %}
+    ""
+  ]
 }

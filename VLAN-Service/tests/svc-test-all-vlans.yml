@@ -1,3 +1,6 @@
+#
+# Test services file where all VLAN2 are configured on the switch
+#
 ---
 ACME:
   vlan: 100
@@ -7,7 +10,6 @@ ACME:
 
 Wonka:
   vlan: 200
-  state: absent
   ports:
   - { node: leaf-1, port: "Ethernet2/3"}
   - { node: leaf-2, port: "GigabitEthernet0/3" }

@@ -1,0 +1,26 @@
+#
+# List of tasks needed to decommission VLAN services on NX-OS
+#
+---
+- nxos_interface:
+    provider: "{{cli}}"
+    admin_state: down
+    interface:   "{{item}}"
+    mode:        layer2
+    description: "No service on this port"
+  with_items: "{{data.remove_ports}}"
+  when: item != ""
+
+- nxos_switchport:
+    provider: "{{cli}}"
+    mode:        access
+    access_vlan: 1
+    interface:   "{{item}}"
+  with_items: "{{data.remove_ports}}"
+  when: item != ""
+
+- nxos_vlan:
+    provider: "{{cli}}"
+    vlan_id: "{{item}}" 
+    state:   "absent"
+  with_items: "{{data.remove_vlans}}"

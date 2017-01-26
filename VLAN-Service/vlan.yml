@@ -3,27 +3,14 @@
   name:  configure VLAN service
   tasks:
   - include_vars: 
-      file: "{{inventory_dir}}/services.yml" 
+      file: "{{svcs|default(inventory_dir~'/services.yml')}}" 
       name: services
+    tags: [ always ]
   - set_fact: data="{{lookup('template','templates/node-model.j2')}}"
-  - nxos_vlan:
-      provider: "{{cli}}"
-      vlan_id: "{{item.key}}" 
-      name:    "{{item.value}}"
-      state:   "present"
-      admin_state: "up"
-    with_dict: "{{data.vlans}}"
-
-  - nxos_interface:
-      provider: "{{cli}}"
-      admin_state: up
-      interface:   "{{item.key}}"
-      mode:        layer2
-    with_dict: "{{data.ports}}"
-
-  - nxos_switchport:
-      provider: "{{cli}}"
-      mode:        access
-      access_vlan: "{{item.value}}"
-      interface:   "{{item.key}}"
-    with_dict: "{{data.ports}}"
+    tags: [ always ]
+  - name: "Add/modify VLAN services"
+    include: "provision/{{ansible_os}}-add.yml"
+    tags: [ add, config ]
+  - name: "Remove decommissioned VLAN services"
+    include: "provision/{{ansible_os}}-remove.yml"
+    tags: [ remove, config ]

@@ -1,0 +1,28 @@
+#
+# List of tasks needed to provision new VLAN services on NX-OS
+#
+---
+- nxos_vlan:
+    provider: "{{cli}}"
+    vlan_id: "{{item.key}}" 
+    name:    "{{item.value}}"
+    state:   "present"
+    admin_state: "up"
+  with_dict: "{{data.vlans}}"
+
+- nxos_interface:
+    provider: "{{cli}}"
+    admin_state: up
+    interface:   "{{item.key}}"
+    mode:        layer2
+    description: "{{item.value.description}}"
+  with_dict: "{{data.ports}}"
+  when: "item.key"
+
+- nxos_switchport:
+    provider: "{{cli}}"
+    mode:        access
+    access_vlan: "{{item.value.vlan}}"
+    interface:   "{{item.key}}"
+  with_dict: "{{data.ports}}"
+  when: "item.key"
