@@ -6,11 +6,18 @@
       file: "{{svcs|default(inventory_dir~'/services.yml')}}" 
       name: services
     tags: [ always ]
+
   - set_fact: data="{{lookup('template','templates/node-model.j2')}}"
     tags: [ always ]
+
   - name: "Add/modify VLAN services"
     include: "provision/{{ansible_os}}-add.yml"
     tags: [ add, config ]
+
   - name: "Remove decommissioned VLAN services"
     include: "provision/{{ansible_os}}-remove.yml"
     tags: [ remove, config ]
+
+  - name: "Validate deployed VLAN services"
+    include: "validate/deployed-services.yml"
+    tags: [ validate ]

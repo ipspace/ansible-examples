@@ -1,0 +1,39 @@
+#
+# Get interface and VLAN information from NX-OS
+#
+- nxos_command:
+    provider: "{{cli}}"
+    commands: 
+    - { command: "show interface status", output: "json" }
+#    - { command: "show vlan", output: "json" }
+  register: nxos_results
+
+- block:
+  - copy: 
+      content: "{{nxos_results.stdout[0]}}"
+      dest:    "{{debug_output}}/{{inventory_hostname}}-get-raw.json"
+  - template: 
+      src:  nxos-access-interfaces.j2
+      dest: "{{debug_output}}/{{inventory_hostname}}-get-access.json"
+  when: debug_output is defined
+
+- set_fact: 
+    device_interfaces: |
+      {{nxos_results.stdout[0].TABLE_interface.ROW_interface|map(attribute='interface')|list}}
+    disabled_interfaces: |
+      {{nxos_results.stdout[0].TABLE_interface.ROW_interface|
+          selectattr('state','equalto','disabled')|map(attribute='interface')|list}}
+    access_interfaces: |
+      {{lookup("template","nxos-access-interfaces.j2")}}
+    active_vlan_list: |
+      {{nxos_results.stdout[0].TABLE_interface.ROW_interface|
+          selectattr('vlan','match','^\d+$')|
+          selectattr('state','equalto','connected')|
+          map(attribute='vlan')|list|unique}}
+    all_vlan_list: |
+      {{nxos_results.stdout[0].TABLE_interface.ROW_interface|
+          selectattr('vlan','match','^\d+$')|
+          map(attribute='vlan')|list|unique}}
+#    vlan_list: |
+#     {{nxos_results.stdout[1].TABLE_vlanbrief.ROW_vlanbrief|
+#          selectattr('vlanshowbr-vlanstate','equalto','active')|map(attribute='vlanshowbr-vlanid-utf')|list}}
