@@ -2,31 +2,48 @@
 # List of tasks needed to validate deployed services
 #
 ---
-- name: Get information from the device in common data model
-  include: "../getinfo/{{ansible_os}}-get.yml"
+- name: Get VLAN information from the device in common data model
+  include: "../getinfo/{{ansible_os}}-get-vlans.yml"
 
-- name: "Check: service VLANs are configured"
-  assert: 
-    that: "item.key|string in active_vlan_list"
-    msg:  "VLAN {{item.value}} id {{item.key}} is not active"
-  with_dict: "{{data.vlans}}"
+- block:
+    - name: "Check: service VLANs are configured"
+      assert: 
+        that: "item.key in vlan_list.keys()"
+        msg:  "VLAN {{item.value}} id {{item.key}} is not configured"
+      with_dict: "{{data.vlans}}"
 
-- name: "Check: Access VLANs are configured on service ports"
-  assert: 
-    that: "item.value.vlan == access_interfaces[item.key].vlan|default('MISSING')"
-    msg:  "VLAN {{item.value.vlan}} is not access VLAN configured on {{item.key}}"
-  with_dict: "{{data.ports}}"
-  when: item.key != ""
+    - name: "Check: service VLANs are active"
+      assert: 
+        that: "vlan_list[item.key].state == 'active'"
+        msg:  "VLAN {{item.value}} id {{item.key}} is not active"
+      with_dict: "{{data.vlans}}"
 
-- name: "Check: decomissioned service VLANs are not configured"
-  assert: 
-    that: "not(item|string in all_vlan_list)"
-    msg:  "VLAN {{item}} is still active on {{inventory_hostname}}"
-  with_items: "{{data.remove_vlans}}"
+    - name: "Check: decomissioned service VLANs are not configured"
+      assert: 
+        that: "not(item in vlan_list.keys())"
+        msg:  "VLAN {{item}} is still configured on {{inventory_hostname}}"
+      with_items: "{{data.remove_vlans}}"
+  when: vlan_list is defined
 
-- name: "Check: decomissioned ports are not active"
-  assert: 
-    that: "item in disabled_interfaces"
-    msg:  "Port {{item}} is not disabled on {{inventory_hostname}}"
-  with_items: "{{data.remove_ports}}"
-  when: item != ""
+- name: Get VLAN information from the device in common data model
+  include: "../getinfo/{{ansible_os}}-get-interfaces.yml"
+
+- block:
+    - name: "Check: Service ports are access interfaces"
+      assert: 
+        that: "vlan_interfaces[item.key].mode == 'access'"
+        msg:  "Interface {{item.key}} is not a VLAN access interface"
+      with_dict: "{{data.ports}}"
+
+    - name: "Check: Access VLANs are configured on service ports"
+      assert: 
+        that: "item.value.vlan == vlan_interfaces[item.key].vlan"
+        msg:  "VLAN {{item.value.vlan}} is not access VLAN configured on {{item.key}}"
+      with_dict: "{{data.ports}}"
+
+    - name: "Check: decomissioned ports are not active"
+      assert: 
+        that: "vlan_interfaces[item].state == 'disabled'"
+        msg:  "Port {{item}} is not disabled on {{inventory_hostname}}"
+      with_items: "{{data.remove_ports}}"
+  when: vlan_interfaces is defined

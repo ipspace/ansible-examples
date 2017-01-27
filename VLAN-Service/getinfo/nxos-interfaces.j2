@@ -1,0 +1,24 @@
+{% macro output(s) -%}{%
+   if s == "connected" %}up{% 
+     elif s == "disabled" %}disabled{% 
+     else %}down{% endif 
+%}{%- endmacro %}
+{# 
+  Create a list of interfaces in common data model from NXOS JSON data 
+#}
+{
+{% for intf in nxos_results.stdout[0].TABLE_interface.ROW_interface %}
+  "{{intf.interface}}": { 
+{%    if intf.vlan|search("^\d+$") %}
+    "mode": "access", "vlan": {{intf.vlan}},
+{%    elif intf.vlan == "routed" %}
+    "mode": "L3",
+{%    elif intf.vlan == "trunk" %}
+    "mode": "trunk",
+{%    else %}
+    "mode": "unknown",
+{%    endif %}
+    "state": "{{output(intf.state)}}" }{% if not(loop.last) %},{% endif %}
+
+{% endfor %}
+}

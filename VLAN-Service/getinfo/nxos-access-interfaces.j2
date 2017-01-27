@@ -1,7 +1,0 @@
-{
-{% for intf in nxos_results.stdout[0].TABLE_interface.ROW_interface 
-     if intf.vlan|search("^\d+$") %}
-  "{{intf.interface}}": { "vlan": {{intf.vlan}}, "state": "{{intf.state}}" }{% if not(loop.last) %},{% endif %}
-
-{% endfor %}
-}

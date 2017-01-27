@@ -1,0 +1,29 @@
+{% macro output(s) -%}{%
+   if s == "connected" %}up{% 
+     elif s == "disabled" %}disabled{% 
+     else %}down{% endif 
+%}{%- endmacro %}
+{# 
+  Create a list object based on NXOS VLAN object
+#}
+{% macro vlan(v) -%}
+  "{{v['vlanshowbr-vlanid-utf']}}": { 
+    "name": "{{v['vlanshowbr-vlanname']|default('')}}",
+{%    if v['vlanshowbr-shutstate'] == 'shutdown' %}
+    "state": "shutdown"
+{%    elif v['vlanshowbr-vlanstate'] in [ 'active','suspend' ] %}
+    "state": "{{v['vlanshowbr-vlanstate']}}"
+{%    else %}
+    "state": "unknown"
+{%    endif %}
+  }
+{%- endmacro %}
+{# 
+  Create a list of vlans in common data model from NXOS JSON data 
+#}
+{
+{% for v in nxos_results.stdout[0].TABLE_vlanbrief.ROW_vlanbrief %}
+{{ vlan(v) }}{% if not(loop.last) %},
+{% endif %}
+{% endfor %}
+}
