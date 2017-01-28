@@ -1,0 +1,440 @@
+{
+  "mgmt0": { 
+    "mode": "L3",
+    "state": "up" },
+  "Ethernet2/1": { 
+    "mode": "access", "vlan": 100,
+    "state": "down" },
+  "Ethernet2/2": { 
+    "mode": "L3",
+    "state": "up" },
+  "Ethernet2/3": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet2/4": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/5": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet2/6": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet2/7": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet2/8": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet2/9": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/10": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/11": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/12": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/13": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/14": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/15": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/16": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/17": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/18": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/19": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/20": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/21": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/22": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/23": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/24": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/25": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/26": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/27": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/28": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/29": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/30": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/31": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/32": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/33": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/34": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/35": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/36": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/37": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/38": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/39": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/40": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/41": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/42": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/43": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/44": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/45": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/46": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/47": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet2/48": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/1": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/2": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/3": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/4": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/5": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/6": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/7": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/8": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/9": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/10": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/11": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/12": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/13": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/14": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/15": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/16": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/17": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/18": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/19": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/20": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/21": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/22": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/23": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/24": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/25": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/26": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/27": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/28": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/29": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/30": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/31": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/32": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/33": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/34": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/35": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/36": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/37": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/38": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/39": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/40": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/41": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/42": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/43": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/44": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/45": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/46": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/47": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet3/48": { 
+    "mode": "L3",
+    "state": "disabled" },
+  "Ethernet4/1": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/2": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/3": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/4": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/5": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/6": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/7": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/8": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/9": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/10": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/11": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/12": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/13": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/14": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/15": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/16": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/17": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/18": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/19": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/20": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/21": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/22": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/23": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/24": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/25": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/26": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/27": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/28": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/29": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/30": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/31": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/32": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/33": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/34": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/35": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/36": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/37": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/38": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/39": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/40": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/41": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/42": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/43": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/44": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/45": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/46": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/47": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "Ethernet4/48": { 
+    "mode": "access", "vlan": 1,
+    "state": "disabled" },
+  "loopback0": { 
+    "mode": "L3",
+    "state": "up" }
+}

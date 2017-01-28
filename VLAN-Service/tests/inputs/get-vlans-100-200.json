@@ -1,0 +1,13 @@
+{
+"1": { 
+    "name": "default",
+    "state": "active"
+  },
+"100": { 
+    "name": "ACME",
+    "state": "active"
+  },
+"200": { 
+    "name": "Wonka",
+    "state": "active"
+  }}

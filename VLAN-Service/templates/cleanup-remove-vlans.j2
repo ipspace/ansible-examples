@@ -1,0 +1,14 @@
+{# 
+  Create a list of VLANs to be removed because they
+  are within service VLAN range but are not needed
+  by active services
+#}
+{
+  "remove_vlans": [
+{% for vid,vdata in vlan_list.iteritems()
+     if vid|int >= min_service_vlan|default(100) 
+       and vid|int <= max_service_vlan|default(2000)
+       and not(data.vlans[vid] is defined) %}
+  "{{ vid }}"{% if not(loop.last) %},{% endif %}
+{% endfor %}
+]}

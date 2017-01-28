@@ -18,6 +18,19 @@
     include: "provision/{{ansible_os}}-remove.yml"
     tags: [ remove, config ]
 
+  - name: "Reset interface facts"
+    set_fact:
+      vlan_list:       []
+      vlan_interfaces: []
+
   - name: "Validate deployed VLAN services"
     include: "validate/deployed-services.yml"
     tags: [ validate ]
+
+  - name: "Prepare for cleanup"
+    include: "provision/cleanup-prepare.yml"
+    tags: [ cleanup ]
+
+  - name: "Execute cleanup"
+    include: "provision/{{ansible_os}}-remove.yml"
+    tags: [ cleanup ]

@@ -9,7 +9,6 @@
     mode:        layer2
     description: "No service on this port"
   with_items: "{{data.remove_ports}}"
-  when: item != ""
 
 - nxos_switchport:
     provider: "{{cli}}"
@@ -17,7 +16,6 @@
     access_vlan: 1
     interface:   "{{item}}"
   with_items: "{{data.remove_ports}}"
-  when: item != ""
 
 - nxos_vlan:
     provider: "{{cli}}"

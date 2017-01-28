@@ -13,7 +13,7 @@
       dest:    "{{debug_output}}/{{inventory_hostname}}-get-raw.json"
   - template: 
       src:  nxos-interfaces.j2
-      dest: "{{debug_output}}/{{inventory_hostname}}-get-access.json"
+      dest: "{{debug_output}}/{{inventory_hostname}}-get-interfaces.json"
   when: debug_output is defined
 
 - set_fact: 
