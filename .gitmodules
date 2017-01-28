@@ -1,0 +1,3 @@
+[submodule "VLAN-service"]
+	path = VLAN-service
+	url = https://github.com/ipspace/VLAN-service.git
