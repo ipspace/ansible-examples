@@ -1,0 +1,21 @@
+{
+"1": { 
+    "name": "default",
+    "state": "active"
+  },
+"100": { 
+    "name": "ACME",
+    "state": "active"
+  },
+"200": { 
+    "name": "Wonka",
+    "state": "active"
+  },
+"201": { 
+    "name": "extra",
+    "state": "shutdown"
+  },
+"202": { 
+    "name": "Willy",
+    "state": "suspend"
+  }}

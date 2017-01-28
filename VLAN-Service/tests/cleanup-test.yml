@@ -1,0 +1,37 @@
+---
+- hosts: all
+  name:  Test cleanup code
+  vars:
+    output: "{{inventory_dir}}/printouts"
+  tasks:
+  - assert:
+      that:
+      - model is defined
+      - model != ""
+      - input is defined
+      - input != ""
+      msg:  Have to specify model and input scenarios as extra-vars
+
+  - include_vars: 
+      file: "inputs/model-{{model}}.json" 
+      name: data
+  - include_vars:
+      file: "inputs/get-if-interfaces-{{input}}.json"
+      name: vlan_interfaces
+  - include_vars:
+      file: "inputs/get-vlans-{{input}}.json"
+      name: vlan_list
+
+  - include: "../provision/cleanup-prepare.yml"
+
+  - file: path="{{output}}/{{inventory_hostname}}-remove-vlans.json" state=absent
+  - file: path="{{output}}/{{inventory_hostname}}-remove-ports.json" state=absent
+
+  - copy:
+      content: "{{data.remove_vlans|to_nice_json}}"
+      dest: "{{output}}/{{inventory_hostname}}-remove-vlans.json"
+    when: remove_vlans is defined
+  - copy:
+      content: "{{data.remove_ports|to_nice_json}}"
+      dest: "{{output}}/{{inventory_hostname}}-remove-ports.json"
+    when: remove_ports is defined

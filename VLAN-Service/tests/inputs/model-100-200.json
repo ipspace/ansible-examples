@@ -1,0 +1,16 @@
+{
+  "vlans": {
+    "200": "Wonka",
+    "100": "ACME"
+  },
+  "remove_vlans": [
+  ],
+  "vlan_list": [ 1,
+    200,    100  ],
+  "ports": {
+    "Ethernet2/3": { "vlan": 200, "description": "Wonka - " }
+,    "Ethernet2/1": { "vlan": 100, "description": "ACME - ACME Downtown" }
+  },
+  "remove_ports": [
+  ]
+}

@@ -1,0 +1,19 @@
+#
+# List of tasks needed to validate deployed services
+#
+---
+- name: Get VLAN information from the device in common data model
+  include: "../getinfo/{{ansible_os}}-get-vlans.yml"
+  when: vlan_list|length == 0
+
+- name: Get interface information from the device in common data model
+  include: "../getinfo/{{ansible_os}}-get-interfaces.yml"
+  when: vlan_interfaces|length == 0
+
+- set_fact:
+    data: "{{data|combine(lookup('template','../templates/cleanup-remove-ports.j2'))}}"
+  when: vlan_interfaces is defined
+
+- set_fact:
+    data: "{{data|combine(lookup('template','../templates/cleanup-remove-vlans.j2'))}}"
+  when: vlan_list is defined

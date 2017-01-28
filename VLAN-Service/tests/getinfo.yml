@@ -3,14 +3,10 @@
 #
 ---
 - hosts: all
-  name:  test data model
+  name:  Test the GET functions
   vars:
-#    input:  "{{inventory_dir}}/services.yml"
     debug_output: "{{inventory_dir}}/printouts"
   tasks:
-#  - include_vars: 
-#      file: "{{input}}" 
-#      name: services
   - include: "../getinfo/{{ansible_os}}-get-interfaces.yml"
     tags: [ interfaces ]
   - include: "../getinfo/{{ansible_os}}-get-vlans.yml"
