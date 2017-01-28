@@ -1,0 +1,12 @@
+{# 
+  Create a list of interface names to be removed because they
+  are access interfaces not associated with active services
+#}
+{
+  "remove_ports": [
+{% for ifname,ifdata in vlan_interfaces.iteritems() 
+   if ifdata.mode == "access" and ifdata.vlan != 1
+     and not(data.ports[ifname] is defined) %}
+  "{{ ifname }}"{% if not(loop.last) %},{% endif %}
+{% endfor %}
+]}

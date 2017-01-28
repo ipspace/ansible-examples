@@ -1,0 +1,13 @@
+#
+# Test playbook: get info from managed devices
+#
+---
+- hosts: all
+  name:  Test the GET functions
+  vars:
+    debug_output: "{{inventory_dir}}/printouts"
+  tasks:
+  - include: "../getinfo/{{ansible_os}}-get-interfaces.yml"
+    tags: [ interfaces ]
+  - include: "../getinfo/{{ansible_os}}-get-vlans.yml"
+    tags: [ vlans ]

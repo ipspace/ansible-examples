@@ -1,0 +1,21 @@
+#
+# Get interface and VLAN information from NX-OS
+#
+- nxos_command:
+    provider: "{{cli}}"
+    commands: 
+    - { command: "show vlan", output: "json" }
+  register: nxos_results
+
+- block:
+  - copy: 
+      content: "{{nxos_results.stdout[0]}}"
+      dest:    "{{debug_output}}/{{inventory_hostname}}-get-vlan-raw.json"
+  - template: 
+      src:  nxos-vlans.j2
+      dest: "{{debug_output}}/{{inventory_hostname}}-get-vlans.json"
+  when: debug_output is defined
+
+- set_fact: 
+    vlan_list: |
+      {{lookup("template","nxos-vlans.j2")}}
