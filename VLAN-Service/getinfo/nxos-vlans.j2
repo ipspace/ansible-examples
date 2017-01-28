@@ -22,8 +22,13 @@
   Create a list of vlans in common data model from NXOS JSON data 
 #}
 {
-{% for v in nxos_results.stdout[0].TABLE_vlanbrief.ROW_vlanbrief %}
+{% set data = nxos_results.stdout[0].TABLE_vlanbrief.ROW_vlanbrief %}
+{% if  data['vlanshowbr-vlanid-utf'] is defined %}
+{{ vlan(data) }}
+{% else %}
+{%   for v in data %}
 {{ vlan(v) }}{% if not(loop.last) %},
+{%     endif %}
+{%   endfor %}
 {% endif %}
-{% endfor %}
 }
