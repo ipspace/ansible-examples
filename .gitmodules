@@ -1,3 +1,6 @@
 [submodule "VLAN-Service"]
 	path = VLAN-Service
 	url = https://github.com/ipspace/VLAN-service.git
+[submodule "Routing-Deployment"]
+	path = Routing-Deployment
+	url = https://github.com/ipspace/MPLS-infrastructure
