@@ -1,9 +1,0 @@
-{% set cnt = 0 %}
-[
-{% for cust,vpn in vpnv4|dictsort %}
-{%   if inventory_hostname in vpn.nodes.keys() %}
-    {% if cnt > 0 %},"{% endif %}"{{ cust }}"
-{%     set cnt = cnt + 1 %}
-{%   endif %}
-{% endfor %}
-]
