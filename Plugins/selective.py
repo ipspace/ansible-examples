@@ -95,7 +95,7 @@ class CallbackModule(CallbackBase):
 
         if not self.printed_last_task:
             self.printed_last_task = True
-            line_length = 120
+            line_length = int(os.getenv('ANSIBLE_SELECTIVE_LINE_LENGTH', default=120))
             if self.last_skipped:
                 print()
             msg = colorize("# {} {}".format(task_name,
@@ -143,7 +143,7 @@ class CallbackModule(CallbackBase):
 
         msg = colorize(msg, color)
 
-        line_length = 120
+        line_length = int(os.getenv('ANSIBLE_SELECTIVE_LINE_LENGTH', default=120))
         spaces = ' ' * (40-len(name)-indent_level)
         line = "{}  * {}{}- {}".format(' ' * indent_level, name, spaces, change_string)
 
@@ -235,7 +235,7 @@ class CallbackModule(CallbackBase):
             self._print_task()
             self.last_skipped = False
 
-            line_length = 120
+            line_length = int(os.getenv('ANSIBLE_SELECTIVE_LINE_LENGTH', default=120))
             spaces = ' ' * (31-len(result._host.name)-4)
 
             line = "  * {}{}- {}".format(colorize(result._host.name, 'not_so_bold'),
