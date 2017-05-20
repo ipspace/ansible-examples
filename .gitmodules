@@ -4,3 +4,6 @@
 [submodule "Routing-Deployment"]
 	path = Routing-Deployment
 	url = https://github.com/ipspace/MPLS-infrastructure
+[submodule "Private/ConfigRepo"]
+	path = Private/ConfigRepo
+	url = https://gitlab.com/ipspace/ConfigRepo

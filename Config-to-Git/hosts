@@ -12,5 +12,4 @@ PE2 ansible_host=172.16.1.122
 ansible_user=cisco
 #ansible_connection=local
 ansible_ssh_pass=cisco
-snmp_community=cisco
-os=ios
+repository=../Private/ConfigRepo

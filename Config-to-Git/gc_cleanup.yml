@@ -1,0 +1,18 @@
+#
+# Get configuration from managed hosts using "show running" command
+#
+---
+- name:  Get device configuration
+  hosts: all
+  tasks:
+  - name: Grab configuration
+    ios_command:
+      commands: show running
+    register: cfg
+  - set_fact: config={{ cfg.stdout[0]|regex_replace("\A[^!]*","") }}
+
+  - name: Save configuration to local file
+    copy:
+      content: "{{config}}"
+      dest: "{{repository}}/{{inventory_hostname}}.cfg"
+    delegate_to: localhost
