@@ -1,3 +1,4 @@
 Private/
 *.retry
+ansible.log
 *.pyc

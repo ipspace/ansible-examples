@@ -1,0 +1,7 @@
+#
+# Get configuration from managed hosts using "show running" command
+# and store it into Git repo in branch Actual
+#
+---
+- include: gc_cleanup.yml
+- include: git_commit.yml

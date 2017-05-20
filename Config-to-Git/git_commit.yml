@@ -1,0 +1,30 @@
+#
+# Commit configuration changes to Git
+#
+---
+- name:  Commit configuration changes
+  hosts: localhost
+  tasks:
+  - name: Get timestamp
+    shell: date
+    register: timestamp
+
+  - name: Make sure we're in the right branch
+    shell: git checkout Actual
+    args:
+      chdir: "{{repository}}"
+
+  - name: Check the directory status
+    shell: git status
+    args:
+      chdir: "{{repository}}"
+    register: changes
+
+  - name: "Add files to Git staging area, commit and push"
+    shell: |
+      git add .
+      git commit -m "Configuration changed on {{timestamp.stdout}}"
+      git push --set-upstream origin Actual
+    args:
+      chdir: "{{repository}}"
+    when: not("working directory clean" in changes.stdout)
