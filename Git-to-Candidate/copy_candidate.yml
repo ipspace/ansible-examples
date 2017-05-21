@@ -1,0 +1,12 @@
+#
+# Copy files from Candidate configuration branch into devices
+#
+---
+- hosts: all
+  tasks:
+  - name: Copy candidate configuration into routers
+    local_action: >
+      command /usr/bin/sshpass -p {{ansible_ssh_pass}} 
+      /usr/bin/scp Candidate/{{inventory_hostname}}.cfg 
+        {{ansible_user}}@{{ansible_host|default(inventory_hostname)}}:{{filesystem}}candidate.cfg
+

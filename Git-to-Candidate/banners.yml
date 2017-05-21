@@ -1,0 +1,13 @@
+#
+# Enable SCP on Cisco IOS
+#
+---
+- hosts: all
+  tasks:
+  - name: Fix banners that trip IOS config replace
+    ios_config:
+      lines:
+      - no banner incoming
+      - no banner login
+      - no banner exec
+      match: none

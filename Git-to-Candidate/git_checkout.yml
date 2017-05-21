@@ -1,0 +1,18 @@
+#
+# Check out candidate configurations from Git repository
+#
+---
+- hosts: localhost
+  name: Checkout candidate configuration
+  tasks:
+  - file: dest=Candidate state=absent
+  - shell: "git clone {{repository}} Candidate"
+    name: Clone configuration repository
+  - block:
+    - shell: "git checkout Candidate"
+      name: Check out Candidate branch
+      args:
+        chdir: Candidate
+    rescue:
+    - file: dest=Candidate state=absent
+    - fail: msg="Cannot check out the candidate branch '{{branch}}'"
