@@ -1,0 +1,23 @@
+router bgp {{as}}
+ no synchronization
+ redistribute ospf 1 match internal
+{% for ifnum,intf in DMVPN|default({})|dictsort %}
+{%   set peerip = hostvars[tunnel[ifnum].hub_router].DMVPN[ifnum].ip %}
+ neighbor {{peerip}} remote-as {{as}}
+ neighbor {{peerip}} description Hub tunnel[ifnum].hub_router
+ neighbor {{peerip}} update-source Tunnel{{ifnum}}
+{% endfor %}
+!
+{% if loopback.ip is defined %}
+interface Loopback0
+ ip ospf 1 area 0
+{% endif %}
+!
+{% if LAN is defined %}
+interface {{LAN.interface}}
+ ip ospf 1 area 0
+{% endif %}
+!
+router ospf 1
+ default-information originate
+!

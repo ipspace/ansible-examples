@@ -1,0 +1,10 @@
+---
+- name: Baseline configuration - start
+  template: src=00-common.j2 dest={{ build_dir }}/{{inventory_hostname}}/00-common.conf
+  check_mode: no
+- name: Baseline configuration - IP interfaces
+  template: src=10-interfaces.j2 dest={{ build_dir }}/{{inventory_hostname}}/10-interfaces.conf
+  check_mode: no
+- name: Baseline configuration - end
+  template: src=99-common.j2 dest={{ build_dir }}/{{inventory_hostname}}/99-common.conf
+  check_mode: no
