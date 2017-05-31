@@ -1,0 +1,13 @@
+router bgp {{as}}
+ bgp log-neighbor-changes
+ redistribute ospf 1
+{% for ifnum,intf in DMVPN|default({})|dictsort %}
+{%   set peerip = hostvars[tunnel[ifnum].hub_router].DMVPN[ifnum].ip %}
+ neighbor {{peerip}} remote-as {{as}}
+ neighbor {{peerip}} description Hub {{tunnel[ifnum].hub_router}}
+ neighbor {{peerip}} update-source Tunnel{{ifnum}}
+{% endfor %}
+!
+router ospf 1
+ default-information originate
+!

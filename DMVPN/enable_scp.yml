@@ -1,0 +1,12 @@
+#
+# Enable SCP on Cisco IOS
+#
+---
+- hosts: all
+  tasks:
+  - name: Enable SCP server on Cisco IOS devices
+    ios_config:
+      lines:
+      - ip scp server enable
+      - alias exec replace configure replace
+      authorize: yes

@@ -1,0 +1,38 @@
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname {{inventory_hostname}}
+!
+boot-start-marker
+boot-end-marker
+!
+logging buffered 4096
+!
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+no ip source-route
+ip cef
+ipv6 unicast-routing
+!
+no ip domain lookup
+{% if domain_name is defined %}
+ip domain name {{domain_name}}
+{% endif %}
+!
+!
+username {{ansible_user}} privilege 15 password 0 {{ansible_ssh_pass}}
+!
+redundancy
+!
+archive
+ log config
+  hidekeys
+!
+alias exec replace configure replace
+!

@@ -1,0 +1,11 @@
+---
+loopback: { ip: 10.0.1.1 }
+LAN:
+  interface: 'GigabitEthernet0/1'
+  ip: 172.16.0.1
+WAN:
+  0:
+    interface: 'GigabitEthernet0/2'
+    ip: 10.0.7.17
+    subnet: 255.255.0.0
+DMVPN: { 0: { ip: 192.168.0.1 } }

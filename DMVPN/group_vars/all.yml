@@ -1,0 +1,20 @@
+---
+log_dir: logs
+build_dir: compiled
+domain_name: lab.ipspace.net
+routing: ibgp
+
+as: 65000
+tunnel:
+  mtu: 1400
+  mss: 1360
+  0:
+    auth: WanExamp
+    hub_router: C1
+    nhrp_id: 12345
+    gre: 12345
+  1:
+    auth: WanExamp
+    hub_router: C2
+    nhrp_id: 12346
+    gre: 12346

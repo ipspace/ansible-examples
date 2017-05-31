@@ -1,0 +1,22 @@
+router bgp {{as}}
+ bgp log-neighbor-changes
+ redistribute ospf 1
+ neighbor spokes peer-group
+ neighbor spokes remote-as {{as}}
+ neighbor spokes route-reflector-client
+ neighbor spokes default-originate
+ neighbor spokes send-community
+{% for ifnum,intf in DMVPN|default({})|dictsort %}
+{%   set ifip = intf.ip+"/24" %}
+ bgp listen range {{ifip|ipaddr(0)}} peer-group spokes
+{% endfor %}
+{% for hub in groups['hubs'] %}
+{%   if hub != inventory_hostname %}
+{%     set peerip = hostvars[hub].loopback.ip %}
+ neighbor {{peerip}} remote-as {{as}}
+ neighbor {{peerip}} next-hop-self all
+{%   endif %}
+{% endfor %}
+!
+router ospf 1
+!

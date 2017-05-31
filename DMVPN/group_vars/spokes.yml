@@ -1,0 +1,4 @@
+---
+uplink_vrf:
+  0: { name: "ISP_A", id: "65000:1" }
+  1: { name: "ISP_B", id: "65000:2" }

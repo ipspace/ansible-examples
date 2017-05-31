@@ -1,0 +1,46 @@
+!
+{% if loopback.ip is defined %}
+interface Loopback0
+ ip address {{loopback.ip}} 255.255.255.255
+{% include [ routing_includes+routing+'-loopback-interface.j2',routing_includes+routing+'-LAN-interface.j2'] ignore missing %}
+{% endif %}
+!
+{% if LAN is defined %}
+interface {{LAN.interface}}
+ description LAN interface
+ ip address {{LAN.ip}} {{LAN.mask|default('255.255.255.0')}}
+{% include routing_includes+routing+'-LAN-interface.j2' ignore missing %}
+!
+{% endif %}
+!
+{% for ifnum,intf in WAN|default({})|dictsort %}
+{%   if uplink_vrf is defined %}
+{%     if uplink_vrf[ifnum] is defined %}
+{%       set vrf = uplink_vrf[ifnum] %}
+{%     endif %}
+{%   endif %}
+{%   if vrf is defined %}
+ip vrf {{vrf.name|default('Internet')}}
+ rd {{vrf.id|default('65000:1')}}
+!
+{%   endif %}
+interface {{intf.interface}}
+{%   if vrf is defined %}
+ description Uplink to {{vrf.name|default('Internet')}}
+{%   else %}
+ description WAN uplink
+{%   endif %}
+{%   if vrf is defined %}
+ ip vrf forwarding {{vrf.name|default('Internet')}}
+{%   endif %}
+{%   if intf.ip == 'DHCP' %}
+ ip address dhcp
+{%   else %}
+ ip address {{intf.ip}} {{intf.mask|default("255.255.255.0")}}
+{%   endif %}
+!
+{%   if vrf is defined and intf.gw is defined %}
+ip route vrf {{vrf.name|default('Internet')}} 0.0.0.0 0.0.0.0 {{intf.interface}} {{intf.gw}}
+{%   endif %}
+!
+{% endfor %}

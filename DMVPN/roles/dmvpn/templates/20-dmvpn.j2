@@ -1,0 +1,66 @@
+crypto isakmp policy 10
+ authentication pre-share
+ group 2
+!
+!
+crypto ipsec transform-set DMVPN esp-des esp-sha-hmac
+ mode transport
+!
+crypto ipsec profile DMVPN
+ set transform-set DMVPN
+!
+{% if uplink_vrf is not defined %}
+crypto keyring DMVPN
+  pre-shared-key address 0.0.0.0 0.0.0.0 key TESTING
+{% endif %}
+!
+{% for ifnum,intf in DMVPN|default({})|dictsort %}
+{# Find underlying WAN interface #}
+{%   if WAN[ifnum] is defined %}
+{%     set WANIF = WAN[ifnum] %}
+{%     set wannum = ifnum %}
+{%   else %}
+{%     set WANIF = WAN[0] %}
+{%     set wannum = 0 %}
+{%   endif %}
+{# Find VRF associated with WAN interface #}
+{%   if uplink_vrf is defined %}
+{%     if uplink_vrf[wannum] is defined %}
+{%       set vrf = uplink_vrf[wannum] %}
+{%     endif %}
+{%   endif %}
+{%   if vrf is defined %}
+crypto keyring DMVPN vrf {{vrf.name|default('Internet')}}
+  pre-shared-key address 0.0.0.0 0.0.0.0 key TESTING
+{%   endif %}
+!
+interface Tunnel{{ifnum}}
+ ip address {{intf.ip}} {{intf.mask|default("255.255.255.0")}}
+ no ip redirects
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ ip nhrp authentication {{tunnel[ifnum].auth}}
+{%   if 'hubs' in group_names %}
+ ip nhrp map multicast dynamic
+ tunnel mode gre multipoint
+{%   else %}
+ ip nhrp map {{hostvars[tunnel[ifnum].hub_router].DMVPN[ifnum].ip}} {{hostvars[tunnel[ifnum].hub_router].WAN[0].ip}}
+ ip nhrp map multicast {{hostvars[tunnel[ifnum].hub_router].WAN[0].ip}}
+ ip nhrp holdtime 60
+ ip nhrp nhs {{hostvars[tunnel[ifnum].hub_router].DMVPN[ifnum].ip}}
+ ip nhrp registration timeout 30
+{%     if tunnel[ifnum].phase|default('3') == '1' %}
+ tunnel mode gre
+{%     else %}
+ tunnel mode gre multipoint
+{%     endif %}
+{%   endif %}
+ ip nhrp network-id {{tunnel[ifnum].nhrp_id}}
+ tunnel source {{WANIF.interface}}
+{%   if vrf is defined %}
+ tunnel vrf {{vrf.name|default('Internet')}}
+{%   endif %}
+ tunnel key {{tunnel[ifnum].gre}}
+ tunnel protection ipsec profile DMVPN shared
+!
+{% endfor %}

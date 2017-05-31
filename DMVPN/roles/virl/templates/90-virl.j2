@@ -1,0 +1,21 @@
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address {{ansible_host}} 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+event manager applet ssh-keys
+ event syslog occurs 1 pattern "%SYS-5-RESTART: System restarted"
+ action 1.0 cli command "enable"
+ action 2.0 cli command "configure terminal"
+ action 3.0 cli command "crypto key generate rsa modulus 1024"
