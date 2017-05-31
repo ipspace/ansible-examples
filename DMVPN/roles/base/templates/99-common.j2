@@ -4,10 +4,6 @@ no ip http secure-server
 ip ssh server algorithm authentication password
 ip scp server enable
 !
-no banner exec
-no banner incoming
-no banner login
-!
 line con 0
  password {{ansible_ssh_pass}}
 line aux 0

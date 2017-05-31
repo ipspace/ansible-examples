@@ -1,6 +1,6 @@
 router bgp {{as}}
- redistribute ospf 1 match internal
- no synchronization
+ bgp log-neighbor-changes
+ redistribute ospf 1
  neighbor spokes peer-group
  neighbor spokes remote-as {{as}}
  neighbor spokes route-reflector-client
@@ -17,14 +17,6 @@ router bgp {{as}}
  neighbor {{peerip}} next-hop-self all
 {%   endif %}
 {% endfor %}
-
 !
-{% if loopback.ip is defined %}
-interface Loopback0
- ip ospf 1 area 0
-{% endif %}
+router ospf 1
 !
-{% if LAN is defined %}
-interface {{LAN.interface}}
- ip ospf 1 area 0
-{% endif %}

@@ -8,3 +8,6 @@
   template: src=30-{{routing|default('ibgp')}}-hub.j2 dest={{ build_dir }}/{{inventory_hostname}}/30-routing.conf
   check_mode: no
   when: "'hubs' in group_names"
+
+#- set_fact: routing_includes={{role_path}}/templates/
+- set_fact: routing_includes=roles/routing/templates/

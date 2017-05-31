@@ -2,12 +2,14 @@
 {% if loopback.ip is defined %}
 interface Loopback0
  ip address {{loopback.ip}} 255.255.255.255
+{% include [ routing_includes+routing+'-loopback-interface.j2',routing_includes+routing+'-LAN-interface.j2'] ignore missing %}
 {% endif %}
 !
 {% if LAN is defined %}
 interface {{LAN.interface}}
  description LAN interface
  ip address {{LAN.ip}} {{LAN.mask|default('255.255.255.0')}}
+{% include routing_includes+routing+'-LAN-interface.j2' ignore missing %}
 !
 {% endif %}
 !

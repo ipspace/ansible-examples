@@ -26,11 +26,13 @@ ip domain name {{domain_name}}
 {% endif %}
 !
 !
-username {{ansible_user}} privilege 15 password {{ansible_ssh_pass}}
+username {{ansible_user}} privilege 15 password 0 {{ansible_ssh_pass}}
 !
 redundancy
 !
 archive
  log config
   hidekeys
+!
+alias exec replace configure replace
 !
