@@ -1,0 +1,10 @@
+graph network {
+{% for local in play_hosts %}
+{%   for intf in hostvars[local].ansible_interfaces.values() if intf.description.find('to ') >= 0%}
+{%     set remote = intf.description.partition('to ')[2] %}
+{%     if remote and (remote > local or (not remote in play_hosts)) %}
+  "{{local}}" -- "{{remote}}"
+{%     endif %}
+{%   endfor %}
+{% endfor %}
+}

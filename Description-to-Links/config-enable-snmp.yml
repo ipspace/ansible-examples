@@ -6,9 +6,6 @@
   tasks:
   - name: "Configure SNMP on IOS devices"
     ios_config:
-      username:  "{{ansible_user}}"
-      password:  "{{ansible_password}}"
-      host:      "{{ip|default(inventory_hostname)}}"
       lines:
         - "snmp-server community {{snmp_community}} RO"
-    when: "'{{os}}' == 'ios'"
+    when: os == 'ios'
