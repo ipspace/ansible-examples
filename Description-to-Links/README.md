@@ -4,7 +4,7 @@ The *extract-links* Ansible playbook uses interface descriptions to generate lis
 
 The playbook uses snmp_facts to get interface descriptions.
 
-## Multi-vendor support
+## Multi-vendor support (on your own)
 
 The *extract-links* playbook works on any devices that support SNMP MIB II. The *config-enable-snmp.yml* playbook works with Cisco IOS, but feel free to extend it to any other operating system.
 
