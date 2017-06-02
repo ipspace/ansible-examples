@@ -5,6 +5,14 @@
 - name:  Get device configuration
   hosts: all
   tasks:
+  - name: Make sure we're in the right branch
+    shell: git checkout Actual
+    args:
+      chdir: "{{repository}}"
+    delegate_to: localhost
+    run_once: true
+    changed_when: no
+
   - name: Grab configuration
     ios_command:
       commands: show running
