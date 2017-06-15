@@ -6,7 +6,7 @@
   hosts: all
   tasks:
   - name: Make sure we're in the right branch
-    shell: git checkout Actual
+    shell: git checkout {{branch|default('master')}}
     args:
       chdir: "{{repository}}"
     delegate_to: localhost

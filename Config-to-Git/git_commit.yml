@@ -10,7 +10,7 @@
     register: timestamp
 
   - name: Make sure we're in the right branch
-    shell: git checkout Actual
+    shell: git checkout {{branch|default('master')}}
     args:
       chdir: "{{repository}}"
 
@@ -24,7 +24,7 @@
     shell: |
       git add .
       git commit -m "Configuration changed on {{timestamp.stdout}}"
-      git push --set-upstream origin Actual
+      git push --set-upstream origin {{branch|default('master')}}
     args:
       chdir: "{{repository}}"
     when: not("working directory clean" in changes.stdout)

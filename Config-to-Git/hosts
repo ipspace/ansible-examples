@@ -10,6 +10,6 @@ PE2 ansible_host=172.16.1.122
 
 [all:vars]
 ansible_user=cisco
-#ansible_connection=local
 ansible_ssh_pass=cisco
 repository=../Private/ConfigRepo
+branch=master
