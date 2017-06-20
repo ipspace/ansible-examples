@@ -2,3 +2,4 @@ Private/
 *.retry
 ansible.log
 *.pyc
+.DS_Store

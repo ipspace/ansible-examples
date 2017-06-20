@@ -1,0 +1,30 @@
+#
+# Get configuration from managed hosts using scp from system:running-config
+#
+---
+- name:  Get device configuration
+  hosts: all
+  connection: local
+  tasks:
+  - name: Make sure we're in the right branch
+    shell: git checkout {{branch|default('master')}}
+    args:
+      chdir: "{{repository}}"
+    run_once: true
+    changed_when: no
+
+  - name: Get configuration with NAPALM
+    napalm_get_facts:
+      hostname: "{{ansible_host|default(inventory_hostname)}}"
+      username: "{{ansible_user}}"
+      password: "{{ansible_ssh_pass}}"
+      dev_os: ios
+      filter: [ config ]
+
+  - set_fact: clean_config={{ config.running|regex_replace("\A[^!]*","") }}
+
+  - name: Save configuration to local file
+    copy:
+      content: "{{clean_config}}"
+      dest: "{{repository}}/{{inventory_hostname}}.cfg"
+    delegate_to: localhost
