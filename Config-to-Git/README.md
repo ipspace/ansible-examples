@@ -8,7 +8,7 @@ and store them in a Git repository.
 Ansible variables required for proper operation:
 
 * **repository**: directory already set up as a local Git repository
-* **branch**: git branch used for actual device configurations. The branch has to exist before the git_commit.yml playbook is run
+* **branch**: git branch used for actual device configurations. The branch has to exist before the *git_commit.yml* playbook is run
 
 Optional:
 * Install *NAPALM* library (if required) using [NAPALM installation instructions](https://napalm.readthedocs.io/en/latest/installation/index.html)
@@ -20,6 +20,6 @@ Collect device configurations with one of these methods:
 
 * SCP (*gc_scp.yml*) - requires "ip scp enable" configured on the device
 * **show running** (*gc_show.yml*)
-* *NAPALM* (*gc_napalm.yml*) - needs NAPALM library and napalm-ansible role
+* *NAPALM* (*gc_napalm.yml*) - needs NAPALM library and napalm-ansible module
 
 Commit the changes in device configurations to git repository with *git_commit.yml*
