@@ -1,0 +1,16 @@
+graph network {
+{% for local in play_hosts %}
+  "{{local}}" [shape=record,
+    label="<node>{{local}}|{ {% 
+    for ifname,lldp in hostvars[local].lldp_neighbors|dictsort 
+    %}<{{- ifname -}}>{{- ifname -}}{% if not(loop.last) %}|{% endif %}{%
+    endfor %} }"];
+{% endfor %}
+{% for local in play_hosts %}
+{%  for ifname,lldp in hostvars[local].lldp_neighbors|dictsort if lldp|length > 0 %}
+{%   for n in lldp if local < n.hostname %}
+  "{{local}}":"{{ifname}}" -- "{{n.hostname}}":"{{n.port}}";
+{%   endfor %}
+{%  endfor %}
+{% endfor %}
+}

@@ -1,0 +1,4 @@
+*.retry
+ansible.log
+napalm-ansible
+network.*

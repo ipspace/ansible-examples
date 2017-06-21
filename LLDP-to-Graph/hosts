@@ -1,0 +1,4 @@
+spine-1 ansible_host=10.0.2.2  ansible_port=20001 api_port=21001 os=eos ansible_user=admin ansible_ssh_pass=admin
+spine-2 ansible_host=10.0.2.2  ansible_port=20002 api_port=21002 os=eos ansible_user=admin ansible_ssh_pass=admin
+leaf-1  ansible_host=10.0.2.2  ansible_port=20003 api_port=21003 os=eos ansible_user=admin ansible_ssh_pass=admin
+leaf-2  ansible_host=10.0.2.2  ansible_port=20004 api_port=21004 os=eos ansible_user=admin ansible_ssh_pass=admin
