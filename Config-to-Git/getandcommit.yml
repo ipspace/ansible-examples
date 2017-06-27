@@ -1,5 +1,6 @@
 #
-# Get configuration from managed hosts using "show running" command
+# Get configuration from managed hosts (change the included
+# playbook to switch between various retrieval mathods)
 # and store it into Git repo in branch Actual
 #
 ---
