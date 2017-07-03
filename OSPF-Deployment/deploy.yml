@@ -1,0 +1,22 @@
+#
+# Deploy OSPF routing in a WAN fabric
+#
+---
+- name: Create and deploy OSPF configurations
+  hosts: all
+  vars:
+    configs: "{{inventory_dir}}/configs"
+  tasks:
+  - include_vars: "{{ item }}"
+    with_first_found:
+      - "{{ inventory_dir }}/nodes.yml"
+      - nodes.yml
+    tags: [ configs,verify ]
+  - include: clean.yml
+    tags: [ clean ]
+  - include: config_ospf.yml
+    tags: [ configs ]
+  - include: deploy_ospf.yml
+    tags: [ deploy ]
+  - include: verify_ospf.yml
+    tags: [ verify ]

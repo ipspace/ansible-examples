@@ -1,0 +1,22 @@
+#
+# Deploy OSPF routing in a WAN fabric
+#
+---
+- name: Wait for OSPF to start
+  pause: seconds=15 prompt="Waiting for OSPF to start"
+  tags: [ verify ]
+
+- name: Collect OSPF neighbors
+  ios_command:
+    provider: "{{ios_provider}}"
+    commands: 
+    - "show ip ospf neighbor | include ^[1-9]"
+  register: ospf_neighbors
+  tags: [ verify ]
+
+- name: Verify OSPF is running on all internal interfaces
+  assert:
+    that: "'{{ item.key }}' in ospf_neighbors.stdout[0]"
+    msg:  "OSPF session in interface {{item.key}} is missing"
+  with_dict: "{{ nodes[inventory_hostname].internal }}"
+  tags: [ verify ]

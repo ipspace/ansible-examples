@@ -1,0 +1,13 @@
+#
+# Deploy OSPF routing in a WAN fabric
+#
+---
+- include: ../tools/log_changes_init.yml
+
+- name: Deploy configurations
+  ios_config:
+    provider: "{{ios_provider}}"
+    src: "{{configs}}/{{inventory_hostname}}.ospf.cfg"
+  register: changes
+
+- include: ../tools/log_changes.yml component=OSPF

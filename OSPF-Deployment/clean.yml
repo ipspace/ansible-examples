@@ -1,0 +1,10 @@
+#
+# Deploy IBGP and EBGP routing in a WAN fabric
+#
+---
+- name: Clean configuration directory
+  local_action: file path={{configs}} state=absent
+  run_once: true
+  check_mode: no
+  changed_when: no
+  tags: [ clean ]
