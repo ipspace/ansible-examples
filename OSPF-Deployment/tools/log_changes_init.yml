@@ -3,6 +3,6 @@
 #
 ---
 - name: Create configuration changes directory
-  local_action: file path={{configs}}/changes state=directory
+  local_action: file path={{configs}}/node.changes state=directory
   check_mode: no
   changed_when: no

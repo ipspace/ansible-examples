@@ -16,7 +16,9 @@
     tags: [ clean ]
   - include: common/config_ospf.yml
     tags: [ configs ]
-  - include: deploy_ospf.yml
+  - block:
+    - include: "{{ansible_os}}/deploy_ospf.yml"
+    - set_fact: wait_flag=1
     tags: [ deploy ]
-  - include: verify_ospf.yml
+  - include: "{{ansible_os}}/verify_ospf.yml"
     tags: [ verify ]

@@ -6,7 +6,6 @@
 
 - name: Deploy configurations
   ios_config:
-    provider: "{{ios_provider}}"
     src: "{{configs}}/{{inventory_hostname}}.ospf.cfg"
   register: changes
 

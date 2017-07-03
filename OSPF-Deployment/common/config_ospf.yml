@@ -9,5 +9,5 @@
   changed_when: no
 
 - name: Create configurations
-  template: src=ospf-config.j2 dest={{configs}}/{{inventory_hostname}}.ospf.cfg
+  template: src=../{{ansible_os}}/ospf-config.j2 dest={{configs}}/{{inventory_hostname}}.ospf.cfg
   check_mode: no

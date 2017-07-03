@@ -1,22 +1,20 @@
 {% set node = nodes[inventory_hostname] %}
-{% if node.internal is defined %}
+{% if node.links is defined %}
 router ospf 1
  router-id {{ node.rid }}
 !
 interface Loopback0
+ ip address {{ node.rid }} 255.255.255.255
  ip ospf 1 area 0
 !
-{%   for intf,data in node.internal|dictsort %}
+{%   for intf,data in node.links|dictsort %}
 interface {{intf}}
  ip ospf 1 area 0
- ip ospf hello-interval 3
- ip ospf dead-interval 10
+ ip ospf hello 3
+ ip ospf dead 10
  ip ospf network point-to-multipoint
 {%     if data.cost is defined %}  
  ip ospf cost {{data.cost}}
-{%     endif %}
-{%     if "VPNv4" in services %}
- mpls ip
 {%     endif %}
 !
 {%   endfor %}

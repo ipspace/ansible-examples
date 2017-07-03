@@ -5,10 +5,10 @@
 - name: Wait for OSPF to start
   pause: seconds=15 prompt="Waiting for OSPF to start"
   tags: [ verify ]
+  when: wait_flag is defined
 
 - name: Collect OSPF neighbors
   ios_command:
-    provider: "{{ios_provider}}"
     commands: 
     - "show ip ospf neighbor | include ^[1-9]"
   register: ospf_neighbors
@@ -18,5 +18,5 @@
   assert:
     that: "'{{ item.key }}' in ospf_neighbors.stdout[0]"
     msg:  "OSPF session in interface {{item.key}} is missing"
-  with_dict: "{{ nodes[inventory_hostname].internal }}"
+  with_dict: "{{ nodes[inventory_hostname].links }}"
   tags: [ verify ]
