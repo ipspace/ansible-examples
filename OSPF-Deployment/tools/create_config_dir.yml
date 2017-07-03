@@ -1,0 +1,9 @@
+#
+# Create configuration directory if it doesn't exist
+#
+---
+- name: Create configuration directory
+  local_action: file path={{configs}} state=directory
+  run_once: true
+  check_mode: no
+  changed_when: no

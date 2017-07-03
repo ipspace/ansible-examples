@@ -12,9 +12,9 @@
       - "{{ inventory_dir }}/nodes.yml"
       - nodes.yml
     tags: [ configs,verify ]
-  - include: clean.yml
+  - include: tools/clean.yml
     tags: [ clean ]
-  - include: config_ospf.yml
+  - include: common/config_ospf.yml
     tags: [ configs ]
   - include: deploy_ospf.yml
     tags: [ deploy ]

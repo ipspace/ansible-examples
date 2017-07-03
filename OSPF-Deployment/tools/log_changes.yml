@@ -1,0 +1,34 @@
+#
+# Create files documenting changes made to individual devices
+#
+---
+- name: Cleanup old changes file
+  local_action: file path={{configs}}/changes/{{inventory_hostname}}.{{component}}.changes state=absent
+  check_mode: no
+  changed_when: no
+
+- name: Document changes
+  copy:
+    content: |
+      *************************************
+      {{component}} changes on {{inventory_hostname}}
+      *************************************
+      {% for line in changes.commands %}
+      {{ line }}
+      {% endfor %}
+    dest: "{{configs}}/changes/{{inventory_hostname}}.{{component}}.changes"
+  delegate_to: localhost
+  check_mode: no
+  when: changes.commands|default([])|length
+
+- assemble: src={{configs}}/changes dest={{configs}}/changes.txt
+  check_mode: no
+  changed_when: no
+  delegate_to: localhost
+  run_once: "{{allnodes|default(true)}}"
+  when: true
+
+- name: Cleanup changes files
+  local_action: file path={{configs}}/changes/{{inventory_hostname}}.{{component}}.changes state=absent
+  check_mode: no
+  changed_when: no

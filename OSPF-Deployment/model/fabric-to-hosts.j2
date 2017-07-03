@@ -3,6 +3,6 @@
 #
 {% for node in nodes %}
 {{ node.name }} ansible_host={{ node.mgmt }} ansible_os={{node.os|default(common.os)
-  }} ansible_user={{node.user|default(common.user)|default("missing")
+  }} ansible_user={{node.username|default(common.username)|default("missing")
   }} ansible_pass={{node.password|default(common.password)|default("missing")}}
 {% endfor %}
