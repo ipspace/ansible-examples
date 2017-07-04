@@ -1,8 +1,6 @@
 ---
 - hosts: localhost
   gather_facts: no
-#  vars_files:
-#  - "{{inventory_dir|default('.')}}/"
   tasks:
   - include_vars: "{{ input }}"
   - file: dest={{output}} state=directory
