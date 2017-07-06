@@ -6,6 +6,7 @@ common:
   username: cisco
   password: cisco
   os: ios
+  domain: virl.info
 
 nodes:
   - name: E1

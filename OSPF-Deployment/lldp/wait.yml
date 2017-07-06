@@ -1,0 +1,11 @@
+#
+# Enable LLDP on fabric links
+#
+---
+- name: Set wait flag if we just configured LLDP
+  set_fact: wait_flag=1
+  tags: [ config ]
+- name: Wait for LLDP to start
+  pause: seconds=15 prompt="Waiting for LLDP to start"
+  tags: [ verify ]
+  when: wait_flag is defined

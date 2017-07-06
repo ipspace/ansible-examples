@@ -3,3 +3,4 @@ nodes.yml
 WAN
 /configs
 /printouts
+napalm-ansible

@@ -1,10 +1,14 @@
 #
 # Nodes in the network
 #
-{% macro internal_link(name,ip,cost) %}
-{{ name }}: { ip: {{ip}} {% if cost %}, cost: {{cost}}{% endif %} }{% endmacro %}
+{% macro internal_link(name,ip,cost,remote) %}
+{{ name }}: { ip: {{ip}}, remote: {{remote}} {% if cost %}, cost: {{cost}}{% endif %} }{% endmacro %}
 
 ---
+common:
+  domain: {{common.domain|default("")}}
+  suffix: {% if common.domain is defined %}.{{common.domain}}{% endif %}
+
 nodes:
 {% for node in nodes %}
 
@@ -14,9 +18,9 @@ nodes:
     links:
 {%   for link in fabric %}
 {%     if link.left == node.name %}
-      {{ internal_link(link.left_port,link.left_ip,link.cost|default('')) }}
+      {{ internal_link(link.left_port,link.left_ip,link.cost|default(''),link.right) }}
 {%     elif link.right == node.name %}
-      {{ internal_link(link.right_port,link.right_ip, link.cost|default('')) }}
+      {{ internal_link(link.right_port,link.right_ip, link.cost|default(''),link.left) }}
 {%     endif %}
 {%   endfor %}
 {% endfor %}

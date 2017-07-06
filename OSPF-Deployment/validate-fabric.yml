@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  name: Create node data model
+  tags: [ model ]
+  vars_files:
+  - "{{inventory_dir}}/{{fabric|default('fabric.yml')}}"
+  tasks:
+  - name: Create per-node data model from fabric data model
+    template: src=model/fabric-to-nodes.j2 dest={{inventory_dir}}/nodes.yml
+
+- hosts: all
+  name: Validate fabric connectivity
+  tags: [ config ]
+  vars_files:
+  - "{{inventory_dir}}/nodes.yml"
+  tasks:
+  - name: Configure LLDP on fabric devices
+    include: "{{ansible_os}}/deploy_lldp.yml"
+    tags: [ config ]
+  - name: Wait for LLDP to start
+    include: lldp/wait.yml
+  - name: Wait for LLDP to start
+    include: "{{item}}"
+    with_first_found:
+      - "{{ansible_os}}/lldp_facts.yml"
+      - "lldp/napalm_lldp_facts.yml"
+    tags: [ validate ]
+  - name: Validate connectivity using LLDP neighbors
+    include: lldp/validate.yml
+    tags: [ validate ]
