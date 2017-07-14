@@ -3,23 +3,22 @@
   name: Create node data model
   tags: [ model ]
   vars_files:
-  - "{{inventory_dir}}/{{fabric|default('fabric.yml')}}"
+  - "{{inventory_dir}}/{{model|default('fabric.yml')}}"
   tasks:
   - name: Create per-node data model from fabric data model
     template: src=model/fabric-to-nodes.j2 dest={{inventory_dir}}/nodes.yml
 
 - hosts: all
   name: Validate fabric connectivity
-  tags: [ config ]
-  vars_files:
-  - "{{inventory_dir}}/nodes.yml"
   tasks:
+  - include_vars: "{{inventory_dir}}/nodes.yml"
+    tags: [ config,validate ]
   - name: Configure LLDP on fabric devices
     include: "{{ansible_os}}/deploy_lldp.yml"
     tags: [ config ]
   - name: Wait for LLDP to start
     include: lldp/wait.yml
-  - name: Wait for LLDP to start
+  - name: Gather LLDP facts
     include: "{{item}}"
     with_first_found:
       - "{{ansible_os}}/lldp_facts.yml"
