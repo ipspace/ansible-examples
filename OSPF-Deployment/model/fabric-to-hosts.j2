@@ -1,0 +1,8 @@
+#
+# Auto-generated inventory file
+#
+{% for node in nodes %}
+{{ node.name }} ansible_host={{ node.mgmt }} ansible_os={{node.os|default(common.os)
+  }} ansible_user={{node.username|default(common.username)|default("missing")
+  }} ansible_ssh_pass={{node.password|default(common.password)|default("missing")}}
+{% endfor %}

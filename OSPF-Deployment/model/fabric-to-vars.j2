@@ -1,0 +1,22 @@
+#
+# Ansible host variables created from the fabric data model
+#
+{% macro internal_link(name,ip,cost,remote) %}
+{{ name }}:
+    ip: {{ip}}
+    remote: {{remote}}
+    {% if cost %}cost: {{cost}}{% endif %}{% endmacro %}
+
+---
+{% for node in nodes if node.name == inventory_hostname %}
+mgmt: {{ node.mgmt }}
+rid:  {{ node.rid }}
+links:
+{%   for link in fabric %}
+{%     if link.left == node.name %}
+  {{ internal_link(link.left_port,link.left_ip,link.cost|default(''),link.right) }}
+{%     elif link.right == node.name %}
+  {{ internal_link(link.right_port,link.right_ip, link.cost|default(''),link.left) }}
+{%     endif %}
+{%   endfor %}
+{% endfor %}

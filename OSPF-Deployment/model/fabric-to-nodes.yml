@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+  - include_vars: "{{ item }}"
+    with_first_found:
+      - "{{dir}}/{{fabric|default('fabric.yml')}}"
+      - "{{inventory_dir}}/{{fabric|default('fabric.yml')}}"
+      - "{{fabric|default('fabric.yml')}}"
+    tags: [ hosts, nodes ]
+  - name: Create inventory file from fabric data model
+    template: src=fabric-to-hosts.j2 dest={{dir|default(inventory_dir)}}/hosts
+    tags: [ hosts ]
+  - name: Create per-node data model from fabric data model
+    template: src=fabric-to-nodes.j2 dest={{dir|default(inventory_dir)}}/nodes.yml
+    tags: [ nodes ]

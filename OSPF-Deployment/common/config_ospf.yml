@@ -1,0 +1,13 @@
+#
+# Deploy OSPF routing in a WAN fabric
+#
+---
+- name: Create configuration directory
+  local_action: file path={{configs}} state=directory
+  run_once: true
+  check_mode: no
+  changed_when: no
+
+- name: Create configurations
+  template: src=../{{ansible_os}}/ospf-config.j2 dest={{configs}}/{{inventory_hostname}}.ospf.cfg
+  check_mode: no

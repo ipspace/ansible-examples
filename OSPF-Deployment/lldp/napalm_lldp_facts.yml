@@ -1,0 +1,13 @@
+---
+- name: Get interfaces and LLDP neighbors
+  napalm_get_facts:
+    hostname: "{{ansible_host|default(inventory_hostname)}}"
+    username: "{{ansible_user}}"
+    password: "{{ansible_ssh_pass}}"
+    dev_os: "{{ansible_os}}"
+    optional_args:
+      port: "{{api_port|default(ansible_port)|default(22)}}"
+    filter:
+    - lldp_neighbors
+    - interfaces
+  tags: [ validate,print_action ]

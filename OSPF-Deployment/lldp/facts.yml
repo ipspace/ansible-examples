@@ -1,0 +1,4 @@
+---
+- hosts: all
+  tasks:
+  - include: napalm_lldp_facts.yml

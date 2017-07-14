@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+  - include_vars: "{{ input }}"
+  - file: dest={{output}} state=directory
+  - file: dest={{output}}/host_vars state=directory
+  - name: Create inventory file from fabric data model
+    template: src=fabric-to-hosts.j2 dest={{output}}/hosts
+  - name: Create dynamic hosts
+    add_host:
+      name: "{{item.name}}"
+      group: devices
+    with_items: "{{nodes}}"
+
+- hosts: devices
+  gather_facts: no
+  connection: local
+  tasks:
+  - include_vars: "{{ input }}"
+  - name: Create per-node vars files from fabric data model
+    template: src=fabric-to-vars.j2 dest={{output}}/host_vars/{{inventory_hostname}}.yml
