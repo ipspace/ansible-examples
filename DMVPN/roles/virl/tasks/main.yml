@@ -2,3 +2,4 @@
 - name: Build VIRL-specific configuration
   template: src=90-virl.j2 dest={{ build_dir }}/{{inventory_hostname}}/90-virl.conf
   check_mode: no
+  changed_when: false
