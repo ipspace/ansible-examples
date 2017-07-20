@@ -12,17 +12,8 @@
     check_mode: no
     tags: [ always ]
 
-- name: Generate spoke configs
-  hosts: spokes
-  tags: [ build ]
-  roles:
-    - routing
-    - base
-    - dmvpn
-    - virl
-
-- name: Generate hub configs
-  hosts: hubs
+- name: Generate configs
+  hosts: all
   tags: [ build ]
   roles:
     - routing

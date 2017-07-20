@@ -1,6 +1,7 @@
 ---
 log_dir: logs
 build_dir: compiled
+config_dir: configs
 domain_name: lab.ipspace.net
 routing: ibgp
 
