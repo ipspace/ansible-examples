@@ -2,11 +2,13 @@
 - name: Routing configuration - spokes
   template: src=30-{{routing|default('ibgp')}}-spoke.j2 dest={{ build_dir }}/{{inventory_hostname}}/30-routing.conf
   check_mode: no
+  changed_when: false
   when: "'spokes' in group_names"
 
 - name: Routing configuration - hubs
   template: src=30-{{routing|default('ibgp')}}-hub.j2 dest={{ build_dir }}/{{inventory_hostname}}/30-routing.conf
   check_mode: no
+  changed_when: false
   when: "'hubs' in group_names"
 
 #- set_fact: routing_includes={{role_path}}/templates/

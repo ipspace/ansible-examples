@@ -1,16 +1,20 @@
 ---
 - name: Prepare for configuration build
   hosts: all
+  tags: [ always ]
   tasks:
-  - file: path={{build_dir}} state=absent
-    changed_when: no
+  - file: path={{build_dir}} state=directory
     check_mode: no
     run_once: yes
-    tags: [ clean ]
-  - file: path={{build_dir}}/{{inventory_hostname}} state=directory
-    changed_when: no
+  - file: path={{config_dir}} state=directory
     check_mode: no
-    tags: [ always ]
+    run_once: yes
+  - file: path={{build_dir}}/{{inventory_hostname}} state=absent
+    changed_when: false
+    check_mode: no
+  - file: path={{build_dir}}/{{inventory_hostname}} state=directory
+    changed_when: false
+    check_mode: no
 
 - name: Generate spoke configs
   hosts: spokes
@@ -67,5 +71,3 @@
   - assemble: src={{build_dir}}/results dest={{build_dir}}/results.txt
     run_once: true
     tags: [ deploy ]
-
-
