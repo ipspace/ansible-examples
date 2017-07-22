@@ -2,3 +2,4 @@
 - name: DMVPN and IPsec configuration
   template: src=20-dmvpn.j2 dest={{ build_dir }}/{{inventory_hostname}}/20-dmvpn.conf
   check_mode: no
+  changed_when: false
