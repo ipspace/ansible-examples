@@ -3,6 +3,8 @@
 #
 ---
 - name: Create configuration changes directory
-  local_action: file path={{configs}}/node.changes state=directory
+  file: path={{configs}}/node.changes state=directory
+  delegate_to: localhost
+  run_once: true
   check_mode: no
   changed_when: no
