@@ -1,0 +1,16 @@
+# Snapshot: create a snapshot of inventory file and host facts in specified folder
+#
+# Variables:
+# - snapshot: directory (relative to inventory directory)
+#
+---
+- name: Create snapshot directory
+  file:
+    path: "{{output}}"
+    state: directory
+  run_once: true
+
+- name: Create host variable files
+  template:
+    src: "yaml.j2"
+    dest: "{{output}}/{{inventory_hostname}}.yml"

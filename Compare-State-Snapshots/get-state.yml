@@ -1,0 +1,24 @@
+#
+# Collect state from network devices. Execute all playbooks in getters/{{os}}
+#
+---
+- hosts: all
+  roles:
+  - napalm
+  vars:
+    output: "{{inventory_dir}}/snapshot"
+    format: yaml
+  tasks:
+  - include_tasks: "{{item}}"
+    vars:
+      filter_dir: getters/{{ansible_os}}
+    with_fileglob: [ "getters/{{ansible_os}}/*.yml" ]
+
+  - include_tasks: "{{item}}"
+    with_fileglob: [ "getters/napalm/*.yml" ]
+
+  - include_tasks: "../../tools/include/snapshot.yml"
+    when: snapshot is defined
+
+  - name: Save
+    include_tasks: "{{ 'savers/'+format+'.yml' }}"

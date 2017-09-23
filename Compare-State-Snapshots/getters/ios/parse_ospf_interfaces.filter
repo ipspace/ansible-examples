@@ -1,0 +1,22 @@
+# CLI filter for "show ip ospf neighbor" Cisco IOS printout
+#
+---
+vars:
+  interface:
+    key: "{{ item[0].ifname }}"
+    values:
+      admin_state: "{{ item[0].admin_state }}"
+      op_state: "{{ item[0].op_state }}"
+      address: "{{ item[1].addr }}"
+      area: "{{ item[1].area }}"
+
+keys:
+  interfaces:
+    start_block: ".*line protocol is"
+    end_block: "^$"
+    type: list
+    value: "{{ interface }}"
+    items:
+    - "^(?P<ifname>\\S+) is (?P<admin_state>[^,]+), line protocol is (?P<op_state>\\S+)"
+    - ".*Internet Address (?P<addr>[0-9./]+), Area (?P<area>[0-9.])"
+

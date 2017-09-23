@@ -1,0 +1,14 @@
+#
+# Get device state using NAPALM
+#
+- napalm_get_facts:
+    hostname={{ansible_host|default(inventory_hostname)}}
+    username={{ansible_user}}
+    password={{ansible_ssh_pass}}
+    dev_os={{ansible_os}}
+    filter='bgp_neighbors,interfaces,interfaces_ip,lldp_neighbors'
+- set_fact:
+    state_bgp_peers: "{{napalm_bgp_neighbors.global.peers}}"
+    state_interfaces: "{{napalm_interfaces|combine(napalm_interfaces_ip,recursive=True)}}"
+    state_lldp_neighbors: "{{napalm_lldp_neighbors}}"
+

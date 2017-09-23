@@ -1,0 +1,5 @@
+---
+- hosts: all
+  name: Enable LLDP on IOS devices
+  tasks:
+  - ios_config: commands="lldp run"

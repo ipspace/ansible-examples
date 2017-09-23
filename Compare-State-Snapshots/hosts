@@ -1,0 +1,9 @@
+#
+# Auto-generated inventory file
+#
+E1 ansible_host=172.16.1.110 ansible_os=ios ansible_user=cisco ansible_ssh_pass=cisco
+E2 ansible_host=172.16.1.111 ansible_os=ios ansible_user=cisco ansible_ssh_pass=cisco
+E3 ansible_host=172.16.1.120 ansible_os=ios ansible_user=cisco ansible_ssh_pass=cisco
+E4 ansible_host=172.16.1.121 ansible_os=ios ansible_user=cisco ansible_ssh_pass=cisco
+PE1 ansible_host=172.16.1.112 ansible_os=ios ansible_user=cisco ansible_ssh_pass=cisco
+PE2 ansible_host=172.16.1.122 ansible_os=ios ansible_user=cisco ansible_ssh_pass=cisco

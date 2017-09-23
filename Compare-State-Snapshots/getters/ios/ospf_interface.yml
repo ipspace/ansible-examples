@@ -1,0 +1,11 @@
+#
+# Retrieve Cisco IOS OSPF neighbor information
+---
+- ios_command:
+    commands: [ show ip ospf interface ]
+  register: ospf_printout
+
+- set_fact:
+    state_ospf_interfaces: >
+      {{ ospf_printout.stdout[0] |
+         parse_cli(filter_dir|default(playbook_dir)+"/parse_ospf_interfaces.filter") }}

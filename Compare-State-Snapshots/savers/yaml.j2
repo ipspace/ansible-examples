@@ -1,0 +1,4 @@
+{% for k,v in hostvars[inventory_hostname].items() if 'state_' in k %}
+{{ k.replace('state_','') }}:
+{{ v|to_nice_yaml(indent=2)|indent(2,true) }}
+{% endfor %}
