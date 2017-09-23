@@ -1,5 +1,16 @@
 # Demo script for "Compare State Snapshots" case study
 
+## Preparation
+
+* Start VIRL Inter-AS topology
+* Start Ansible VM
+* Gather SSH keys
+
+In /vagrant/Examples/Compare-State-Snapshots directory run playbook that configures LLDP on the devices
+```
+ansible-playbook fix/deploy_lldp.yml
+```
+
 ## Simplistic approach
 
 Prepare the initial version of the playbooks
@@ -44,4 +55,4 @@ ansible-playbook get-state.yml -e output=snap_after
 Compare state before and after
 ```
 colordiff -ru snap_before snap_after|less -r
-``
+```
