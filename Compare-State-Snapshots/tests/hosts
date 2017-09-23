@@ -1,0 +1,1 @@
+E1 ansible_host=172.16.1.110 ansible_user=cisco ansible_ssh_pass=cisco

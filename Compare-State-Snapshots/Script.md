@@ -1,7 +1,34 @@
 # Demo script for "Compare State Snapshots" case study
 
+## Simplistic approach
+
+Prepare the initial version of the playbooks
+```
+git checkout Compare-State-Initial
+```
+Run Ansible playbook to collect initial state
 ```
 ansible-playbook get-state.yml -e output=snap_before
+```
+Inspect the results
+```
+more snap_before/E1.yml
+```
+Time to go back to the drawing board...
+
+## Remove time-dependent state
+
+Switch to the final version of the playbooks
+```
+git checkout master
+```
+Collect initial state
+```
+ansible-playbook get-state.yml -e output=snap_before
+```
+Inspect the results
+```
+more snap_before/E1.yml
 ```
 Log into one of the routers, turn off an interface
 ```
@@ -14,3 +41,7 @@ Repeat state gathering
 ```
 ansible-playbook get-state.yml -e output=snap_after
 ```
+Compare state before and after
+```
+colordiff -ru snap_before snap_after|less -r
+``

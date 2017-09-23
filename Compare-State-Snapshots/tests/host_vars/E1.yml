@@ -1,0 +1,323 @@
+ansible_check_mode: false
+ansible_diff_mode: false
+ansible_forks: 5
+ansible_host: 172.16.1.110
+ansible_inventory_sources:
+- /vagrant/Examples/Compare-State-Snapshots/hosts
+ansible_limit: E1
+ansible_os: ios
+ansible_playbook_python: /usr/bin/python
+ansible_run_tags:
+- all
+ansible_skip_tags: []
+ansible_ssh_pass: cisco
+ansible_user: cisco
+ansible_version:
+  full: 2.5.0
+  major: 2
+  minor: 5
+  revision: 0
+  string: 2.5.0
+group_names:
+- ungrouped
+groups:
+  all:
+  - E1
+  - E2
+  - E3
+  - E4
+  - PE1
+  - PE2
+  ungrouped:
+  - E1
+  - E2
+  - E3
+  - E4
+  - PE1
+  - PE2
+inventory_dir: /vagrant/Examples/Compare-State-Snapshots
+inventory_file: hosts
+inventory_hostname: E1
+inventory_hostname_short: E1
+napalm_bgp_neighbors:
+  global:
+    peers:
+      10.0.0.26:
+        address_family:
+          ipv4:
+            accepted_prefixes: 3
+            received_prefixes: 3
+            sent_prefixes: 3
+        description: ''
+        is_enabled: true
+        is_up: true
+        local_as: 64500
+        remote_as: 64501
+        remote_id: 192.168.0.5
+        uptime: 3051
+      192.168.0.1:
+        address_family:
+          ipv4:
+            accepted_prefixes: 1
+            received_prefixes: 1
+            sent_prefixes: 5
+        description: ''
+        is_enabled: true
+        is_up: true
+        local_as: 64500
+        remote_as: 64500
+        remote_id: 192.168.0.1
+        uptime: 3046
+      192.168.0.4:
+        address_family:
+          ipv4:
+            accepted_prefixes: 5
+            received_prefixes: 5
+            sent_prefixes: 5
+        description: ''
+        is_enabled: true
+        is_up: true
+        local_as: 64500
+        remote_as: 64500
+        remote_id: 192.168.0.4
+        uptime: 3048
+    router_id: 192.168.0.2
+napalm_interfaces:
+  GigabitEthernet0/0:
+    description: OOB Management
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: FA:16:3E:90:30:C0
+    speed: 1000
+  GigabitEthernet0/1:
+    description: to PE1
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: FA:16:3E:EA:66:F6
+    speed: 1000
+  GigabitEthernet0/2:
+    description: to E2
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: FA:16:3E:54:F3:E1
+    speed: 1000
+  GigabitEthernet0/3:
+    description: to E3
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: FA:16:3E:32:02:9B
+    speed: 1000
+  Loopback0:
+    description: Loopback
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: N/A
+    speed: 8000
+napalm_interfaces_ip:
+  GigabitEthernet0/0:
+    ipv4:
+      172.16.1.110:
+        prefix_length: 24
+  GigabitEthernet0/1:
+    ipv4:
+      10.0.0.13:
+        prefix_length: 30
+  GigabitEthernet0/2:
+    ipv4:
+      10.0.0.21:
+        prefix_length: 30
+  GigabitEthernet0/3:
+    ipv4:
+      10.0.0.25:
+        prefix_length: 30
+  Loopback0:
+    ipv4:
+      192.168.0.2:
+        prefix_length: 32
+napalm_lldp_neighbors:
+  GigabitEthernet0/0:
+  - hostname: E3.virl.info
+    port: Gi0/0
+  - hostname: E2.virl.info
+    port: Gi0/0
+  - hostname: E4.virl.info
+    port: Gi0/0
+  - hostname: PE1.virl.info
+    port: Gi0/0
+  - hostname: PE2.virl.info
+    port: Gi0/0
+  GigabitEthernet0/1:
+  - hostname: PE1.virl.info
+    port: Gi0/1
+  GigabitEthernet0/2:
+  - hostname: E2.virl.info
+    port: Gi0/2
+  GigabitEthernet0/3:
+  - hostname: E3.virl.info
+    port: Gi0/1
+omit: __omit_place_holder__464d0b8b874e3556e3ee692cd51f3f4aa46c4a32
+ospf_printout:
+  changed: false
+  failed: false
+  stdout:
+  - 'Neighbor ID     Pri   State           Dead Time   Address         Interface
+
+    192.168.0.4       0   FULL/  -        00:00:07    10.0.0.22       GigabitEthernet0/2
+
+    192.168.0.1       0   FULL/  -        00:00:08    10.0.0.14       GigabitEthernet0/1'
+  stdout_lines:
+  - - Neighbor ID     Pri   State           Dead Time   Address         Interface
+    - 192.168.0.4       0   FULL/  -        00:00:07    10.0.0.22       GigabitEthernet0/2
+    - 192.168.0.1       0   FULL/  -        00:00:08    10.0.0.14       GigabitEthernet0/1
+parse_ospf_neighbors:
+  neighbors:
+    192.168.0.1:
+      address: 10.0.0.14
+      interface: GigabitEthernet0/1
+      state: FULL
+      up: true
+    192.168.0.4:
+      address: 10.0.0.22
+      interface: GigabitEthernet0/2
+      state: FULL
+      up: true
+playbook_dir: /vagrant/Examples/Compare-State-Snapshots
+state_bgp_peers:
+  10.0.0.26:
+    address_family:
+      ipv4:
+        accepted_prefixes: 3
+        received_prefixes: 3
+        sent_prefixes: 3
+    description: ''
+    is_enabled: true
+    is_up: true
+    local_as: 64500
+    remote_as: 64501
+    remote_id: 192.168.0.5
+    uptime: 3051
+  192.168.0.1:
+    address_family:
+      ipv4:
+        accepted_prefixes: 1
+        received_prefixes: 1
+        sent_prefixes: 5
+    description: ''
+    is_enabled: true
+    is_up: true
+    local_as: 64500
+    remote_as: 64500
+    remote_id: 192.168.0.1
+    uptime: 3046
+  192.168.0.4:
+    address_family:
+      ipv4:
+        accepted_prefixes: 5
+        received_prefixes: 5
+        sent_prefixes: 5
+    description: ''
+    is_enabled: true
+    is_up: true
+    local_as: 64500
+    remote_as: 64500
+    remote_id: 192.168.0.4
+    uptime: 3048
+state_interfaces:
+  GigabitEthernet0/0:
+    description: OOB Management
+    ipv4:
+      172.16.1.110:
+        prefix_length: 24
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: FA:16:3E:90:30:C0
+    speed: 1000
+  GigabitEthernet0/1:
+    description: to PE1
+    ipv4:
+      10.0.0.13:
+        prefix_length: 30
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: FA:16:3E:EA:66:F6
+    speed: 1000
+  GigabitEthernet0/2:
+    description: to E2
+    ipv4:
+      10.0.0.21:
+        prefix_length: 30
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: FA:16:3E:54:F3:E1
+    speed: 1000
+  GigabitEthernet0/3:
+    description: to E3
+    ipv4:
+      10.0.0.25:
+        prefix_length: 30
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: FA:16:3E:32:02:9B
+    speed: 1000
+  Loopback0:
+    description: Loopback
+    ipv4:
+      192.168.0.2:
+        prefix_length: 32
+    is_enabled: true
+    is_up: true
+    last_flapped: -1.0
+    mac_address: N/A
+    speed: 8000
+state_lldp_neighbors:
+  GigabitEthernet0/0:
+  - hostname: E3.virl.info
+    port: Gi0/0
+  - hostname: E2.virl.info
+    port: Gi0/0
+  - hostname: E4.virl.info
+    port: Gi0/0
+  - hostname: PE1.virl.info
+    port: Gi0/0
+  - hostname: PE2.virl.info
+    port: Gi0/0
+  GigabitEthernet0/1:
+  - hostname: PE1.virl.info
+    port: Gi0/1
+  GigabitEthernet0/2:
+  - hostname: E2.virl.info
+    port: Gi0/2
+  GigabitEthernet0/3:
+  - hostname: E3.virl.info
+    port: Gi0/1
+state_ospf_interfaces:
+- Loopback0:
+    address: 192.168.0.2/32
+    admin_state: up
+    area: 0
+    op_state: up
+- GigabitEthernet0/2:
+    address: 10.0.0.21/30
+    admin_state: up
+    area: 0
+    op_state: up
+state_ospf_neighbors:
+  192.168.0.1:
+    address: 10.0.0.14
+    interface: GigabitEthernet0/1
+    state: FULL
+    up: true
+  192.168.0.4:
+    address: 10.0.0.22
+    interface: GigabitEthernet0/2
+    state: FULL
+    up: true

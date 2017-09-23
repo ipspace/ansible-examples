@@ -1,0 +1,12 @@
+#
+# Test list handling plugins
+#
+# Run from parent directory with ansible-playbook -i tests tests/test_remove_keys.yml
+#
+---
+- hosts: E1
+  tasks:
+  - debug:
+      msg: >
+        {{ napalm_bgp_neighbors.global.peers|
+           remove_keys('uptime',recurse=true) }}

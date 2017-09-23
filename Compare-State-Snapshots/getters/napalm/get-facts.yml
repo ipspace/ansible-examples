@@ -8,7 +8,12 @@
     dev_os={{ansible_os}}
     filter='bgp_neighbors,interfaces,interfaces_ip,lldp_neighbors'
 - set_fact:
-    state_bgp_peers: "{{napalm_bgp_neighbors.global.peers}}"
-    state_interfaces: "{{napalm_interfaces|combine(napalm_interfaces_ip,recursive=True)}}"
+    state_bgp_peers: >
+      {{ napalm_bgp_neighbors.global.peers |
+         remove_keys('uptime',true) }}
+    state_interfaces: >
+      {{ napalm_interfaces |
+         combine(napalm_interfaces_ip,recursive=True) |
+         remove_keys('last_flapped',true) }}
     state_lldp_neighbors: "{{napalm_lldp_neighbors}}"
 
