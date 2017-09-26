@@ -1,45 +1,36 @@
 # Demo script for "Compare State Snapshots" case study
 
-## Preparation
+## Prepare for the demo
 
-* Start VIRL Inter-AS topology
-* Start Ansible VM
-* Gather SSH keys
+Collect SSH keys with `get-keys.yml`
 
-In /vagrant/Examples/Compare-State-Snapshots directory run playbook that configures LLDP on the devices
+Turn on LLDP with
 ```
 ansible-playbook fix/deploy_lldp.yml
 ```
-
-## Simplistic approach
-
-Prepare the initial version of the playbooks
+Check out the inital branch with time-dependent state
 ```
 git checkout Compare-State-Initial
 ```
-Run Ansible playbook to collect initial state
+
+## Step 1: Time-dependent state
+
+Collect the state
+```
+ansible-playbook get-state.yml -e output=snapshot
+more snapshot/E1.yml
+```
+
+## Step 2: Fixed state gathering
+
+Check out the final branch
+```
+git checkout Work
+```
+Collect state
 ```
 ansible-playbook get-state.yml -e output=snap_before
-```
-Inspect the results
-```
-more snap_before/E1.yml
-```
-Time to go back to the drawing board...
-
-## Remove time-dependent state
-
-Switch to the final version of the playbooks
-```
-git checkout master
-```
-Collect initial state
-```
-ansible-playbook get-state.yml -e output=snap_before
-```
-Inspect the results
-```
-more snap_before/E1.yml
+colordiff -au snapshot snap_before|less -r
 ```
 Log into one of the routers, turn off an interface
 ```
@@ -52,7 +43,7 @@ Repeat state gathering
 ```
 ansible-playbook get-state.yml -e output=snap_after
 ```
-Compare state before and after
+Compare the state
 ```
-colordiff -ru snap_before snap_after|less -r
+colordiff -au snap_before snap_after|less -r
 ```
