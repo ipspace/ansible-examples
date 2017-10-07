@@ -5,26 +5,26 @@
 - set_fact: node={{nodes[inventory_hostname]}}
 - block:
   - set_fact: fabric_intf={{node.links.keys()}}
-  - set_fact: device_intf={{interfaces.keys()}}
+  - set_fact: device_intf={{napalm_interfaces.keys()}}
   - assert:
       that: fabric_intf|difference(device_intf)|length == 0
       msg:  |
         Some interfaces used in fabric definition are not present
         on {{inventory_hostname}}
-  - set_fact: lldp_intf={{lldp_neighbors.keys()}}
+  - set_fact: lldp_intf={{napalm_lldp_neighbors.keys()}}
   - assert:
       that: fabric_intf|difference(lldp_intf)|length == 0
       msg:  |
         LLDP is not enabled on some fabric interfaces on {{inventory_hostname}}
   - assert:
       that: >
-        lldp_neighbors[item.key]|map(attribute='hostname')|list|
+        napalm_lldp_neighbors[item.key]|map(attribute='hostname')|list|
         intersect(item.value.remote+common.suffix)|length > 0
       msg: "Neighbor {{item.value.remote}} is not present on {{item.key}}"
     with_dict: "{{node.links}}"
   - assert:
       that: >
-        lldp_neighbors[item.key]|map(attribute='hostname')|list|
+        napalm_lldp_neighbors[item.key]|map(attribute='hostname')|list|
         difference(item.value.remote+common.suffix)|length == 0
       msg: "Extra LLDP neighbors are present on {{item.key}}"
     with_dict: "{{node.links}}"

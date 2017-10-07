@@ -12,13 +12,13 @@
       - "{{ inventory_dir }}/nodes.yml"
       - nodes.yml
     tags: [ configs,verify ]
-  - include: tools/clean.yml
+  - include_tasks: tools/clean.yml
     tags: [ clean ]
-  - include: common/config_ospf.yml
+  - include_tasks: common/config_ospf.yml
     tags: [ configs ]
   - block:
-    - include: "{{ansible_os}}/deploy_ospf.yml"
+    - include_tasks: "{{ansible_os}}/deploy_ospf.yml"
     - set_fact: wait_flag=1
     tags: [ deploy ]
-  - include: "{{ansible_os}}/verify_ospf.yml"
+  - include_tasks: "{{ansible_os}}/verify_ospf.yml"
     tags: [ verify ]
