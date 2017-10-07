@@ -3,6 +3,22 @@
 The *LLDP-to-Graph* Ansible playbook uses LLDP neighbor data collected
 with *napalm_get_facts* Ansible module to generate network diagram in *Graphviz* .dot file format.
 
+## Installation guide
+
+The playbooks were tested with these versions of Ansible and NAPALM:
+
+* Ansible 2.4
+* napalm 1.2.0 (or greater)
+* napalm-ansible 0.7.0 (or greater)
+
+Notes:
+
+* The playbooks have been updated to work with Ansible 2.4 and will not work
+  with previous versions of Ansible
+* Run `napalm-ansible` to find path to your distribution of NAPALM
+  and update ansible.cfg accordingly
+* The graph-generation playbook doesn't work correctly with Cisco IOS because NAPALM reports different interface names in interface facts and LLDP neighbor facts
+
 ## Usage
 
 * Create your inventory file. The current **hosts** file uses vEOS leaf-and-spine topology. Set IP addresses, usernames, passwords and ports in the inventory file.
