@@ -1,7 +1,8 @@
+{% from 'format.j2' import hostname,ifname with context %}
 {% for local in play_hosts %}
-{%  for ifname,lldp in hostvars[local].napalm_lldp_neighbors|dictsort if lldp|length > 0 %}
+{%  for intf,lldp in hostvars[local].napalm_lldp_neighbors|dictsort if lldp|length > 0 %}
 {%   for n in lldp if local < n.hostname %}
-{{local}}:{{ifname}} -- {{n.hostname}}:{{n.port}}
+{{ hostname(hostvars[local].napalm_fqdn)}}:{{ifname(intf)}} -- {{hostname(n.hostname)}}:{{ifname(n.port)}}
 {%   endfor %}
 {%  endfor %}
 {% endfor %}

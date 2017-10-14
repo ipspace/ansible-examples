@@ -1,0 +1,16 @@
+PE1:Gi0/1 -- E1:Gi0/1
+PE1:Gi0/2 -- E2:Gi0/1
+PE2:Gi0/1 -- E3:Gi0/3
+PE2:Gi0/2 -- E4:Gi0/3
+E4:Gi0/1 -- E2:Gi0/3
+E4:Gi0/2 -- E3:Gi0/2
+E4:Gi0/3 -- PE2:Gi0/2
+E1:Gi0/1 -- PE1:Gi0/1
+E1:Gi0/2 -- E2:Gi0/2
+E1:Gi0/3 -- E3:Gi0/1
+E3:Gi0/1 -- E1:Gi0/3
+E3:Gi0/2 -- E4:Gi0/2
+E3:Gi0/3 -- PE2:Gi0/1
+E2:Gi0/1 -- PE1:Gi0/2
+E2:Gi0/2 -- E1:Gi0/2
+E2:Gi0/3 -- E4:Gi0/1

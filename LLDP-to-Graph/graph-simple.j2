@@ -1,10 +1,13 @@
-{% from 'format.j2' import hostname,ifname with context %}
+{% from 'format.j2' import hostname,shortname,ifname with context %}
+graph network {
 {% for local in play_hosts %}
 {%  for intf,lldp in hostvars[local].napalm_lldp_neighbors|dictsort if lldp|length > 0 %}
-{%   for n in lldp
+{%   for n in lldp 
        if local < n.hostname or
          (n.hostname not in play_hosts and shortname(n.hostname) not in play_hosts) %}
-{{ hostname(hostvars[local].napalm_fqdn)}}:{{ifname(intf)}} -- {{hostname(n.hostname)}}:{{ifname(n.port)}}
+{%   set lname = hostvars[local].napalm_fqdn %}
+  "{{hostname(lname)}}" -- "{{hostname(n.hostname)}}";
 {%   endfor %}
 {%  endfor %}
 {% endfor %}
+}

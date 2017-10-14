@@ -1,15 +1,20 @@
+{% from 'format.j2' import hostname,shortname,ifname with context %}
 graph network {
 {% for local in play_hosts %}
-  "{{local}}" [shape=record,
-    label="<node>{{local}}|{ {% 
-    for ifname,lldp in hostvars[local].napalm_lldp_neighbors|dictsort 
-    %}<{{- ifname -}}>{{- ifname -}}{% if not(loop.last) %}|{% endif %}{%
+{%   set lname = hostvars[local].napalm_fqdn %}
+  "{{hostname(lname)}}" [shape=record,
+    label="<node>{{hostname(lname)}}|{ {%
+    for intf,lldp in hostvars[local].napalm_lldp_neighbors|dictsort
+    %}<{{- ifname(intf) -}}>{{- ifname(intf) -}}{% if not(loop.last) %}|{% endif %}{%
     endfor %} }"];
 {% endfor %}
 {% for local in play_hosts %}
-{%  for ifname,lldp in hostvars[local].napalm_lldp_neighbors|dictsort if lldp|length > 0 %}
-{%   for n in lldp if local < n.hostname or n.hostname not in play_hosts %}
-  "{{local}}":"{{ifname}}" -- "{{n.hostname}}":"{{n.port}}";
+{%  for intf,lldp in hostvars[local].napalm_lldp_neighbors|dictsort if lldp|length > 0 %}
+{%   for n in lldp
+       if local < n.hostname or
+         (n.hostname not in play_hosts and shortname(n.hostname) not in play_hosts) %}
+{%   set lname = hostvars[local].napalm_fqdn %}
+  "{{hostname(lname)}}":"{{ifname(intf)}}" -- "{{hostname(n.hostname)}}":"{{ifname(n.port)}}";
 {%   endfor %}
 {%  endfor %}
 {% endfor %}

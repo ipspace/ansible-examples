@@ -11,5 +11,5 @@
         port: "{{api_port|default(ansible_port)|default(22)}}"
       filter:
       - lldp_neighbors
-  
+
   - debug: var=hostvars[inventory_hostname]

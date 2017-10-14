@@ -10,6 +10,7 @@
       optional_args:
         port: "{{api_port|default(ansible_port)|default(22)}}"
       filter:
+      - facts
       - lldp_neighbors
 
   - name: Generate graph description file

@@ -1,0 +1,9 @@
+{% macro ifname(name) %}{{
+  name.replace('GigabitEthernet','Gi')
+}}{% endmacro %}
+{% macro shortname(name) %}{{
+  name.partition('.')[0]
+}}{% endmacro %}
+{% macro hostname(name) %}{{
+  name.partition('.')[0] if no_domain is defined else name
+}}{% endmacro %}
