@@ -1,7 +1,6 @@
 ---
 - name: Prepare for configuration build
   hosts: all
-  tags: [ always ]
   tasks:
   - file: path={{build_dir}} state=directory
     check_mode: no
@@ -18,47 +17,16 @@
 
 - name: Generate configs
   hosts: all
-  tags: [ build ]
   roles:
     - routing
     - base
     - dmvpn
     - virl
 
-- name: Assemble and deploy configurations
+- name: Assemble configurations
   hosts: all
   tasks:
   - assemble:
       src: "{{build_dir}}/{{inventory_hostname}}"
       dest: "{{build_dir}}/{{inventory_hostname}}.conf"
     check_mode: no
-    tags: [ build ]
-  - name: Copy candidate configuration into routers
-    local_action: >
-      command /usr/bin/sshpass -p {{ansible_ssh_pass}}
-      /usr/bin/scp {{build_dir}}/{{inventory_hostname}}.conf {{ansible_user}}@{{ansible_host|default(inventory_hostname)}}:flash:candidate.cfg
-    tags: [ copy ]
-  - ios_command:
-      commands:
-        - replace flash:candidate.cfg force
-      authorize: yes
-      timeout: 120
-    register: replace
-    tags: [ deploy,print_action ]
-  - file: path={{build_dir}}/results state=directory
-    check_mode: no
-    tags: [ deploy ]
-  - copy: 
-      content: |
-
-        *********************************
-        Results on {{inventory_hostname}}
-        *********************************
-
-        {{replace.stdout[0]}}
-      dest: "{{build_dir}}/results/{{inventory_hostname}}.txt"
-    delegate_to: localhost
-    tags: [ deploy ]
-  - assemble: src={{build_dir}}/results dest={{build_dir}}/results.txt
-    run_once: true
-    tags: [ deploy ]

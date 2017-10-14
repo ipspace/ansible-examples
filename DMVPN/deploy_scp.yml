@@ -1,0 +1,38 @@
+---
+- name: Copy and deploy configurations
+  hosts: all
+  tasks:
+  - stat: path={{build_dir}}/{{inventory_hostname}}.conf
+    delegate_to: localhost
+    register: stat
+  - assert: 
+      that: stat.exists
+      msg:  "Cannot find router configuration file for {{inventory_hostname}}"
+  - name: Copy candidate configuration into routers
+    local_action: >
+      command /usr/bin/sshpass -p {{ansible_ssh_pass}}
+      /usr/bin/scp {{build_dir}}/{{inventory_hostname}}.conf {{ansible_user}}@{{ansible_host|default(inventory_hostname)}}:flash:candidate.cfg
+  - ios_command:
+      commands:
+        - replace flash:candidate.cfg force
+      authorize: yes
+      timeout: 120
+    register: replace
+    tags: [ deploy,print_action ]
+  - file: path={{build_dir}}/results state=directory
+    check_mode: no
+    tags: [ deploy ]
+  - copy: 
+      content: |
+
+        *********************************
+        Results on {{inventory_hostname}}
+        *********************************
+
+        {{replace.stdout[0]}}
+      dest: "{{build_dir}}/results/{{inventory_hostname}}.txt"
+    delegate_to: localhost
+    tags: [ deploy ]
+  - assemble: src={{build_dir}}/results dest={{build_dir}}/results.txt
+    run_once: true
+    tags: [ deploy ]
