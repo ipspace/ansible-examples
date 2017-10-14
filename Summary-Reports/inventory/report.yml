@@ -1,0 +1,37 @@
+#! /usr/bin/env ansible-playbook
+#
+---
+- hosts: all
+  tasks:
+  - set_fact: results={{inventory_dir}}/results
+  - file: path={{results}} state=directory
+    run_once: true
+
+  - name: Get device facts
+    napalm_get_facts:
+      hostname: "{{ansible_host|default(inventory_hostname)}}"
+      username: "{{ansible_user}}"
+      password: "{{ansible_ssh_pass}}"
+      dev_os: "{{ansible_os}}"
+      optional_args:
+        port: "{{api_port|default(ansible_port)|default(22)}}"
+      filter:
+      - facts
+
+  - name: Save structured data in YAML files
+    copy:
+      content: |
+        {{hostvars[inventory_hostname]|to_nice_yaml(indent=4)}}
+      dest: "{{results}}/{{inventory_hostname}}.yml"
+
+  - name: Create CSV report
+    template:
+      src:  "csv.j2"
+      dest: "{{results}}/inventory.csv"
+    run_once: true
+
+  - name: Create HTML report
+    template:
+      src:  "html.j2"
+      dest: "{{results}}/inventory.html"
+    run_once: true

@@ -1,0 +1,13 @@
+#
+# Generate "create report from a template" module
+#
+# Variables
+#   results - output directory
+#   fmt     - desired template
+#   dest    - destination file name
+#
+---
+- template:
+    src:  "template/{{fmt|default('text')}}.j2"
+    dest: "{{results}}/{{output|default('uptime.log')}}"
+  run_once: true

@@ -1,0 +1,20 @@
+#
+# The playbook collects facts from managed devices
+# and saves them to one or more files
+# in results directory
+#
+# The playbook behavior is controlled with extra variables
+#
+# src: data source (default: facts)
+# dst: report generator (default: Jinja2)
+# fmt: report template (when using Jinja2 report generator)
+#
+---
+- name:  Collect facts from devices and write a report
+  hosts: all
+  tasks:
+  - set_fact: results={{inventory_dir}}/results
+  - include_tasks: "read/{{src|default('snmp')}}.yml"
+  - file: path={{results}} state=directory
+    run_once: true
+  - include_tasks: "report/{{dst|default('template')}}.yml"

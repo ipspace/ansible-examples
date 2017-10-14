@@ -1,0 +1,12 @@
+#! /usr/bin/env ansible-playbook
+#
+---
+- hosts: all
+  name: Cleanup /etc/hosts
+  tasks:
+  - blockinfile:
+      path: /etc/hosts
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    delegate_to: localhost
+    run_once: true
+    become: yes

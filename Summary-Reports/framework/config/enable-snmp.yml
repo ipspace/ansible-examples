@@ -1,0 +1,11 @@
+#
+# Enable SNMP on Cisco IOS devices
+#
+---
+- name: Enable SNMP on Cisco IOS devices
+  hosts: all
+  tasks:
+  - ios_config:
+      lines:
+      - snmp-server community cisco RO
+      - snmp-server contact admin@lab.local

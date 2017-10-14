@@ -1,0 +1,12 @@
+#
+# Reads SNMP and vendor-specific facts from a networking device
+#
+# Include it in an Ansible play
+#
+---
+- ios_facts:
+  when: ansible_os == 'ios'
+- nxos_facts:
+  when: ansible_os == 'nxos'
+- eos_facts:
+  when: ansible_os == 'eos'

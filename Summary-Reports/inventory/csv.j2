@@ -1,0 +1,4 @@
+Host,FQDN,IP address,Serial number,Software version
+{% for host,facts in hostvars|dictsort %}
+{{ host }},{{ facts.napalm_fqdn }},{{ ansible_host|default('') }},{{ facts.napalm_serial_number }},"{{ facts.napalm_os_version }}"
+{% endfor %}

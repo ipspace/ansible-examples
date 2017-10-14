@@ -1,0 +1,25 @@
+<html>
+<head>
+  <title>Device uptime report</title>
+</head>
+<body>
+  <h1>Device inventory report</h1>
+  <table>
+    <tr>
+      <th>Device name</th>
+      <th>FQDN</th>
+      <th>Management IP</th>
+      <th>Serial number</th>
+      <th>Software version</th>
+    </tr>
+{% for host,facts in hostvars|dictsort %}
+    <tr>
+      <td>{{ host }}</td>
+      <td>{{ facts.napalm_fqdn }}</td>
+      <td>{{ ansible_host|default('') }}</td>
+      <td>{{ facts.napalm_serial_number }}</td>
+      <td>{{ facts.napalm_os_version }}</td>
+    </tr>
+{% endfor %}
+  </table>
+</body>

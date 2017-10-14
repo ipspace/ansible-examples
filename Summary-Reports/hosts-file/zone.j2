@@ -1,0 +1,15 @@
+{% for host,facts in hostvars|dictsort
+     if facts.napalm_interfaces_ip is defined %}
+{%   for ifname,ifdata in facts.napalm_interfaces_ip.items()
+       if ifdata.ipv4 is defined %}
+{%     for ip,prefix in ifdata.ipv4.items() %}
+{{'%-30s %s'|format(ip|ipaddr('revdns'),facts.napalm_fqdn) }}
+{%     endfor %}
+{%   endfor %}
+{%   for ifname,ifdata in facts.napalm_interfaces_ip.items()
+       if ifdata.ipv6 is defined %}
+{%     for ip,prefix in ifdata.ipv6.items() %}
+{{'%-60s %s'|format(ip|ipaddr('revdns'),facts.napalm_fqdn) }}
+{%     endfor %}
+{%   endfor %}
+{% endfor %}

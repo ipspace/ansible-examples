@@ -1,0 +1,8 @@
+#
+# Saves all Ansible host variables into a YAML file
+#
+---
+- copy:
+    content: |
+      {{hostvars[inventory_hostname]|to_nice_yaml(indent=4)}}
+    dest: "{{results}}/{{inventory_hostname}}.yml"

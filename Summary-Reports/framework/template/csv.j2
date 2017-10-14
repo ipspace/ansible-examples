@@ -1,0 +1,4 @@
+host,uptime
+{% for host,facts in hostvars|dictsort %}
+{{ facts.inventory_hostname }},{{ facts.ansible_sysuptime }}
+{% endfor %}
