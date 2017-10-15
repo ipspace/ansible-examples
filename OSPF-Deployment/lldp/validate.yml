@@ -8,13 +8,24 @@
   - set_fact: device_intf={{napalm_interfaces.keys()}}
   - assert:
       that: fabric_intf|difference(device_intf)|length == 0
-      msg:  |
+      msg:  >
         Some interfaces used in fabric definition are not present
         on {{inventory_hostname}}
+  - assert:
+      that: napalm_interfaces[item.key].is_enabled
+      msg: |
+        Interface {{item.key}} is not enabled on {{inventory_hostname}}
+    with_dict: "{{node.links}}"
+  - assert:
+      that: napalm_interfaces[item.key].is_up
+      msg: >
+        Interface {{item.key}} is down on {{inventory_hostname}}
+    with_dict: "{{node.links}}"
+
   - set_fact: lldp_intf={{napalm_lldp_neighbors.keys()}}
   - assert:
       that: fabric_intf|difference(lldp_intf)|length == 0
-      msg:  |
+      msg:  >
         LLDP is not enabled on some fabric interfaces on {{inventory_hostname}}
   - assert:
       that: >

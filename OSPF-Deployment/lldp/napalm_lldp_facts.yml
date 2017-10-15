@@ -10,4 +10,4 @@
     filter:
     - lldp_neighbors
     - interfaces
-  tags: [ validate,print_action ]
+  tags: [ validate ]
