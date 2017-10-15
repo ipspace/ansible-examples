@@ -3,10 +3,12 @@
 This directory contains a set of playbooks that deploy OSPF in
 a network fabric defined in the *fabric.yml* data model:
 
-* **validate-fabric.yml** starts LLDP on all network devices and validates fabric connectivity using LLDP
+* **validate-fabric.yml** starts LLDP on all network devices and validates interface status and fabric connectivity using LLDP
 * **deploy.yml** configures OSPF and validates OSPF adjacencies
 
-You'll find detailed description of these playbooks in the [Ansible for Networking Engineers](http://www.ipspace.net/Ansible_for_Networking_Engineers) online course
+You'll find detailed description of these playbooks in the [Ansible for Networking Engineers](http://www.ipspace.net/Ansible_for_Networking_Engineers) online course.
+
+Note: to get the sources used in the online course do `git checkout OSPF-Deployment-v1.0`
 
 ## Installation guide
 
