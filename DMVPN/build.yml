@@ -28,5 +28,5 @@
   tasks:
   - assemble:
       src: "{{build_dir}}/{{inventory_hostname}}"
-      dest: "{{build_dir}}/{{inventory_hostname}}.conf"
+      dest: "{{config_dir}}/{{inventory_hostname}}.conf"
     check_mode: no

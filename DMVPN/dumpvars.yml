@@ -1,5 +1,0 @@
----
-- name: Dump variables
-  hosts: all
-  tasks:
-  - debug: var=vars
