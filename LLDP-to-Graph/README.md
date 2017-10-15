@@ -13,11 +13,16 @@ The playbooks were tested with these versions of Ansible and NAPALM:
 
 Notes:
 
-* The playbooks have been updated to work with Ansible 2.4 and will not work
-  with previous versions of Ansible
-* Run `napalm-ansible` to find path to your distribution of NAPALM
-  and update ansible.cfg accordingly
-* The graph-generation playbook doesn't work correctly with Cisco IOS because NAPALM reports different interface names in interface facts and LLDP neighbor facts
+* The playbooks have been updated to work with Ansible 2.4 and will not work with previous versions of Ansible
+* Run `napalm-ansible` to find path to your distribution of NAPALM and update ansible.cfg accordingly
+
+Updates from the [Ansible for Networking Engineers](https://www.ipspace.net/Ansible) case study (details [here](https://my.ipspace.net/bin/list?id=AnsibleOC#SAMPLES)):
+
+* The playbooks and Jinja2 templates have been updated to support platforms (like Cisco IOS) that send shortened interface names in LLDP updates
+* The playbooks work with a mix of hostnames and FQDNs (for example, E1 versus E1.virl.info)
+* Use `-e no_domain=1` option on `ansible-playbook` command line to use short hostnames in printouts and graphs
+
+Use `git checkout LLDP-to-Graph-v1.0` to get the source files matching the original case study.
 
 ## Usage
 
