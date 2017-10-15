@@ -14,6 +14,7 @@ router bgp {{as}}
 {%   if hub != inventory_hostname %}
 {%     set peerip = hostvars[hub].loopback.ip %}
  neighbor {{peerip}} remote-as {{as}}
+ neighbor {{peerip}} update-source Loopback0
  neighbor {{peerip}} next-hop-self all
 {%   endif %}
 {% endfor %}

@@ -9,6 +9,8 @@ interface Loopback0
 interface {{LAN.interface}}
  description LAN interface
  ip address {{LAN.ip}} {{LAN.mask|default('255.255.255.0')}}
+ duplex auto
+ speed auto
 {% include routing_includes+routing+'-LAN-interface.j2' ignore missing %}
 !
 {% endif %}
@@ -38,6 +40,8 @@ interface {{intf.interface}}
 {%   else %}
  ip address {{intf.ip}} {{intf.mask|default("255.255.255.0")}}
 {%   endif %}
+ duplex auto
+ speed auto
 !
 {%   if vrf is defined and intf.gw is defined %}
 ip route vrf {{vrf.name|default('Internet')}} 0.0.0.0 0.0.0.0 {{intf.interface}} {{intf.gw}}
