@@ -8,5 +8,6 @@
   ios_config:
     src: "{{configs}}/{{inventory_hostname}}.ospf.cfg"
   register: changes
+  tags: [ print_action ]
 
 - include_tasks: ../tools/log_changes.yml component=OSPF
