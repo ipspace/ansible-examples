@@ -3,8 +3,6 @@
 #
 ---
 - hosts: all
-  roles:
-  - napalm
   vars:
     output: "{{inventory_dir}}/snapshot"
     format: yaml
