@@ -10,12 +10,16 @@
 - name: Document changes
   copy:
     content: |
-      *************************************
+      ****************************************************
       {{component}} changes on {{inventory_hostname}}
-      *************************************
+      {% if ansible_check_mode %}
+      Running in check mode, configuration was not changed
+      {% endif %}
+      ****************************************************
       {% for line in changes.commands %}
       {{ line }}
       {% endfor %}
+      
     dest: "{{configs}}/node.changes/{{inventory_hostname}}.{{component}}.changes"
   delegate_to: localhost
   check_mode: no

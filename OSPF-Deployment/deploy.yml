@@ -11,7 +11,7 @@
     with_first_found:
       - "{{ inventory_dir }}/nodes.yml"
       - nodes.yml
-    tags: [ configs,verify ]
+    tags: [ configs,verify,validate ]
   - include_tasks: tools/clean.yml
     tags: [ clean ]
   - include_tasks: common/config_ospf.yml
@@ -21,4 +21,4 @@
     - set_fact: wait_flag=1
     tags: [ deploy ]
   - include_tasks: "{{ansible_os}}/verify_ospf.yml"
-    tags: [ verify ]
+    tags: [ verify,validate ]

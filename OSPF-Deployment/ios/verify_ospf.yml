@@ -8,12 +8,12 @@
 
 - name: Collect OSPF neighbors
   ios_command:
-    commands: 
+    commands:
     - "show ip ospf neighbor | include ^[1-9]"
   register: ospf_neighbors
 
 - name: Verify OSPF is running on all internal interfaces
   assert:
     that: "'{{ item.key }}' in ospf_neighbors.stdout[0]"
-    msg:  "OSPF session in interface {{item.key}} is missing"
+    msg:  "OSPF session on interface {{item.key}} is missing"
   with_dict: "{{ nodes[inventory_hostname].links }}"
