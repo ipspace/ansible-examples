@@ -1,4 +1,4 @@
-{% for host,facts in allhosts|dictsort %}
+{% for host,facts in hostvars|dictsort %}
 {%   if facts.error_no_community is defined %}
 {{facts.inventory_hostname}}: Missing SNMP community {{snmp_community}}
 {%   endif %}

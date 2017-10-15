@@ -4,9 +4,7 @@
 ---
 - file: path="{{results}}" state=directory
   run_once: true
-- template: 
-    src:  "{{report|default('missing.j2')}}" 
+- template:
+    src:  "{{report|default('errors.j2')}}"
     dest: "{{results}}/{{output|default('errors.log')}}"
-  vars: 
-    allhosts: "{{hostvars}}"
   run_once: true

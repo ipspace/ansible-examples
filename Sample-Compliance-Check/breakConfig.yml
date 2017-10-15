@@ -6,7 +6,6 @@
   hosts: all
   tasks:
   - ios_config:
-      provider: "{{ios_provider}}"
       lines:
       - "no snmp-server community cisco"
       - "no snmp-server community myPass"
@@ -16,7 +15,6 @@
   hosts: E2,E4,PE1,PE2
   tasks:
   - ios_config:
-      provider: "{{ios_provider}}"
       lines:
       - "snmp-server community myPass"
 
@@ -24,7 +22,6 @@
   hosts: all
   tasks:
   - ios_config:
-      provider: "{{ios_provider}}"
       lines:
       - "no snmp-server host 10.0.0.1 traps cisco"
     ignore_errors: true
@@ -33,7 +30,6 @@
   hosts: E1,E2,E4,PE2
   tasks:
   - ios_config:
-      provider: "{{ios_provider}}"
       lines:
       - "snmp-server host 10.0.0.1 traps cisco"
 
@@ -41,7 +37,6 @@
   hosts: all
   tasks:
   - ios_config:
-      provider: "{{ios_provider}}"
       lines:
       - "no logging host 10.0.0.1"
     ignore_errors: true
@@ -50,7 +45,6 @@
   hosts: E3,E4,PE1,PE2
   tasks:
   - ios_config:
-      provider: "{{ios_provider}}"
       lines:
       - "logging host 10.0.0.1"
 

@@ -5,7 +5,6 @@
   - results: results
   tasks:
   - ios_command: 
-      provider: "{{ios_provider}}"
       commands: "show snmp community"
     register: result
   - set_fact: error_no_community=1
@@ -13,6 +12,4 @@
   - file: path={{results}} state=directory
     run_once: true
   - template: src=reports/missing-community.j2 dest={{results}}/errors.log
-    vars: 
-      allhosts: "{{hostvars}}"
     run_once: true

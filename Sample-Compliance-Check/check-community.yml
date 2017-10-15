@@ -3,7 +3,6 @@
   hosts: all
   tasks:
   - ios_command: 
-      provider: "{{ios_provider}}"
       commands: "show snmp community"
     register: result
   - set_fact: error_no_community=1
