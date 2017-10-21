@@ -4,8 +4,8 @@
 # Include it in an Ansible play
 #
 ---
-- snmp_facts:       
+- snmp_facts:
     host: "{{ansible_host}}"
     version: v2
     community: cisco
-- ios_facts: provider={{ios_provider}}
+- ios_facts:
