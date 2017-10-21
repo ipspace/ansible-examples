@@ -7,9 +7,9 @@
 #   dest    - destination file name
 #
 ---
-- template: 
-    src:  "{{fmt|default('uptime-text.j2')}}" 
+- template:
+    src:  "{{fmt|default('uptime-text.j2')}}"
     dest: "{{results}}/{{output|default('uptime.log')}}"
-  vars: 
+  vars:
     allhosts: "{{hostvars}}"
   run_once: true
