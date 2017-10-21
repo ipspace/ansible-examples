@@ -8,3 +8,4 @@ PE2 ansible_host=172.16.1.122
 [all:vars]
 ansible_user=cisco
 ansible_ssh_pass=cisco
+ansible_os=ios
