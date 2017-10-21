@@ -2,6 +2,14 @@
 # Break configuration on various devices in the network
 #
 ---
+- name: Collect configurations
+  hosts: all
+  tasks:
+  - file: path=configs state=directory
+  - ios_command: commands="show running"
+    register: running
+  - copy: content="{{ running.stdout[0] }}" dest=configs/{{inventory_hostname}}.cfg
+
 - name: Disable SNMP community
   hosts: all
   tasks:
@@ -9,6 +17,7 @@
       lines:
       - "no snmp-server community cisco"
       - "no snmp-server community myPass"
+      running_config: configs/{{inventory_hostname}}.cfg
     ignore_errors: true
 
 - name: Enable SNMP community
@@ -17,13 +26,15 @@
   - ios_config:
       lines:
       - "snmp-server community myPass"
+      running_config: configs/{{inventory_hostname}}.cfg
 
 - name: Disable SNMP traps
   hosts: all
   tasks:
   - ios_config:
       lines:
-      - "no snmp-server host 10.0.0.1 traps cisco"
+      - "no snmp-server host 1.0.0.1 traps cisco"
+      running_config: configs/{{inventory_hostname}}.cfg
     ignore_errors: true
 
 - name: Enable SNMP traps
@@ -32,19 +43,29 @@
   - ios_config:
       lines:
       - "snmp-server host 10.0.0.1 traps cisco"
+      running_config: configs/{{inventory_hostname}}.cfg
 
 - name: Disable syslog
   hosts: all
   tasks:
-  - ios_config:
-      lines:
-      - "no logging host 10.0.0.1"
-    ignore_errors: true
+  - block:
+    - ios_config:
+        lines:
+        - "no logging host 10.0.0.1"
+        running_config: configs/{{inventory_hostname}}.cfg
+    rescue:
+    - ios_command: commands="end"
 
 - name: Enable syslog
-  hosts: E3,E4,PE1,PE2
+  hosts: E1,E4,PE1,PE2
   tasks:
   - ios_config:
       lines:
       - "logging host 10.0.0.1"
+      running_config: configs/{{inventory_hostname}}.cfg
 
+- name: Saving configuration changes
+  hosts: all
+  tasks:
+  - ios_config:
+      save_when: modified
