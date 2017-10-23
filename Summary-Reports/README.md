@@ -1,8 +1,9 @@
-# Create a simple device uptime report
+# Create simple summary reports
 
-This directory contains the source code for the _Creating Reports_ video in the [Creating Summary and Compliance Reports](https://my.ipspace.net/bin/list?id=NetAutSol&module=2#M2S2) part of [Building Network Automation Solutions](http://www.ipspace.net/Building_Network_Automation_Solutions) online course.
+This directory contains several simple summary reports discussed in the _Easy Wins_ part of [Building Network Automation Solutions](http://www.ipspace.net/Building_Network_Automation_Solutions) online course:
 
-The sources have been modified to work with Ansible 2.4:
+* **inventory** - Simple inventory report listing device name, software version and serial number in text, CSV and HTML format;
+* **framework** - An extensible report framework generating device uptime reports in various formats
+* **hosts-file** - Creates `/etc/hosts` file and `in-addr.arpa` DNS zone file from IP addresses collected from network devices.
 
-* Removed `provider` parameter from `ios_facts` module
-* Removed `group_vars` directory (no longer needed because we don't use the *provider* parameter)
+The playbooks have been tested with Ansible 2.4 and napalm-ansible 0.7.0.

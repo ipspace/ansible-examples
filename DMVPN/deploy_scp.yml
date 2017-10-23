@@ -14,13 +14,16 @@
         /usr/bin/scp {{config_dir}}/{{inventory_hostname}}.conf {{ansible_user}}@{{ansible_host|default(inventory_hostname)}}:flash:candidate.cfg
     tags: [ copy ]
   - block:
+    - ios_command: commands="reload in 5" authorize=yes timeout=180
     - ios_command:
         commands:
           - replace flash:candidate.cfg force
         authorize: yes
-        timeout: 120
+        timeout: 180
       register: replace
       tags: [ print_action ]
+    - ios_command: commands="reload cancel" authorize=yes
+
     - file: path={{build_dir}}/results state=directory
       check_mode: no
     - copy:
