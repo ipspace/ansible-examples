@@ -17,6 +17,6 @@
     vars: 
       snap_path: ./snap_data
 
-  - name: Generate graph description file
+  - name: Generate graph
     template: src={{template|default('graph.j2')}} dest=./{{output|default('network.dot')}}
     run_once: true
