@@ -1,4 +1,5 @@
 *.retry
 ansible.log
 napalm-ansible
+snap_data
 network.*

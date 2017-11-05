@@ -1,0 +1,41 @@
+# Snapshot: create a snapshot of inventory file and host facts in specified folder
+#
+# Variables:
+# - snapshot: directory (relative to inventory directory)
+#
+---
+- set_fact: snap_path={{inventory_dir}}/{{snapshot}}
+  when: snap_path is not defined
+
+- name: Create snapshot directory
+  file:
+    path: "{{snap_path}}"
+    state: directory
+  run_once: true
+  check_mode: false
+
+- name: Create inventory file in snapshot directory
+  copy:
+    dest: "{{snap_path}}/hosts"
+    content: |
+      {% for h in play_hosts %}
+      {{inventory_hostname}} ansible_host={{ansible_host}} ansible_user={{ansible_user}} ansible_ssh_pass={{ansible_ssh_pass}}
+      {% endfor %}
+  run_once: true
+  delegate_to: localhost
+  check_mode: false
+
+- name: Create host_vars directory in snapshot directory
+  file:
+    path: "{{snap_path}}/host_vars"
+    state: directory
+  run_once: true
+  check_mode: false
+
+- name: Create host variable files
+  copy:
+    dest: "{{snap_path}}/host_vars/{{inventory_hostname}}.yml"
+    content: |
+      {{hostvars[inventory_hostname]|to_nice_yaml(indent=2)}}
+  check_mode: false
+

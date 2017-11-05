@@ -15,7 +15,7 @@
   - include_tasks: "{{item}}"
     with_fileglob: [ "getters/napalm/*.yml" ]
 
-  - include_tasks: "../../tools/include/snapshot.yml"
+  - include_tasks: "../tools/include/snapshot.yml"
     when: snapshot is defined
 
   - name: Save
