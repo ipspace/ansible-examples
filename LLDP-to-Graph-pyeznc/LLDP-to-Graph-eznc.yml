@@ -1,0 +1,26 @@
+---
+
+- name: Fetch LLDP information from network elements and produce physical topology
+  hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+
+    - name: Get LLDP neighbors using table/views
+      junos_get_table:
+        table=LLDPNeighborTable
+        file=lldp.yml 
+        host={{ inventory_hostname }} 
+        port=22
+      register: lldp_results
+
+    - name: print
+      debug: msg="{{ lldp_results }}"
+
+    - name: Generate graph description file
+      template: src={{template|default('graph-eznc.j2')}} dest=./{{output|default('network.dot')}}
+      run_once: true
+
+  roles:
+    - ansible-junos-stdlib
