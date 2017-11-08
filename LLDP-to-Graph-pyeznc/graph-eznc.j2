@@ -1,0 +1,16 @@
+graph network {
+{% for local in play_hosts %}
+  "{{local}}" [shape=record,
+    label="<node>{{local}}|{ {% 
+    for key in hostvars[local].lldp_results.resource|sort(attribute='local_int')
+    %}<{{- key['local_int'] -}}>{{- key['local_int'] -}}{% if not(loop.last) %}|{% endif %}{%
+    endfor %} }"];
+{% endfor %}
+{% for local in play_hosts %}
+{%  for x in hostvars[local].lldp_results.resource|sort(attribute='local_int') if x|length > 0 %}
+{%   if local < x.remote_sysname or x.remote_sysname not in play_hosts %}
+  "{{local}}":"{{ x.local_int }}" -- "{{x.remote_sysname}}":"{{x.remote_port_id}}";
+{%   endif  %}
+{%  endfor %}
+{% endfor %}
+}
