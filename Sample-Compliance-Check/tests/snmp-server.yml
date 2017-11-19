@@ -2,8 +2,8 @@
 # Check whether SNMP community is configured on devices
 #
 ---
-- ios_command:
+- name: "Check: {{snmp_server}} is not configured as SNMP trap host"
+  ios_command:
     commands: "show snmp host"
   register: result
-- set_fact: error_no_snmp_server="{{snmp_server}} is not configured as SNMP trap host"
-  when: "not('host: '~snmp_server in result.stdout[0])"
+  failed_when: "not('host: '~snmp_server in result.stdout[0])"

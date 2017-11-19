@@ -1,0 +1,15 @@
+{% for host in groups ['all']|sort %}
+{%   for t_result in results 
+       if t_result.hosts[host] is defined and
+          t_result.hosts[host].failed is defined and
+          t_result.hosts[host].failed %}
+{%     if loop.first %}
+{{ host }}
+========================
+{%     endif %}
+-{{ t_result.task.name.replace("Check:","") }}
+{%     if loop.last %}
+
+{%     endif %}
+{%   endfor %}
+{% endfor %}

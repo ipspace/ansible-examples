@@ -1,9 +1,10 @@
 #
-# Check whether SNMP community is configured on devices
+# Check whether SYSLOG server is configured on devices
 #
 ---
-- ios_command:
+- name: "Check: {{syslog_server}} is not configured as syslog server"
+  ios_command:
     commands: "show run | include logging host"
   register: result
-- set_fact: error_no_syslog_server="{{syslog_server}} is not configured as syslog server"
-  when: "not(syslog_server in result.stdout[0])"
+  failed_when: |
+    not(syslog_server in result.stdout[0])

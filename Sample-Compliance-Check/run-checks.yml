@@ -4,5 +4,6 @@
   tasks:
   - set_fact: results={{ results|default(playbook_dir ~ '/results') }}
   - include_tasks: "{{item}}"
-    with_fileglob: [ "tests/*.yml" ] 
-  - include_tasks: "reports/{{fmt|default('template')}}.yml"
+    with_fileglob: [ "tests/*.yml" ]
+    ignore_errors: true
+#  - include_tasks: "reports/{{fmt|default('template')}}.yml"

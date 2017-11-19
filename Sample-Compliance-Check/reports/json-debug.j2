@@ -1,0 +1,6 @@
+{% for host in groups ['all'] %}
+{%   for t_result in results %}
+{%     set h_result = t_result.hosts[host]|default({}) %}
+{{ host }} - {{ h_result.failed|default('*') }} - {{ t_result.task.name }}
+{%   endfor %}
+{% endfor %}
