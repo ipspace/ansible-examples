@@ -1,7 +1,0 @@
-{% for host,facts in hostvars|dictsort %}
-{%   for k,v in facts|dictsort %}
-{%     if 'error' in k %}
-{{facts.inventory_hostname}}: {{v}}
-{%     endif %}
-{%   endfor %}
-{% endfor %}
