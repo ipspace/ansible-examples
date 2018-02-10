@@ -1,0 +1,6 @@
+---
+- name: Send message to all TTYs
+  hosts: all
+  tasks:
+  - ios_command:
+      commands: "send *\nTesting...\n\x1A\n\n"
