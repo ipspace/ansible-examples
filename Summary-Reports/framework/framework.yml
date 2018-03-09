@@ -13,7 +13,7 @@
 - name:  Collect facts from devices and write a report
   hosts: all
   tasks:
-  - set_fact: results={{inventory_dir}}/results
+  - set_fact: results={{ lookup('env','OUTPUT') | default('results') }}
   - include_tasks: "read/{{src|default('snmp')}}.yml"
   - file: path={{results}} state=directory
     run_once: true

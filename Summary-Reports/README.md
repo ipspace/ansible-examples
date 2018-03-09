@@ -6,4 +6,6 @@ This directory contains several simple summary reports discussed in the _Easy Wi
 * **framework** - An extensible report framework generating device uptime reports in various formats
 * **hosts-file** - Creates `/etc/hosts` file and `in-addr.arpa` DNS zone file from IP addresses collected from network devices.
 
+Reports are stored into directory specified in environment variable $OUTPUT or in the **results** subdirectory of the current directory.
+
 The playbooks have been tested with Ansible 2.4 and napalm-ansible 0.7.0.

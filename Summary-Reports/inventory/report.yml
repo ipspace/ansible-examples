@@ -3,7 +3,7 @@
 ---
 - hosts: all
   tasks:
-  - set_fact: results={{inventory_dir}}/results
+  - set_fact: results={{ lookup('env','OUTPUT') | default('results') }}
   - file: path={{results}} state=directory
     run_once: true
 
