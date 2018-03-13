@@ -1,8 +1,8 @@
 {% for host in groups ['all']|sort %}
 {%   for t_result in results 
-       if t_result.hosts[host] is defined and
-          t_result.hosts[host].failed is defined and
-          t_result.hosts[host].failed %}
+       if t_result.hosts[host] is defined and (
+          t_result.hosts[host].failed_when_result|default(false)
+          or t_result.hosts[host].failed|default(false)) %}
 {%     if loop.first %}
 {{ host }}
 ========================
