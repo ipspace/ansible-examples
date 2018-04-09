@@ -4,5 +4,5 @@
 # and store it into Git repo in branch Actual
 #
 ---
-- include: gc_scp.yml
-- include: git_commit.yml
+- import_playbook: gc_napalm.yml
+- import_playbook: git_commit.yml

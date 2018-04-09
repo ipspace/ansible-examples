@@ -10,21 +10,26 @@
     register: timestamp
 
   - name: Make sure we're in the right branch
-    shell: git checkout {{branch|default('master')}}
+    shell: git checkout {{git_branch|default('master')}}
     args:
-      chdir: "{{repository}}"
+      chdir: "{{git_repository}}"
+
+  - name: Pull remote changes
+    shell: git pull
+    args:
+      chdir: "{{git_repository}}"
 
   - name: Check the directory status
     shell: git status
     args:
-      chdir: "{{repository}}"
+      chdir: "{{git_repository}}"
     register: changes
 
   - name: "Add files to Git staging area, commit and push"
     shell: |
       git add .
       git commit -m "Configuration changed on {{timestamp.stdout}}"
-      git push --set-upstream origin {{branch|default('master')}}
+      git push --set-upstream origin {{git_branch|default('master')}}
     args:
-      chdir: "{{repository}}"
+      chdir: "{{git_repository}}"
     when: not("working directory clean" in changes.stdout)

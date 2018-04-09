@@ -1,0 +1,16 @@
+#
+# Test clean-config plugin
+#
+---
+- name: Test plugin
+  hosts: localhost
+  vars:
+    config: "{{ lookup('file','show_run.original') }}"
+    patterns:
+    - "\\A[^!]*"
+    - "ntp clock-period..."
+    - "! Last configuration change..."
+  tasks:
+  - copy:
+      content: "{{ config|clean_config(patterns) }}"
+      dest: "./show_run.expected"

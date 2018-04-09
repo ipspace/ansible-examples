@@ -7,9 +7,9 @@
   connection: local
   tasks:
   - name: Make sure we're in the right branch
-    shell: git checkout {{branch|default('master')}}
+    shell: git checkout {{git_branch|default('master')}}
     args:
-      chdir: "{{repository}}"
+      chdir: "{{git_repository}}"
     run_once: true
     changed_when: no
 
@@ -21,10 +21,10 @@
       dev_os: ios
       filter: [ config ]
 
-  - set_fact: clean_config={{ config.running|regex_replace("\A[^!]*","") }}
+  - set_fact: clean_config={{ napalm_config.running|clean_config(clean_patterns) }}
 
   - name: Save configuration to local file
     copy:
       content: "{{clean_config}}"
-      dest: "{{repository}}/{{inventory_hostname}}.cfg"
+      dest: "{{git_repository}}/{{inventory_hostname}}.cfg"
     delegate_to: localhost

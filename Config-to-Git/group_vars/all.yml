@@ -1,0 +1,8 @@
+---
+git_repository: ../Private/ConfigRepo
+git_branch:     master
+clean_patterns:
+- "\\A[^!]*"
+- "ntp clock-period..."
+- "! Last configuration change..."
+

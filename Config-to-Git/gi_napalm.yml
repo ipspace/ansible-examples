@@ -1,0 +1,35 @@
+#
+# Get configuration from managed hosts using scp from system:running-config
+#
+---
+- name: Prepare local copy of device configurations
+  hosts: localhost
+  tasks:
+  - name: Check out the target Git branch
+    shell: git checkout {{git_branch|default('master')}}
+    args:
+      chdir: "{{git_repository}}"
+    changed_when: no
+    check_mode: no
+  - name: Pull changes from Git repository
+    shell: git pull
+    args:
+      chdir: "{{git_repository}}"
+    changed_when: no
+    check_mode: no
+
+- name:  Install device configuration from Git
+  hosts: all
+  tasks:
+  - name: Push configurations with NAPALM
+    napalm_install_config:
+      hostname: "{{ansible_host|default(inventory_hostname)}}"
+      username: "{{ansible_user}}"
+      password: "{{ansible_ssh_pass}}"
+      dev_os: ios
+      config_file: "{{git_repository}}/{{inventory_hostname}}.cfg"
+      replace_config: true
+      commit_changes: "{{ not ansible_check_mode }}"
+      get_diffs: true
+    tags: [ print_action ]
+

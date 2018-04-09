@@ -1,0 +1,18 @@
+
+Building configuration...
+
+  
+Current configuration : 2331 bytes
+!
+! Last configuration change at 05:37:16 UTC Mon Apr 9 2018 by cisco
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+ntp clock-period 1234567
+!
+end
