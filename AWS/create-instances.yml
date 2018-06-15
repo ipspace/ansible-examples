@@ -2,18 +2,11 @@
     region: "{{ region }}"
   register: vpc_subnets
 
-#- debug: msg={{ vpc_subnets|json_query('subnets[?tags.name == `'+'db'+'`].id') }}
 - ec2_instance_facts:
     region: "{{ region }}"
     filters:
       "instance-state-name": "running"
   register: ec2_instances
-
-#- debug:
-#    msg: "{{ ec2_instances|json_query('instances[?tags.Name == `'+item.name+'`]')|length }}"
-#  with_items: "{{ vm }}"
-#
-#- fail: msg=Enough
 
 - ec2:
     private_ip: "{{ item.ip | default('') }}"
@@ -25,10 +18,8 @@
     vpc_subnet_id: "{{ vpc_subnets|json_query('subnets[?tags.name == `'+item.subnet+'`].id')|first if item.subnet is defined else '' }}"
     instance_tags:
       Name: "{{ item.name }}"
-    count_tag:
-      Name: "{{ item.name }}"
+    id: "{{ item.name }}"
     count: 1
     key_name: "{{key_name}}"
     wait: yes
-  when: ec2_instances|json_query('instances[?tags.Name == `'+item.name+'`]')|length < 1
   with_items: "{{ vm }}"
