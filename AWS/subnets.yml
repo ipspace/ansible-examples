@@ -1,0 +1,19 @@
+- ec2_vpc_subnet:
+    region: "{{ region }}"
+    vpc_id: "{{ item.vpc | default(default_vpc_id) }}"
+    az: "{{ item.zone | default(zone) }}"
+    cidr: "{{ item.cidr }}"
+    resource_tags:
+      name: "{{ item.name }}"
+#    assign_instances_ipv6: "{{ item.ipv6 | default('no') }}"
+  with_items: "{{ subnets }}"
+  when: subnets is defined
+
+- ec2_vpc_route_table:
+    region: "{{ region }}"
+    vpc_id: "{{ default_vpc_id }}"
+    subnets: "{{ subnets | json_query ('[?route == `local`].cidr') }}"
+    tags:
+      name: local
+  when: (subnets is defined) and (subnets | json_query ('[?route == `local`].cidr') | first)
+

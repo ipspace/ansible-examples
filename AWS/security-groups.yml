@@ -1,0 +1,12 @@
+- ec2_group:
+    name: ssh
+    description: SSH access to EC2 instances
+    rules:
+    - proto: tcp
+      ports: [ 22 ]
+      cidr_ip: 0.0.0.0/0
+    - proto: tcp
+      ports: [ 80 ]
+      cidr_ip: 0.0.0.0/0
+    rules_egress:
+    region: "{{region}}"

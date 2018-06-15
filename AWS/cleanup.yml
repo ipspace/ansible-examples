@@ -1,0 +1,20 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+  - params.yml
+  - instances.yml
+  tasks:
+  - ec2_instance_facts:
+      region: "{{region}}"
+    register: ec2_facts
+
+  - ec2:
+      instance_id: "{{ item.instance_id }}"
+      state: absent
+      region: "{{ region }}"
+    with_items: "{{ ec2_facts.instances }}"
+#      private_ip: "{{ item.ip }}"
+#      region: "{{region}}"
+#      zone: "{{zone}}"
+#      wait: yes

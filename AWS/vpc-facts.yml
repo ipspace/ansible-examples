@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  name: Get VPC facts
+  vars_files:
+  - params.yml
+  tasks:
+  - ec2_vpc_net_facts:
+      region: "{{region}}"
+    register: ec2_vpc_facts
+  - set_fact:
+      default_vpc_id: "{{ ec2_vpc_facts|json_query('vpcs[?is_default].id')|first }}"

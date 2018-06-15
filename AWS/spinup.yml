@@ -1,0 +1,15 @@
+---
+- import_playbook: vpc-facts.yml
+  tags: [ always ]
+
+- hosts: localhost
+  vars_files:
+  - params.yml
+  - instances.yml
+  tasks:
+  - include_tasks: subnets.yml
+    tags: [ routing ]
+  - include_tasks: security-groups.yml
+    tags: [ security ]
+  - include_tasks: create-instances.yml
+    tags: [ vm ]

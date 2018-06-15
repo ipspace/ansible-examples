@@ -1,0 +1,13 @@
+---
+ami_id: ami-14c5486b
+instance_type: t2.micro
+zone: us-east-1a
+region: us-east-1
+key_name: aws_testing
+
+subnets:
+- name: db
+  cidr: 172.31.131.0/24
+  zone: us-east-1a
+  ipv6: yes
+  route: local

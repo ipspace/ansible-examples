@@ -1,0 +1,8 @@
+{{ "%-10s %-30s %15s"|format('tag','Private DNS','Private IP') }}
+=================================================================
+{% for r in Reservations %}
+{%   for i in r.Instances %}
+{{ "%-10s"|format(i.Tags[0].Value|default('')) }}{{ " %-30s %15s"|format(i.PrivateDnsName | default (''),i.PrivateIpAddress)
+}}{{ " %15s"|format(i.PublicIpAddress|default('')) }}
+{%   endfor %}
+{% endfor %}
