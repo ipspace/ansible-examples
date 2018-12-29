@@ -33,8 +33,5 @@
 
   - name: Configure DHCP pools
     ios_config:
-      username:  "{{ansible_user}}"
-      password:  "{{ansible_ssh_pass}}"
-      host:      "{{ip|default(inventory_hostname)}}"
       src:       pools.j2
     tags: [ install ]

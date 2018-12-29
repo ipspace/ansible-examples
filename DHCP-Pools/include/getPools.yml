@@ -4,9 +4,9 @@
 ---
 - name: "Get interface and pool list"
   ios_command:
-    username:  "{{ansible_user}}"
-    password:  "{{ansible_ssh_pass}}"
-    host:      "{{ip|default(inventory_hostname)}}"
+#    username:  "{{ansible_user}}"
+#    password:  "{{ansible_ssh_pass}}"
+#    host:      "{{ip|default(inventory_hostname)}}"
     commands:
       - "show ip interface brief | inc \\.[0-9]+[ ]+YES"
       - "show ip dhcp pool | inc ^Pool"
