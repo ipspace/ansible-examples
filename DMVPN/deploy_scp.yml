@@ -2,6 +2,12 @@
 - name: Copy and deploy configurations
   hosts: all
   tasks:
+  - name: Enable SCP server and configuration archive
+    ios_config:
+      src: deploy_setup.cfg
+    become: yes
+    tags: [ copy,deploy ]
+
   - block:
     - stat: path={{config_dir}}/{{inventory_hostname}}.conf
       register: stat
@@ -9,20 +15,26 @@
         that: stat.stat.exists
         msg:  "Cannot find router configuration file for {{inventory_hostname}}"
     - name: Copy candidate configuration into routers
-      local_action: >
-        command /usr/bin/sshpass -p {{ansible_ssh_pass}}
-        /usr/bin/scp {{config_dir}}/{{inventory_hostname}}.conf {{ansible_user}}@{{ansible_host|default(inventory_hostname)}}:flash:candidate.cfg
+      net_put:
+        src: "{{config_dir}}/{{inventory_hostname}}.conf"
+        dest: "flash:candidate.cfg"
     tags: [ copy ]
+
   - block:
-    - ios_command: commands="reload in 5" authorize=yes timeout=180
-    - ios_command:
-        commands:
-          - replace flash:candidate.cfg force
-        authorize: yes
-        timeout: 180
+    - cli_command:
+        command: disable
+    - cli_command:
+        command: enable
+        prompt: Password
+        answer: "{{ ansible_ssh_pass }}"
+    - cli_command:
+        command: configure replace flash:candidate.cfg force revert trigger timer 120
       register: replace
       tags: [ print_action ]
-    - ios_command: commands="reload cancel" authorize=yes
+      vars:
+        ansible_command_timeout: 180
+    - cli_command:
+        command: configure confirm
 
     - file: path={{build_dir}}/results state=directory
       check_mode: no
@@ -33,9 +45,10 @@
           Results on {{inventory_hostname}}
           *********************************
 
-          {{replace.stdout[0]}}
+          {{replace.stdout}}
         dest: "{{build_dir}}/results/{{inventory_hostname}}.txt"
       delegate_to: localhost
     - assemble: src={{build_dir}}/results dest={{build_dir}}/results.txt
       run_once: true
+      delegate_to: localhost
     tags: [ deploy ]
