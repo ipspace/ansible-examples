@@ -1,0 +1,16 @@
+hostname {{ hostname }}
+{% for ifname,ifdata in interfaces|dictsort %}
+!
+interface {{ ifname }}
+ ip address {{ ifdata.ip|ipaddr('address') }} {{ ifdata.ip|ipaddr('netmask') }}
+{% endfor %}
+!
+router bgp {{ bgp_as }}
+{% for n in neighbors %}
+{% set n_ip = hostvars[n.name].interfaces[n.interface].ip|ipaddr('address') %}
+ neighbor {{ n_ip }} remote-as {{ hostvars[n.name].bgp_as }}
+ neighbor {{ n_ip }} description {{ n.name }}
+{% endfor %}
+{% for ifname,ifdata in interfaces|dictsort if 'Vlan' in ifname %}
+ network {{ ifdata.ip|ipaddr('network') }} {{ ifdata.ip|ipaddr('netmask') }}
+{% endfor %}

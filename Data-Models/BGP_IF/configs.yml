@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+  - template:
+      src: config.j2
+      dest: "{{inventory_hostname}}.cfg"

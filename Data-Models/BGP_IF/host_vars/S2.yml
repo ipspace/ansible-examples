@@ -1,0 +1,12 @@
+---
+hostname: S2
+bgp_as: 65002
+interfaces:
+  GigabitEthernet0/1:
+    ip: 172.16.0.2/30
+  Vlan101:
+    ip: 192.168.2.1/24
+
+neighbors:
+- name: S1
+  interface: GigabitEthernet0/1
