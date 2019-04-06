@@ -1,0 +1,50 @@
+- name: Backup ASA configs
+  connection: network_cli
+  gather_facts: false
+  hosts: ASA
+  tasks:
+     - name: set fact date-time
+       set_fact:
+         date: "{{ lookup('pipe','date +%Y%m%d-%H%M%S') }}"
+
+     - name: show run config url
+       become_method: enable
+       become: yes
+       asa_command:
+         commands:
+           - "terminal pager 0"
+           - "show run context | i config-url"
+         context: system
+       register: confurl
+
+     - name: configurl =  regex confurl
+       vars:
+         regexp: "(?<=\\/)\\S+\\.cfg"
+#regex above. (?+) positive lookahead...match after / S=any character + greedy match .cfg
+       set_fact:
+         configurl: "{{ confurl.stdout[1] | regex_findall(regexp) }}"
+
+     - name:  register all configs
+       loop: "{{ configurl }}"
+       asa_command:
+         commands:
+           - "more {{ item }}"
+         context: system
+       register: configs
+
+     - name: create directory with date
+       local_action: file path={{ homedir }}{{ inventory_hostname }}/{{ date }} state=directory
+
+     - name: store files
+       loop: "{{ configs.results }}"
+       local_action: "copy content={{ item.stdout[0] }} dest={{ homedir }}{{ inventory_hostname }}/{{ date }}/{{ item.item }}"
+
+     - name: register system running config
+       asa_command:
+         commands:
+           - "more system:running-config"
+         context: system
+       register: runconf
+
+     - name: store system running conf files
+       local_action: "copy content={{ runconf.stdout[0] }} dest={{ homedir }}{{ inventory_hostname }}/{{ date }}/running-conf"
