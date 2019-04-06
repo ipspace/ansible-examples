@@ -1,0 +1,14 @@
+hostname {{ hostname }}
+{% for intf in interfaces %}
+!
+interface {{ intf.name }}
+ ip address {{ intf.ip|ipaddr('address') }} {{ intf.ip|ipaddr('netmask') }}
+{% endfor %}
+!
+router bgp {{ bgp_as }}
+{% for n in neighbors %}
+ neighbor {{ n.ip }} remote-as {{ n.bgp_as }}
+{% endfor %}
+{% for intf in interfaces if 'Vlan' in intf.name %}
+ network {{ intf.ip|ipaddr('network') }} {{ intf.ip|ipaddr('netmask') }}
+{% endfor %}
