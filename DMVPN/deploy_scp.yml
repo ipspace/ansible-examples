@@ -21,24 +21,28 @@
     tags: [ copy ]
 
   - block:
-    - cli_command:
-        command: disable
-    - cli_command:
+#    - cli_command:
+#        command: disable
+    - name: Enter Enable mode
+      cli_command:
         command: enable
         prompt: Password
         answer: "{{ ansible_ssh_pass }}"
-    - cli_command:
+    - name: Replace configuration
+      cli_command:
         command: configure replace flash:candidate.cfg force revert trigger timer 120
       register: replace
       tags: [ print_action ]
       vars:
         ansible_command_timeout: 180
-    - cli_command:
+    - name: Confirm configuration replace
+      cli_command:
         command: configure confirm
 
     - file: path={{build_dir}}/results state=directory
       check_mode: no
-    - copy:
+    - name: Save configuration replace results
+      copy:
         content: |
 
           *********************************
@@ -48,7 +52,8 @@
           {{replace.stdout}}
         dest: "{{build_dir}}/results/{{inventory_hostname}}.txt"
       delegate_to: localhost
-    - assemble: src={{build_dir}}/results dest={{build_dir}}/results.txt
+    - name: Assemble final report
+      assemble: src={{build_dir}}/results dest={{build_dir}}/results.txt
       run_once: true
       delegate_to: localhost
     tags: [ deploy ]
