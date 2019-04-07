@@ -1,0 +1,6 @@
+---
+hostname: S2
+bgp_as: 65002
+interfaces:
+  Vlan101:
+    ip: 192.168.2.1/24

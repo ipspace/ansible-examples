@@ -1,0 +1,40 @@
+hostname {{ hostname }}
+{# stub interfaces #}
+{% for ifname,ifdata in interfaces|dictsort %}
+!
+interface {{ ifname }}
+ ip address {{ ifdata.ip|ipaddr('address') }} {{ ifdata.ip|ipaddr('netmask') }}
+{% endfor %}
+{# nodes on the left side of a link #}
+{% for link in links if link.left_node == inventory_hostname %}
+!
+interface {{ link.left_interface }}
+ ip address {{ link.left_ip|ipaddr('address') }} {{ link.left_ip|ipaddr('netmask') }}
+{% endfor %}
+{# nodes on the right side of a link #}
+{% for link in links if link.right_node == inventory_hostname %}
+!
+interface {{ link.right_interface }}
+ ip address {{ link.right_ip|ipaddr('address') }} {{ link.right_ip|ipaddr('netmask') }}
+{% endfor %}
+!
+router bgp {{ bgp_as }}
+{# nodes on the left side of a link #}
+{% for link in links if link.left_node == inventory_hostname %}
+{% set neighbor = link.right_node %}
+{% set n_ip = link.right_ip|ipaddr('address') %}
+ neighbor {{ n_ip }} remote-as {{ hostvars[neighbor].bgp_as }}
+ neighbor {{ n_ip }} description {{ neighbor }}
+{% endfor %}
+{# nodes on the right side of a link #}
+{% for link in links if link.right_node == inventory_hostname %}
+{% set neighbor = link.left_node %}
+{% set n_ip = link.left_ip|ipaddr('address') %}
+ neighbor {{ n_ip }} remote-as {{ hostvars[neighbor].bgp_as }}
+ neighbor {{ n_ip }} description {{ neighbor }}
+{% endfor %}
+!
+{# stub interfaces #}
+{% for ifname,ifdata in interfaces|dictsort %}
+ network {{ ifdata.ip|ipaddr('network') }} {{ ifdata.ip|ipaddr('netmask') }}
+{% endfor %}

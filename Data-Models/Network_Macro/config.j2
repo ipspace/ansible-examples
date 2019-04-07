@@ -1,0 +1,56 @@
+hostname {{ hostname }}
+{#
+  Interface macro
+#}
+{% macro interface(name,addr) -%}
+!
+interface {{ name }}
+ ip address {{ addr|ipaddr('address') }} {{ addr|ipaddr('netmask') }}
+{%- endmacro %}
+{#
+  Stub interfaces
+#}
+{% for ifname,ifdata in interfaces|dictsort %}
+{{ interface(ifname,ifdata.ip) }}
+{% endfor %}
+{#
+  Nodes on the left side of links
+#}
+{% for link in links if link.left_node == inventory_hostname %}
+{{ interface(link.left_interface,link.left_ip) }}
+{% endfor %}
+{#
+  Nodes on the right side of links
+#}
+{% for link in links if link.right_node == inventory_hostname %}
+{{ interface(link.right_interface,link.right_ip) }}
+{% endfor %}
+!
+{#
+  BGP neighbor macro
+#}
+{% macro neighbor(name,ip) -%}
+{% set n_ip = ip|ipaddr('address') %}
+ neighbor {{ n_ip }} remote-as {{ hostvars[name].bgp_as }}
+ neighbor {{ n_ip }} description {{ name }}
+{%- endmacro %}
+{#
+  BGP routing protocol configuration
+#}
+router bgp {{ bgp_as }}
+{#
+  Nodes on the left side of links
+#}
+{% for link in links if link.left_node == inventory_hostname %}
+{{ neighbor(link.right_node,link.right_ip) }}
+{% endfor %}
+{#
+  Nodes on the right side of links
+#}
+{% for link in links if link.right_node == inventory_hostname %}
+{{ neighbor(link.left_node,link.left_ip) }}
+{% endfor %}
+!
+{% for ifname,ifdata in interfaces|dictsort %}
+ network {{ ifdata.ip|ipaddr('network') }} {{ ifdata.ip|ipaddr('netmask') }}
+{% endfor %}

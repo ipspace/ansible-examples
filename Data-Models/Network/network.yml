@@ -1,0 +1,7 @@
+links:
+- left_node: S1
+  left_interface: GigabitEthernet0/1
+  left_ip: 172.16.0.1/30
+  right_node: S2
+  right_interface: GigabitEthernet0/1
+  right_ip: 172.16.0.2/30

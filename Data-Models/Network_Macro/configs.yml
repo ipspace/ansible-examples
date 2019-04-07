@@ -1,0 +1,7 @@
+---
+- hosts: all
+  tasks:
+  - include_vars: network.yml
+  - template:
+      src: config.j2
+      dest: "{{inventory_hostname}}.cfg"

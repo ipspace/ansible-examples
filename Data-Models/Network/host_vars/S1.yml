@@ -1,0 +1,7 @@
+---
+hostname: S1
+bgp_as: 65001
+
+interfaces:
+  Vlan101:
+    ip: 192.168.1.1/24

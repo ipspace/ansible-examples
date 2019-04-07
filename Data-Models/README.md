@@ -1,6 +1,6 @@
 This set of directories illustrates the data model deduplication
 article published on ipSpace.net during spring/summer 2019.
-URLs will be inserted at the time individual parts of the article 
+URLs will be inserted at the time individual parts of the article
 are published.
 
 To use the examples:
@@ -15,3 +15,6 @@ The subdirectories contain these steps in data model evolution:
 
 * **Initial**: initial box-specific data model
 * **BGP_AS**: data model replacing BGP AS number with name of BGP neighbor
+* **BGP_IF**: data model replacing peer IP address with name of BGP neighbor's interface
+* **Network**: data model describing network nodes and links
+* **Network_Macro**: Refactored Jinja2 configuration template for the *Network* data model
