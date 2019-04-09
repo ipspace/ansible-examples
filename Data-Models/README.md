@@ -18,3 +18,4 @@ The subdirectories contain these steps in data model evolution:
 * **BGP_IF**: data model replacing peer IP address with name of BGP neighbor's interface
 * **Network**: data model describing network nodes and links
 * **Network_Macro**: Refactored Jinja2 configuration template for the *Network* data model
+* **Network_Dict**: Refactored network data model supporting stub interfaces and multi-access links

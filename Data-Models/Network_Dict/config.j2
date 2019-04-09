@@ -1,0 +1,51 @@
+hostname {{ hostname }}
+{#
+  Interface macro
+#}
+{% macro interface(name,addr) -%}
+!
+interface {{ name }}
+ ip address {{ addr|ipaddr('address') }} {{ addr|ipaddr('netmask') }}
+{%- endmacro %}
+{#
+  Interfaces
+#}
+{% for link in links %}
+{% for node,iflist in link|dictsort if node == inventory_hostname %}
+{% for ifname,ip in iflist|dictsort %}
+{{ interface(ifname,ip) }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+!
+{#
+  BGP neighbor macro
+#}
+{% macro neighbor(name,ip) -%}
+{% set n_ip = ip|ipaddr('address') %}
+ neighbor {{ n_ip }} remote-as {{ hostvars[name].bgp_as }}
+ neighbor {{ n_ip }} description {{ name }}
+{%- endmacro %}
+{#
+  BGP routing protocol configuration
+#}
+router bgp {{ bgp_as }}
+{#
+  BGP neighbors - find links that contain local nodename and create
+  neighbors for all other nodenames
+#}
+{% for link in links if link|length > 1 and inventory_hostname in link.keys() %}
+{% for node,iflist in link|dictsort if node != inventory_hostname %}
+{% for ifname,ip in iflist|dictsort %}
+{{ neighbor(node,ip) }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+!
+{% for link in links if link|length == 1 %}
+{% for node,iflist in link|dictsort if node == inventory_hostname %}
+{% for ifname,ip in iflist|dictsort %}
+ network {{ ip|ipaddr('network') }} {{ ip|ipaddr('netmask') }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
