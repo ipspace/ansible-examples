@@ -1,0 +1,24 @@
+{#
+  Interface macro
+#}
+{% macro interface(name,addr) -%}
+!
+interface {{ name }}
+ ip address {{ addr|ipaddr('address') }} {{ addr|ipaddr('netmask') }}
+{%- endmacro %}
+{#
+  Interfaces
+#}
+{% for link in links %}
+{%   for node,iflist in link|dictsort if node != 'prefix' %}
+{%     if node == inventory_hostname %}
+{%       if link.prefix is defined %}
+{{         interface(iflist,link.prefix|ipaddr(loop.index)) }}
+{%       else %}
+{%         for ifname,ip in iflist|dictsort %}
+{{           interface(ifname,ip) }}
+{%         endfor %}
+{%       endif %}
+{%     endif %}
+{%   endfor %}
+{% endfor %}

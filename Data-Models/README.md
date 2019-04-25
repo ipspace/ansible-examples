@@ -19,3 +19,4 @@ The subdirectories contain these steps in data model evolution:
 * **Network**: data model describing network nodes and links
 * **Network_Macro**: Refactored Jinja2 configuration template for the *Network* data model
 * **Network_Dict**: Refactored network data model supporting stub interfaces and multi-access links
+* **Network_Prefix**: Replace per-node IP addresses with link prefixes

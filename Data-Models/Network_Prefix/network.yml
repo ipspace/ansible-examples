@@ -1,0 +1,16 @@
+links:
+#
+# Core links
+#
+- prefix: 172.16.0.0/30
+  S1: GigabitEthernet0/1
+  S2: GigabitEthernet0/1
+
+#
+# Edge links
+#
+- S1:
+    Vlan101: 192.168.1.1/24
+- S2:
+    Vlan101: 192.168.2.1/24
+
