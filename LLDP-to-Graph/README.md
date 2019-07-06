@@ -37,6 +37,8 @@ ansible-playbook LLDP-to-Graph.yml
 ```
 dot -Tpng network.dot >network.png
 ```
+The 'disable-LLDP-on-edge' playbook can be used to rollout LLDP on STP P2P links while keeping it disabled on STP edge ports. This keeps the topology free from LLDP speaking hosts.
+
 * Enjoy, modify and submit a pull request when you add something awesome
 
 ## More information
