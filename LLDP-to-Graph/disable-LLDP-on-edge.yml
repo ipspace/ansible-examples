@@ -30,6 +30,7 @@
     loop: "{{ stp_edge }}"
     loop_control:
       loop_var: edge_interface
+    when: edge_interface | length > 0
 
   - name: enable lldp
     ios_config:
