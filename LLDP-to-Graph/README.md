@@ -1,7 +1,13 @@
 # Generate network topology graph from LLDP neighbors
 
 The *LLDP-to-Graph* Ansible playbook uses LLDP neighbor data collected
-with *napalm_get_facts* Ansible module to generate network diagram in *Graphviz* .dot file format.
+with *napalm_get_facts* Ansible module to generate network diagram in
+*Graphviz* .dot file format.
+
+You can find sample solutions attendees of our
+[Building Network Automation Solutions](https://www.ipspace.net/Building_Network_Automation_Solutions)
+created based on this concept in the Network Diagrams part of our
+[network automation solutions showcase](https://www.ipspace.net/NetAutSol/Solutions).
 
 ## Installation guide
 
