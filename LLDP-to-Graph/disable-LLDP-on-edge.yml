@@ -1,0 +1,39 @@
+# created by abaretta@falco-networks.com
+---
+- hosts: all
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+  - name: Get IOS STP edge ports
+    ios_command:
+      commands:
+         - "sh span | inc Edge"
+    register: spanedgeoutput
+
+  - name: Create list of IOS STP edge ports
+    set_fact:
+       stp_edge: |
+           {{ spanedgeoutput.stdout_lines[0] |
+             map('regex_replace','(?P<int>^\S*)\s+.*$','\g<int>') |
+             map('join') | list }}
+
+  - debug: var=stp_edge
+
+  - name: disable lldp on access ports
+    ios_config:
+      lines:
+        - no lldp transmit
+        - no lldp receive
+      parents: "interface {{ edge_interface }}"
+      save_when: modified
+    loop: "{{ stp_edge }}"
+    loop_control:
+      loop_var: edge_interface
+    when: edge_interface | length > 0
+
+  - name: enable lldp
+    ios_config:
+      lines:
+        - lldp run
+      save_when: modified
