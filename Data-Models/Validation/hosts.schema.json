@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.ipSpace.net/hosts.schema.json",
+  "title": "Ansible inventory data",
+  "description": "A quick check to verify that the Ansible inventory contains the expected values",
+  "definitions": {
+  	"router" : {
+      "type" : "object",
+      "properties": {
+        "bgp_as": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "hostname": {
+          "type": "string"
+        }
+      },
+      "required": [ "bgp_as","hostname" ],
+      "additionalProperties": false
+  	}
+  },
+  "type": "object",
+  "patternProperties": {
+    ".*" : { "$ref" : "#/definitions/router" }
+  },
+  "minProperties": 1
+}

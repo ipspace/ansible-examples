@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.ipSpace.net/network.schema.json",
+  "title": "Network Infrastructure",
+  "description": "An optimized data model describing a network",
+  "definitions": {
+  	"core-link" : {
+      "type" : "object",
+      "minProperties": 3,
+      "maxProperties": 3,
+      "properties": {
+        "prefix": {
+          "type": "string",
+          "format": "ipv4"
+        }
+      },
+      "additionalProperties": {
+        "type" : "string"
+      },
+      "required": [ "prefix" ]
+  	},
+    "edge-link" : {
+      "type" : "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "patternProperties": {
+          "^Vlan" : { "type" : "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+  	"links": {
+  	  "description": "Core and edge links",
+  	  "type": "array",
+      "items" : {
+        "anyOf": [
+          { "$ref" : "#/definitions/core-link" },
+          { "$ref" : "#/definitions/edge-link" }
+        ]
+      }
+  	}
+  },
+  "required": [ "links" ]
+}
