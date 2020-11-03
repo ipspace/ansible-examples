@@ -28,4 +28,5 @@
   - assemble:
       src: "{{build_dir}}/{{inventory_hostname}}"
       dest: "{{config_dir}}/{{inventory_hostname}}.conf"
+      ignore_hidden: yes
     check_mode: no
