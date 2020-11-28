@@ -1,0 +1,16 @@
+---
+all:
+  hosts:
+    E1:  { ansible_host: 192.168.121.103 }
+    E2:  { ansible_host: 192.168.121.104 }
+    PE1: { ansible_host: 192.168.121.101 }
+    E3:  { ansible_host: 192.168.121.105 }
+    E4:  { ansible_host: 192.168.121.106 }
+    PE2: { ansible_host: 192.168.121.102 }
+  vars:
+    ansible_user: vagrant
+    ansible_ssh_private_key_file: ~/.vagrant.d/insecure_private_key
+    ansible_network_os: ios
+    ansible_connection: network_cli
+    ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q brick.local"'
+    simulation: libvirt
