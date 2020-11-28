@@ -1,0 +1,29 @@
+#
+# Deploy IP interface addressing in a WAN fabric
+#
+---
+- name: Enable WAN interfaces, apply IP addresses
+  hosts: all
+  vars:
+    configs: "configs"
+  tasks:
+  - include_vars: "{{ item }}"
+    with_first_found:
+      - "{{ inventory_dir }}/nodes.yml"
+      - nodes.yml
+    tags: [ configs,verify,validate ]
+
+  - include_tasks: tools/clean.yml
+    tags: [ clean ]
+
+  - include_tasks: common/config_interfaces.yml
+    tags: [ configs ]
+    args:
+      apply:
+        tags: [ configs ]
+
+  - include_tasks: "{{ansible_network_os}}/deploy_interfaces.yml"
+    tags: [ deploy ]
+    args:
+      apply:
+        tags: [ deploy ]

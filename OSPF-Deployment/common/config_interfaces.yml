@@ -1,5 +1,5 @@
 #
-# Deploy OSPF routing in a WAN fabric
+# Create interface IP configuration, change hostname, enable LLDP
 #
 ---
 - name: Create configuration directory
@@ -9,5 +9,5 @@
   changed_when: no
 
 - name: Create configurations
-  template: src=../{{ansible_network_os}}/ospf-config.j2 dest={{configs}}/{{inventory_hostname}}.ospf.cfg
+  template: src=../{{ansible_network_os}}/interface-config.j2 dest={{configs}}/{{inventory_hostname}}.if.cfg
   check_mode: no

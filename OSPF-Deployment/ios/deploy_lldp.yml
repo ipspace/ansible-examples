@@ -3,6 +3,6 @@
 #
 ---
 - name: Enable LLDP on fabric links
-  ios_config: 
+  ios_config:
     commands:
     - lldp run

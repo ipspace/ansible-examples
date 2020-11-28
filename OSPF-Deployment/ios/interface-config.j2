@@ -1,0 +1,13 @@
+{% set node = nodes[inventory_hostname] %}
+hostname {{ inventory_hostname }}
+!
+lldp run
+!
+{% if node.links is defined %}
+{%   for intf,data in node.links|dictsort %}
+!
+interface {{intf}}
+ no shutdown
+ ip address {{ data.ip }} 255.255.255.252
+{%   endfor %}
+{% endif %}

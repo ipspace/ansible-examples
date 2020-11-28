@@ -2,21 +2,24 @@
 - hosts: all
   name: Create and read node data model
   tasks:
-  - include_vars: "{{inventory_dir}}/{{model|default('fabric.yml')}}"
+  - include_vars: "{{item}}"
     run_once: true
+    with_first_found:
+    - "{{inventory_dir}}/{{model|default('fabric.yml')}}"
+    - "fabric.yml"
     tags: [ model ]
   - name: Create per-node data model from fabric data model
-    template: src=model/fabric-to-nodes.j2 dest={{inventory_dir}}/nodes.yml
+    template: src=model/fabric-to-nodes.j2 dest=nodes.yml
     run_once: true
     tags: [ model ]
-  - include_vars: "{{inventory_dir}}/nodes.yml"
+  - include_vars: "nodes.yml"
     tags: [ always ]
 
 - hosts: all
   name: Configure LLDP on fabric devices
   tags: [ config ]
   tasks:
-  - include_tasks: "{{ansible_os}}/deploy_lldp.yml"
+  - include_tasks: "{{ansible_network_os}}/deploy_lldp.yml"
   - name: Set 'wait for LLDP flag'
     set_fact: wait_flag=1
 
@@ -29,7 +32,7 @@
   - name: Gather LLDP facts
     include_tasks: "{{item}}"
     with_first_found:
-      - "{{ansible_os}}/lldp_facts.yml"
+      - "{{ansible_network_os}}/lldp_facts.yml"
       - "lldp/napalm_lldp_facts.yml"
   - name: Validate fabric connectivity using LLDP neighbors
     include_tasks: lldp/validate.yml

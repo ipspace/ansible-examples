@@ -1,12 +1,13 @@
 #
-# Deploy OSPF routing in a WAN fabric
+# Enable interfaces and LLDP, deploy IP addressing in a WAN fabric
 #
 ---
 - include_tasks: ../tools/log_changes_init.yml
 
 - name: Deploy configurations
   ios_config:
-    src: "{{configs}}/{{inventory_hostname}}.ospf.cfg"
+    src: "{{configs}}/{{inventory_hostname}}.if.cfg"
+    save_when: changed
   register: changes
   tags: [ print_action ]
 
@@ -14,4 +15,4 @@
   args:
     apply:
       vars:
-        component: OSPF
+        component: interface
