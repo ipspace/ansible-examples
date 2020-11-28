@@ -1,0 +1,5 @@
+---
+- name: Build libvirt-specific configuration
+  template: src=90-libvirt.j2 dest={{ build_dir }}/{{inventory_hostname}}/90-libvirt.conf
+  check_mode: no
+  changed_when: false

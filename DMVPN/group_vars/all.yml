@@ -9,12 +9,12 @@ as: 65000
 tunnel:
   mtu: 1400
   mss: 1360
-  0:
+  tunnel0:
     auth: WanExamp
     hub_router: C1
     nhrp_id: 12345
     gre: 12345
-  1:
+  tunnel1:
     auth: WanExamp
     hub_router: C2
     nhrp_id: 12346

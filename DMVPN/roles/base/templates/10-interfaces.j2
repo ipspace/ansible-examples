@@ -10,6 +10,10 @@ interface {{LAN.interface}}
  description LAN interface
  ip address {{LAN.ip}} {{LAN.mask|default('255.255.255.0')}}
 {% include routing_includes+routing+'-LAN-interface.j2' ignore missing %}
+{%   if 'Gigabit' in LAN.interface %}
+ duplex auto
+ speed auto
+{%   endif %}
 !
 {% endif %}
 !
@@ -37,6 +41,10 @@ interface {{intf.interface}}
  ip address dhcp
 {%   else %}
  ip address {{intf.ip}} {{intf.mask|default("255.255.255.0")}}
+{%   endif %}
+{%   if 'Gigabit' in intf.interface %}
+ duplex auto
+ speed auto
 {%   endif %}
 !
 {%   if vrf is defined and intf.gw is defined %}

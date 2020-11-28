@@ -5,7 +5,7 @@ router bgp {{as}}
 {%   set peerip = hostvars[tunnel[ifnum].hub_router].DMVPN[ifnum].ip %}
  neighbor {{peerip}} remote-as {{as}}
  neighbor {{peerip}} description Hub {{tunnel[ifnum].hub_router}}
- neighbor {{peerip}} update-source Tunnel{{ifnum}}
+ neighbor {{peerip}} update-source {{ifnum|capitalize}}
 {% endfor %}
 !
 router ospf 1

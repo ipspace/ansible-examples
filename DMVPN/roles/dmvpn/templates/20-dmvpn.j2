@@ -14,7 +14,7 @@ crypto keyring DMVPN
   pre-shared-key address 0.0.0.0 0.0.0.0 key TESTING
 {% endif %}
 !
-{% for ifnum,intf in DMVPN|default({})|dictsort %}
+{% for ifnum,intf in DMVPN|default({})|dictsort if 'tunnel' in ifnum %}
 {# Find underlying WAN interface #}
 {%   if WAN[ifnum] is defined %}
 {%     set WANIF = WAN[ifnum] %}
@@ -34,7 +34,7 @@ crypto keyring DMVPN vrf {{vrf.name|default('Internet')}}
   pre-shared-key address 0.0.0.0 0.0.0.0 key TESTING
 {%   endif %}
 !
-interface Tunnel{{ifnum}}
+interface {{ifnum|capitalize}}
  ip address {{intf.ip}} {{intf.mask|default("255.255.255.0")}}
  no ip redirects
  ip mtu 1400

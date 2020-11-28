@@ -1,0 +1,27 @@
+---
+all:
+  vars:
+    ansible_user: vagrant
+    ansible_ssh_pass: vagrant
+    ansible_become_method: enable
+    ansible_become_password: vagrant
+
+#
+# Replace brick.local with FQDN of your libvirt host. Remove this line if you're running
+# Ansible on the same host as IOSv virtual machines
+#
+    ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q brick.local"'
+    simulation: libvirt
+  hosts:
+    C1:
+      ansible_host: 192.168.121.101
+    C2:
+      ansible_host: 192.168.121.102
+    R1A:
+      ansible_host: 192.168.121.103
+    R1B:
+      ansible_host: 192.168.121.104
+    R2:
+      ansible_host: 192.168.121.105
+    R3:
+      ansible_host: 192.168.121.106

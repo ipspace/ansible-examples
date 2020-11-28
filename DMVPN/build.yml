@@ -19,7 +19,9 @@
     - routing
     - base
     - dmvpn
-    - virl
+  tasks:
+  - include_role:
+      name: "{{ simulation|default('virl') }}"
 
 - name: Assemble configurations
   hosts: all

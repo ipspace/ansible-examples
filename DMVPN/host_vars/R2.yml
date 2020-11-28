@@ -9,4 +9,7 @@ WAN:
     ip: 10.0.7.9
     subnet: 255.255.255.252
 #  1: { interface: 'FastEthernet1/0', ip: DHCP }
-DMVPN: { 0: { ip: 192.168.0.5 }, 1: { ip: 192.168.1.5} }
+DMVPN: {
+  tunnel0: { ip: 192.168.0.5 },
+  tunnel1: { ip: 192.168.1.5}
+}

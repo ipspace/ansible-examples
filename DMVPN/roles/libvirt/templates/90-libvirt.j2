@@ -1,0 +1,26 @@
+vrf definition MGMT
+ description Management interface
+ !
+ address-family ipv4
+ exit-address-family
+!
+interface GigabitEthernet0/0
+ description vagrant-management
+ vrf forwarding MGMT
+ ip address dhcp
+ duplex full
+ speed auto
+ media-type rj45
+!
+ip ssh version 2
+ip ssh pubkey-chain
+  username vagrant
+   key-hash ssh-rsa DD3BB82E850406E9ABFFA80AC0046ED6
+!
+event manager applet ENABLE-MGMT
+ event syslog pattern "SYS-5-RESTART"
+ action 0 cli command "enable"
+ action 1 cli command "conf t"
+ action 3 cli command "interface GigabitEthernet0/0"
+ action 4 cli command "no shutdown"
+ action 5 cli command "exit"

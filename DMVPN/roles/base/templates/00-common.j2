@@ -10,10 +10,12 @@ boot-end-marker
 !
 logging buffered 4096
 !
-enable password cisco
+enable password {{ ansible_become_password|default(ansible_ssh_pass) }}
 !
-no aaa new-model
+aaa new-model
 !
+aaa authentication login default local
+aaa authorization exec default local
 !
 !
 no ip source-route
@@ -26,11 +28,12 @@ ip domain name {{domain_name}}
 {% endif %}
 !
 !
-username {{ansible_user}} privilege 15 password 0 {{ansible_ssh_pass}}
+username {{ansible_user}} privilege 15 secret {{ansible_ssh_pass}}
 !
 redundancy
 !
 archive
+ path flash:
  log config
   hidekeys
 !

@@ -1,7 +1,6 @@
 !
 no ip http server
 no ip http secure-server
-ip ssh server algorithm authentication password
 ip scp server enable
 !
 line con 0
@@ -9,7 +8,7 @@ line con 0
 line aux 0
 line vty 0 4
  exec-timeout 720 0
- login local
+ login authentication default
  transport input telnet ssh
 !
 end

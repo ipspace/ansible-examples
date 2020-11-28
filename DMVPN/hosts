@@ -1,20 +1,19 @@
-
 [hubs]
 C1 ansible_host=172.16.1.110
 C2 ansible_host=172.16.1.111
 
 [spokes:children]
-spoke-SOHO
-spoke-medium
-spoke-redundant
+spoke_SOHO
+spoke_medium
+spoke_redundant
 
-[spoke-SOHO]
+[spoke_SOHO]
 R2 ansible_host=172.16.1.122
 
-[spoke-medium]
+[spoke_medium]
 R3 ansible_host=172.16.1.123
 
-[spoke-redundant]
+[spoke_redundant]
 R1A ansible_host=172.16.1.120
 R1B ansible_host=172.16.1.121
 
@@ -22,3 +21,5 @@ R1B ansible_host=172.16.1.121
 ansible_user=cisco
 ansible_ssh_pass=cisco
 ansible_network_os=ios
+ansible_become_method=enable
+ansible_become_password=cisco
